@@ -93,6 +93,16 @@ $app->singleton(
 |
 */
 
+$app->configure('proxypass');
+$app->register(CSUNMetaLab\LumenProxyPass\Providers\ProxyPassServiceProvider::class);
+
+$app->configure('forcehttps');
+$app->register(CSUNMetaLab\LumenForceHttps\Providers\ForceHttpsServiceProvider::class);
+
+$app->middleware([
+    CSUNMetaLab\LumenForceHttps\Http\Middleware\ForceHttps::class,
+]);
+
 $app->router->group([
     'namespace' => 'App\Http\Controllers',
 ], function ($router) {
@@ -100,3 +110,6 @@ $app->router->group([
 });
 
 return $app;
+
+
+
