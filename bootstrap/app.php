@@ -67,6 +67,10 @@ $app->singleton(
 //     'auth' => App\Http\Middleware\Authenticate::class,
 // ]);
 
+$app->middleware([
+    CSUNMetaLab\LumenForceHttps\Http\Middleware\ForceHttps::class,
+]);
+
 /*
 |--------------------------------------------------------------------------
 | Register Service Providers
@@ -82,6 +86,11 @@ $app->singleton(
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
+$app->configure('proxypass');
+$app->register(CSUNMetaLab\LumenProxyPass\Providers\ProxyPassServiceProvider::class);
+
+$app->configure('forcehttps');
+$app->register(CSUNMetaLab\LumenForceHttps\Providers\ForceHttpsServiceProvider::class);
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes
@@ -93,15 +102,7 @@ $app->singleton(
 |
 */
 
-$app->configure('proxypass');
-$app->register(CSUNMetaLab\LumenProxyPass\Providers\ProxyPassServiceProvider::class);
 
-$app->configure('forcehttps');
-$app->register(CSUNMetaLab\LumenForceHttps\Providers\ForceHttpsServiceProvider::class);
-
-$app->middleware([
-    CSUNMetaLab\LumenForceHttps\Http\Middleware\ForceHttps::class,
-]);
 
 $app->router->group([
     'namespace' => 'App\Http\Controllers',
