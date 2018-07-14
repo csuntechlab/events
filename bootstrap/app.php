@@ -109,6 +109,10 @@ $app->router->group([
     require __DIR__.'/../routes/web.php';
 });
 
+
+// Service Providers
+$app->register(App\Providers\FacultyServiceProvider::class);
+
 return $app;
 
 

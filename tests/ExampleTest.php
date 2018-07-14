@@ -32,7 +32,7 @@ class ExampleTest extends TestCase
 
         //$this->assertTrue(true);
         $val = $this->gimme3->give(); //you have to create the give() function in the Gimme class
-        
+
 
         $this->assertEquals(3, $val); //so if you write'return 3' in give(), it is expecting
                                                 //to get 3, so itll compare what the actual test got vs 3 and shows true/false
