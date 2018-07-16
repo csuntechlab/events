@@ -17,5 +17,3 @@ $router->get('/', function () use ($router) {
 
 $router->get('1.0/terms/{term}/faculty/{email}/classes', 'FacultyController@facultyClassAndFinalExamHours');
 
-
-
