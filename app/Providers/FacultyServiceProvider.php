@@ -14,5 +14,9 @@ class FacultyServiceProvider extends ServiceProvider
     public function register()
     {
         //
+        $this->app->bind(
+            'App\Contracts\FacultyContract',
+            'App\Services\FacultyService'
+        );
     }
 }
