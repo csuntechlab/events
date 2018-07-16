@@ -13,7 +13,7 @@ class CreateBedrockTable extends Migration
      */
     public function up()
     {
-        Schema::create('bedrock', function (Blueprint $table) {
+        Schema::create('events', function (Blueprint $table) {
             $table->string('entities_id',255);
 //            COMMENT 'E.g., office-hours:2187:103166750',
 
