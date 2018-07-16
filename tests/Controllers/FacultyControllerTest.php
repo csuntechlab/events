@@ -59,91 +59,70 @@ class FacultyControllerTest extends TestCase
     */
     public function get_professor_myClassList()
     {
-        $controller = new FacultyController($this->retriever);
+        $workingController = new FacultyController($this->retriever);
 
         $this->retriever
         ->shouldReceive('getClassList')
-        ->with('2187','steven.fitzgerald')
+        ->with(['2187','LuisOG'])
         ->andReturn(
+            json_encode(
             [
                 [
-                'classes_id' => '1234561',
-                'events' => [ 
-                    'entities_id' => 'entity:id',
-                    'term_id' => '2187' 
-                ]
+                        "classes_id" => '12343',
+                        "term_id" => '2187'
                 ],
                 [
-                    'classes_id' => '1234561',
-                    'events' => [ 
-                        'entities_id' => 'entity:id',
-                        'term_id' => '2187' 
-                    ]
+                        "classes_id" => '12344',
+                        "term_id" =>'2187'
                 ],
                 [
-                    'classes_id' => '1234561',
-                    'events' => [ 
-                        'entities_id' => 'entity:id',
-                        'term_id' => '2187' 
+                        "classes_id" => '12345',
+                        "term_id" => '2187'
                     ]
                 ]
-            ]
+            )
         );
         
-        $myClassList = 
-        [
+        $myClassList = json_encode(
             [
-            'classes_id' => '1234561',
-            'events' => [
-                'entities_id' => 'entity:id',
-                'term_id' => '2187'
+                [
+                    "classes_id" => '12343',
+                    "term_id" => '2187'
+                ],
+                [
+                    "classes_id" => '12344',
+                    "term_id" =>'2187'
+                ],
+                [
+                    "classes_id" => '12345',
+                    "term_id" => '2187'
                 ]
-            ],
-            [
-                'classes_id' => '1234561',
-                'events' => [ 
-                    'entities_id' => 'entity:id',
-                    'term_id' => '2187' 
-                ]
-            ],
-            [
-                'classes_id' => '1234561',
-                'events' => [ 
-                    'entities_id' => 'entity:id',
-                    'term_id' => '2187' 
-                ]
-            ]
-        ];
+            ] 
+        );
+
+        $response = $workingController->getClassList('2187','LuisOG');
         
-        $response = $controller->getClassList('2187','steven.fitzgerald');
-        // var_dump($response);
+        var_dump($response);
         // echo 'This is a response: '.$response. ' ';
 
         $this->assertEquals($myClassList, $response);        
         // $this->assertEquals($myClassList,
-        // [
+        // json_encode(
         //     [
-        //     'classes_id' => '1234561',
-        //     'events' => [
-        //         'entities_id' => 'entity:id',
-        //         'term_id' => '2187'
-        //         ]
-        //     ],
-        //     [
-        //         'classes_id' => '1234561',
-        //         'events' => [ 
-        //             'entities_id' => 'entity:id',
-        //             'term_id' => '2187' 
-        //         ]
-        //     ],
-        //     [
-        //         'classes_id' => '1234561',
-        //         'events' => [ 
-        //             'entities_id' => 'entity:id',
-        //             'term_id' => '2187' 
+        //         [
+        //             "classes_id" => '12343',
+        //             "term_id" => '2187'
+        //         ],
+        //         [
+        //             "classes_id" => '12344',
+        //             "term_id" =>'2187'
+        //         ],
+        //         [
+        //             "classes_id" => '12345',
+        //             "term_id" => '2187'
         //         ]
         //     ]
-        // ]);        
+        // ) );        
         
     }
 
@@ -153,7 +132,7 @@ class FacultyControllerTest extends TestCase
     */
     public function get_professor_final_exam_times()
     {
-        $controller = new FacultyController($this->retriever);
+        $workingController = new FacultyController($this->retriever);
 
         $this->retriever
         ->shouldReceive('getFinalExamTimes')
@@ -209,7 +188,7 @@ class FacultyControllerTest extends TestCase
             ]
         ];
         
-        // $response = $controller->getFinalExamTimes('2187','steven.fitzgerald');
+        // $response = $workingController->getFinalExamTimes('2187','steven.fitzgerald');
         // var_dump($response);
 
         // $this->assertEquals('this is a test', $response);        

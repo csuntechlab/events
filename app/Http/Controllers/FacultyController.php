@@ -13,7 +13,6 @@ class FacultyController extends Controller
      */
     public function __construct(FacultyContract $facultyRetriever)
     {
-        //
         $this->facultyRetriever = $facultyRetriever;
     }
 
