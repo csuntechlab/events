@@ -15,3 +15,9 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
+// $router->get('/terms/{term}/faculty/{email}',function() use ($router){
+//     return $router->app->version();
+// });
+$router->get('1.0/terms/{term}/faculty/{email}','FacultyController@getClassList');
+// $router->get('/terms/{term}/faculty/{email}','FacultyController@getFinalExamTimes');
+
