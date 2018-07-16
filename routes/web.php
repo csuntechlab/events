@@ -14,3 +14,12 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+// without name
+//$router->get('1.0/term/{term}/students/{email}', 'StudentController@termClasses');
+
+// with name
+// terms/2197/students/john.smith.302
+$router->get('1.0/terms/{term}/students/{email}', [
+    'as' => 'students.termClasses', 'uses' => 'StudentController@termClasses'
+]);

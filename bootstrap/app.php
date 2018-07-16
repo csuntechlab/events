@@ -93,6 +93,9 @@ $app->singleton(
 |
 */
 
+/* student service provider */
+$app->register(App\Providers\StudentServiceProvider::class);
+
 $app->configure('proxypass');
 $app->register(CSUNMetaLab\LumenProxyPass\Providers\ProxyPassServiceProvider::class);
 
