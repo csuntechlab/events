@@ -59,11 +59,9 @@ class FacultyControllerTest extends TestCase
     */
     public function get_professor_myClassList()
     {
-        $workingController = new FacultyController($this->retriever);
-
         $this->retriever
         ->shouldReceive('getClassList')
-        ->with(['2187','LuisOG'])
+        ->with('2187','LuisOG')
         ->andReturn(
             json_encode(
             [
@@ -82,6 +80,10 @@ class FacultyControllerTest extends TestCase
                 ]
             )
         );
+
+        //need to create controller after mocking param, wont know what to mock?
+        $workingController = new FacultyController($this->retriever);
+        // dd($workingController);
         
         $myClassList = json_encode(
             [
@@ -102,7 +104,7 @@ class FacultyControllerTest extends TestCase
 
         $response = $workingController->getClassList('2187','LuisOG');
         
-        var_dump($response);
+        // dd($response);
         // echo 'This is a response: '.$response. ' ';
 
         $this->assertEquals($myClassList, $response);        
