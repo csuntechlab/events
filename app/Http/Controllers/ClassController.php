@@ -23,13 +23,16 @@ class ClassController extends Controller
 
     public function courses($term,$course_id)
     {
-//        $validTerm = $this->classContract->getYearAndTerm($term);
-        return $term . ' ' . $course_id;
-        $result = $this->classContract->isValidCourseId($course_id);
-        if(!$result)
-        {
-            return $this->classContract->test($course_id);
-        }
-        return $result;
+        return $this->classContract->course_details($term,$course_id);
     }
+
+//    public function courses($term,$course_id)
+//    {
+//        $result = $this->classContract->isValidCourseId($course_id);
+//        if(!$result)
+//        {
+//            return $this->classContract->test($course_id);
+//        }
+//        return $result;
+//    }
 }

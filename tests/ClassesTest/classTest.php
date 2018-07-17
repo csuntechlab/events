@@ -1,6 +1,7 @@
 <?php
 
 use App\Contracts\ClassContract;
+use App\Http\Controllers\ClassController;
 use App\Services\ClassService;
 
 /**
@@ -20,37 +21,39 @@ class classTest extends TestCase
         $this->retriever = Mockery::spy(ClassContract::class);
     }
 
-    /** @test */
-    public function getCourseDetails_with_course_id()
+    public function get_json_from_local_db()
+    {
+
+    }
+
+    /**
+     * @test
+     */
+    public function test_the_url_with_a_given_course_id_return_course_id()
     {
         $this->retriever
-            ->shouldReceive('course_details')
-            ->withArgs([2187,16258])
-            ->andReturn(\json_encode(['class_details' => [
-                'Locate' => 'JD3504',
-                'events' => [
-                    'Class Start' =>'Aug 25,2018',
-                    'Class End' => 'Dec 11,2018',
-                    'Attendance' => [
-                        'Friday' => '9:00 am to 12:15 pm'
-                    ],
-                    'Final Exam' => 'Dec 15,2018'
-                ]
-            ]]));
+            ->shouldReceive('isValidCourseId')
+            ->with(2187)
+            ->andReturn(2187);
 
-        $returnArray = [
-            'Locate' => 'JD3504',
-            'events' => [
-                'Class Start' =>'Aug 25,2018',
-                'Class End' => 'Dec 11,2018',
-                'Attendance' => [
-                    'Friday' => '9:00 am to 12:15 pm'
-                ],
-                'Final Exam' => 'Dec 15,2018'
-            ]
-        ];
-        $output = $this->retriever->course_details(2187,16258);
-        $this->assertEquals($output, \json_encode(['class_details' =>$returnArray]));
+        $result = 2187;
+        $output = $this->retriever->isValidCourseId(2187);
+        $this->assertEquals($result,$output);
+    }
+
+    /**
+     * @test
+     */
+    public function test_the_url_with_a_given_term_id_return_term_id()
+    {
+        $this->retriever
+            ->shouldReceive('isValidTermId')
+            ->with(16258)
+            ->andReturn(16258);
+
+        $result = 16258;
+        $output = $this->retriever->isValidTermId(16258);
+        $this->assertEquals($result,$output);
     }
 
     /**
@@ -60,18 +63,6 @@ class classTest extends TestCase
     {
         $response = $this->call('GET', '1.0/terms/2323/classes/4324234'); // (goes to '/classes/3')
         $this->assertEquals(200, $response->status());
-    }
-
-
-    public function test_term_validate()
-    {
-        $this->retriever
-            ->shouldReceive('isValidTermId')
-            ->withArgs([2187])
-            ->andReturn(true);
-        $course_id = 12345;
-        $output = $this->retriever->isValidTermId(2187);
-        $this->assertTrue($output);
     }
 
 }

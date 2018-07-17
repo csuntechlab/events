@@ -13,7 +13,7 @@ interface ClassContract
 {
     public function isValidCourseId($course_id);
 
-    public function isValidTermId($course_id);
+    public function isValidTermId($term);
 
     public function course_details($term,$course_id);
 

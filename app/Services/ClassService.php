@@ -48,15 +48,15 @@ class ClassService implements ClassContract
 
     public function isValidTermId($termId)
     {
-        $data = ['course_id' => $course_id];
+        $data = ['course_id' => $termId];
 
         $validator = Validator::make($data, [
-            'course_id' => 'digits:5'
+            'course_id' => 'digits:4'
         ]);
 
         if ($validator->fails()) {
             return $validator->errors();
         }
-        return 1;
     }
+
 }
