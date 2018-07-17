@@ -17,7 +17,7 @@ class EventsSeeder extends Seeder
                 Event::create([
                     'entities_id' => 'classes:2187:1234'.$i,
                     'term_id' => '2187',
-                    'meeting_number' => '9999',
+                    'pattern_number' => '9999',
                     'type' => 'class',
                     'label' => 'Class',
                     'description' => 'This is a description',
@@ -29,7 +29,7 @@ class EventsSeeder extends Seeder
                     'location_type' => 'physical',
                     'location' => 'JD2215',
                     'is_byappointment' => '0',
-                    'is_walking' => '0',
+                    'is_walkin' => '0',
                     'booking_url' => 'bookMyOfficeHours.com',
                     'online_label' => 'zoom',
                     'online_url' => 'https://csun.zoom.us/j/5024885325',

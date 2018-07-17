@@ -17,7 +17,7 @@ class CreateEventsTable extends Migration
             $table->string('entities_id',255);
 //            COMMENT 'E.g., office-hours:2187:103166750',
             $table->integer('term_id');
-            $table->integer('meeting_number')->default(1);
+            $table->integer('pattern_number')->default(1);
             $table->string('type',64)->default('office-hours');
 //            E.g.: office-hours, final-exam, class, committee',
             $table->string('label',64)->default('General Office Hours');
@@ -34,7 +34,7 @@ class CreateEventsTable extends Migration
             $table->string('location',64)->default(null);
 //            COMMENT 'E.g., JD2215',
             $table->boolean('is_byappointment')->default(false);
-            $table->boolean('is_walking')->default(true);
+            $table->boolean('is_walkin')->default(true);
             $table->string('booking_url',2048);
             $table->string('online_label',8)->default(null);
 //            COMMENT 'E.g., Zoom',
