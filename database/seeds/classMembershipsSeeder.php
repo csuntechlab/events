@@ -21,7 +21,7 @@ class classMembershipsSeeder extends Seeder
     			'member_id' => 'member:23456',
     			'role_position' => 'Student',
     			'member_status' => 'Enrolled',
-    			'email' => 'student_1_@email.com'
+    			'email' => 'student_1_@my.csun.edu'
     		]);
 				}
 
@@ -33,7 +33,7 @@ class classMembershipsSeeder extends Seeder
     			'member_id' => 'member:23457',
     			'role_position' => 'Student',
     			'member_status' => 'Enrolled',
-    			'email' => 'student_2_@email.com'
+    			'email' => 'student_2_@my.csun.edu'
     		]);
 				}
 
@@ -45,7 +45,7 @@ class classMembershipsSeeder extends Seeder
     			'member_id' => 'member:23458',
     			'role_position' => 'Student',
     			'member_status' => 'Enrolled',
-    			'email' => 'student_3_@email.com'
+    			'email' => 'student_3_@my.csun.edu'
     		]);
 				}
 				for ($i=0; $i < 2; $i++) { 
@@ -65,7 +65,7 @@ class classMembershipsSeeder extends Seeder
     		ClassMemberships::create([
     			'classes_id' => '1234'.$i,
     			'term_id' => '2187',
-    			'member_id' => 'member:234510',
+    			'member_id' => 'member:103166750',
     			'role_position' => 'Instructor',
     			'member_status' => 'Enrolled',
     			'email' => 'LuisOG@csun.edu'

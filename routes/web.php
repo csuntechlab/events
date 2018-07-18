@@ -17,5 +17,6 @@ $router->get('/', function () use ($router) {
 
 $router->get('1.0/terms/{term}/faculty/{email}/classes', 'FacultyController@facultyClassAndFinalExamHours');
 
+// http://localhost:8888/metalab/calendar/public/1.0/terms/2173/faculty/nr_nerces.kazandjian
 $router->get('1.0/terms/{term}/faculty/{email}','FacultyController@getClassList');
 
