@@ -24,7 +24,11 @@ class FacultyController extends Controller
     public function getFinalExamTimes($term,$email){
         return $this->facultyRetriever->getClassList($term, $email);
     }
-       
+
+    public function getClassAndFinalExamTimes($term, $email){
+        return $this->facultyRetriever->getClassAndFinalExamTimes($term, $email);
+    }
 
 
+    
 }
