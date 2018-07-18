@@ -101,3 +101,5 @@ $app->register(CSUNMetaLab\LumenForceHttps\Providers\ForceHttpsServiceProvider::
 | can respond to, as well as the controllers that may handle them.
 |
 */
+/*student service provider */
+$app->register(App\Providers\StudentServiceProvider::class);
