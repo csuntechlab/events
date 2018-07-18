@@ -26,6 +26,7 @@ class StudentController
 //        return $this->generate_ics('2018-07-01', '2018-08-01', 'bunch-o-stuff');
 //        return $this->test();
         $ical = new ICal();
+        $ical->addEvent();
         return $ical->generateICS();
     }
 }
