@@ -61,21 +61,59 @@ class FacultyControllerTest extends TestCase
     {
         $this->retriever
         ->shouldReceive('getClassList')
-        ->with('2187','LuisOG')
+        ->with('2173','nr_nerces.kazandjian')
         ->andReturn(
             json_encode(
-            [
                 [
-                        "classes_id" => '12343',
-                        "term_id" => '2187'
-                ],
-                [
-                        "classes_id" => '12344',
-                        "term_id" =>'2187'
-                ],
-                [
-                        "classes_id" => '12345',
-                        "term_id" => '2187'
+                    [
+                      "classes_id" => "classes:2173:99992",
+                      "term_id" => "2173",
+                      "members_id" => "members:000420312",
+                      "role_position" => "Instructor",
+                      "member_status" => "Active",
+                      "events" => []
+                    ],
+                    
+                    [
+                      "classes_id" => "classes:2173:99993",
+                      "term_id" => "2173",
+                      "members_id" => "members:000420312",
+                      "role_position" => "Instructor",
+                      "member_status" => "Active",
+                      "events" => []
+                    ],
+                    
+                    [
+                      "classes_id" => "classes:2173:99998",
+                      "term_id" => "2173",
+                      "members_id" => "members:000420312",
+                      "role_position" => "Instructor",
+                      "member_status" => "Active",
+                      "events" => 
+                        [
+                          [
+                            "entities_id" => "classes:2173:99998",
+                            "term_id" => 2173,
+                            "pattern_number" => 1,
+                            "type" => "class",
+                            "label" => "Class Time",
+                            "description" => "Comp 122",
+                            "start_time" => "1100h",
+                            "end_time" => "1200h",
+                            "days" => "MW",
+                            "from_date" => "2017-02-02",
+                            "to_date" => "2017-06-01",
+                            "location_type" => "NULL",
+                            "location" => "NULL",
+                            "is_byappointment" => 0,
+                            "is_walkin" => 0,
+                            "booking_url" => "NULL",
+                            "online_label" => "NULL",
+                            "online_url" => "NULL",
+                            "created_at" => "2017-05-01 14:32:56",
+                            "updated_at" => "2017-05-01 14:32:56"
+                          ]
+                        ]
                     ]
                 ]
             )
@@ -88,43 +126,63 @@ class FacultyControllerTest extends TestCase
         $myClassList = json_encode(
             [
                 [
-                    "classes_id" => '12343',
-                    "term_id" => '2187'
+                  "classes_id" => "classes:2173:99992",
+                  "term_id" => "2173",
+                  "members_id" => "members:000420312",
+                  "role_position" => "Instructor",
+                  "member_status" => "Active",
+                  "events" => []
                 ],
+                
                 [
-                    "classes_id" => '12344',
-                    "term_id" =>'2187'
+                  "classes_id" => "classes:2173:99993",
+                  "term_id" => "2173",
+                  "members_id" => "members:000420312",
+                  "role_position" => "Instructor",
+                  "member_status" => "Active",
+                  "events" => []
                 ],
+                
                 [
-                    "classes_id" => '12345',
-                    "term_id" => '2187'
+                  "classes_id" => "classes:2173:99998",
+                  "term_id" => "2173",
+                  "members_id" => "members:000420312",
+                  "role_position" => "Instructor",
+                  "member_status" => "Active",
+                  "events" => 
+                    [
+                      [
+                        "entities_id" => "classes:2173:99998",
+                        "term_id" => 2173,
+                        "pattern_number" => 1,
+                        "type" => "class",
+                        "label" => "Class Time",
+                        "description" => "Comp 122",
+                        "start_time" => "1100h",
+                        "end_time" => "1200h",
+                        "days" => "MW",
+                        "from_date" => "2017-02-02",
+                        "to_date" => "2017-06-01",
+                        "location_type" => "NULL",
+                        "location" => "NULL",
+                        "is_byappointment" => 0,
+                        "is_walkin" => 0,
+                        "booking_url" => "NULL",
+                        "online_label" => "NULL",
+                        "online_url" => "NULL",
+                        "created_at" => "2017-05-01 14:32:56",
+                        "updated_at" => "2017-05-01 14:32:56"
+                      ]
+                    ]
                 ]
-            ] 
+              ] 
         );
 
-        $response = $workingController->getClassList('2187','LuisOG');
+        $response = $workingController->getClassList('2173','nr_nerces.kazandjian');
         
         // dd($response);
-        // echo 'This is a response: '.$response. ' ';
-
-        $this->assertEquals($myClassList, $response);        
-        // $this->assertEquals($myClassList,
-        // json_encode(
-        //     [
-        //         [
-        //             "classes_id" => '12343',
-        //             "term_id" => '2187'
-        //         ],
-        //         [
-        //             "classes_id" => '12344',
-        //             "term_id" =>'2187'
-        //         ],
-        //         [
-        //             "classes_id" => '12345',
-        //             "term_id" => '2187'
-        //         ]
-        //     ]
-        // ) );        
+        
+        $this->assertEquals($myClassList, $response);       
         
     }
 

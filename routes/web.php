@@ -15,9 +15,7 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-// $router->get('/terms/{term}/faculty/{email}',function() use ($router){
-//     return $router->app->version();
-// });
+// http://localhost:8888/metalab/calendar/public/1.0/terms/2173/faculty/nr_nerces.kazandjian
 $router->get('1.0/terms/{term}/faculty/{email}','FacultyController@getClassList');
 // $router->get('/terms/{term}/faculty/{email}','FacultyController@getFinalExamTimes');
 

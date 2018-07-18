@@ -6,6 +6,7 @@ use App\Event;
 
 class EventsSeeder extends Seeder
 {
+    protected $table = 'bedrock.events';
     /**
      * Run the database seeds.
      *
@@ -13,29 +14,29 @@ class EventsSeeder extends Seeder
      */
     public function run()
     {
-            for($i = 3; $i < 6; $i++){
-                Event::create([
-                    'entities_id' => 'classes:2187:1234'.$i,
-                    'term_id' => '2187',
-                    'pattern_number' => '9999',
-                    'type' => 'class',
-                    'label' => 'Class',
-                    'description' => 'This is a description',
-                    'start_time' => ($i+4).':00 am',
-                    'end_time' => ($i+8).':00 am',
-                    'days' => 'Mo_We',
-                    'from_date' => '07-02-2018',
-                    'to_date' => '09-02-2018',
-                    'location_type' => 'physical',
-                    'location' => 'JD2215',
-                    'is_byappointment' => '0',
-                    'is_walkin' => '0',
-                    'booking_url' => 'bookMyOfficeHours.com',
-                    'online_label' => 'zoom',
-                    'online_url' => 'https://csun.zoom.us/j/5024885325',
-                ]);                
-            }
-        
+        // for($i = 3; $i < 6; $i++){
+            Event::create([
+                'entities_id' => 'classes:2173:99998',
+                'term_id' => '2173',
+                'pattern_number' => '1',
+                'type' => 'class',
+                'label' => 'Class Time',
+                'description' => 'Comp 122',
+                'start_time' => '1100h',
+                'end_time' => '1200h',
+                'days' => 'MW',
+                'from_date' => '2017-02-02 14:32:56',
+                'to_date' => '2017-06-01 14:32:56',
+                'location_type' => 'NULL',
+                'location' => 'NULL',
+                'is_byappointment' => 'NULL',
+                'is_walkin' => 'NULL',
+                'booking_url' => 'NULL',
+                'online_label' => 'NULL',
+                'online_url' => 'NULL',
+                'created_at' => '2017-05-01 14:32:56',
+                'updated_at' => '2017-05-01 14:32:56',
+            ]);
     }
 }
 

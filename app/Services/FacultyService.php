@@ -4,30 +4,19 @@ use App\ClassMemberships;
 use App\Contracts\FacultyContract;
 
 class FacultyService implements FacultyContract {
+    
+    protected $table = 'nemo.classmemberships';
+
     public function getClassList($term,$email)
     {
-        // $first = ClassMemberships::email($email)
-        // ->term($term)
-        // ->get();
+        // $first = ClassMemberships::all();
+        $first = ClassMemberships::email($email)
+        ->term($term)
+        ->with('events')
+        ->get();
+        // var_dump($first);
+        return ['status'=>'true'] ;
         // return $first;
-        $json = json_encode(
-            [
-                [
-                    "classes_id" => '12343',
-                    "term_id" => '2187'
-                ],
-                [
-                    "classes_id" => '12344',
-                    "term_id" =>'2187'
-                ],
-                [
-                    "classes_id" => '12345',
-                    "term_id" => '2187'
-                ]
-            ]
-        );
-        
-        return $json;
     }
     
     public function getFinalExamTimes($term,$email){
