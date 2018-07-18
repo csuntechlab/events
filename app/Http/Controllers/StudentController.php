@@ -27,6 +27,7 @@ class StudentController
 //        return $this->test();
         $ical = new ICal();
         $ical->addEvent();
+        $ical->addEvent();
         return $ical->generateICS();
     }
 }
