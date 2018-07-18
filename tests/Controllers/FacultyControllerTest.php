@@ -70,7 +70,6 @@ class FacultyControllerTest extends TestCase
                       "term_id" => "2173",
                       "members_id" => "members:000420312",
                       "role_position" => "Instructor",
-                      "member_status" => "Active",
                       "events" => []
                     ],
                     
@@ -79,7 +78,6 @@ class FacultyControllerTest extends TestCase
                       "term_id" => "2173",
                       "members_id" => "members:000420312",
                       "role_position" => "Instructor",
-                      "member_status" => "Active",
                       "events" => []
                     ],
                     
@@ -88,7 +86,6 @@ class FacultyControllerTest extends TestCase
                       "term_id" => "2173",
                       "members_id" => "members:000420312",
                       "role_position" => "Instructor",
-                      "member_status" => "Active",
                       "events" => 
                         [
                           [
@@ -130,7 +127,6 @@ class FacultyControllerTest extends TestCase
                   "term_id" => "2173",
                   "members_id" => "members:000420312",
                   "role_position" => "Instructor",
-                  "member_status" => "Active",
                   "events" => []
                 ],
                 
@@ -139,7 +135,6 @@ class FacultyControllerTest extends TestCase
                   "term_id" => "2173",
                   "members_id" => "members:000420312",
                   "role_position" => "Instructor",
-                  "member_status" => "Active",
                   "events" => []
                 ],
                 
@@ -148,7 +143,6 @@ class FacultyControllerTest extends TestCase
                   "term_id" => "2173",
                   "members_id" => "members:000420312",
                   "role_position" => "Instructor",
-                  "member_status" => "Active",
                   "events" => 
                     [
                       [
@@ -283,12 +277,76 @@ class FacultyControllerTest extends TestCase
 
    /**
     * Retrieve a teachers office hours for term 2187
-    * @ test
+    * @test
     */
-//    public function get_professor_office_hours()
-//    {
-//    
-//    }
+   public function get_professor_office_hours()
+   {
+        $this->retriever
+        ->shouldReceive('getClassList')
+        ->with('2173','nr_nerces.kazandjian')
+        ->andReturn(
+            json_encode( 
+                [
+                     [
+                         "entities_id" => "office-hours:2187:000420312",
+                         "term_id" => '2187',
+                         "pattern_number" => '1',
+                         "type" => "office-hours",
+                         "label" => "General Office Hours",
+                         "description" => "",
+                         "start_time" => "11:00 AM",
+                         "end_time" => "12:00 PM",
+                         "days" => "WF",
+                         "from_date" => 'null',
+                         "to_date" => 'null',
+                         "location_type" => "physical",
+                         "location" => "HOME",
+                         "is_byappointment" => '0',
+                         "is_walkin" => '1',
+                         "booking_url" => 'null',
+                         "online_label" => 'null',
+                         "online_url" => 'null',
+                         "created_at" => "2018-07-18 16:24:03",
+                         "updated_at" => "2018-07-18 16:24:03"
+                     ]
+                 ]
+             )
+            );
+
+        $workingController = new FacultyController($this->retriever);
+        $response = $workingController->getClassList('2173','nr_nerces.kazandjian');
+        
+       $officeHours = 
+       json_encode( 
+           [
+                [
+                    "entities_id" => "office-hours:2187:000420312",
+                    "term_id" => '2187',
+                    "pattern_number" => '1',
+                    "type" => "office-hours",
+                    "label" => "General Office Hours",
+                    "description" => "",
+                    "start_time" => "11:00 AM",
+                    "end_time" => "12:00 PM",
+                    "days" => "WF",
+                    "from_date" => 'null',
+                    "to_date" => 'null',
+                    "location_type" => "physical",
+                    "location" => "HOME",
+                    "is_byappointment" => '0',
+                    "is_walkin" => '1',
+                    "booking_url" => 'null',
+                    "online_label" => 'null',
+                    "online_url" => 'null',
+                    "created_at" => "2018-07-18 16:24:03",
+                    "updated_at" => "2018-07-18 16:24:03"
+                ]
+            ]
+        );
+
+        $this->assertEquals($officeHours, $response);     
+   
+   }
     
 }
 
