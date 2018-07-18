@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 
 
 use App\Contracts\StudentContract;
+use App\ICal;
 
 class StudentController
 {
@@ -21,8 +22,10 @@ class StudentController
     }
 
     public function termClasses($term, $email){
-        // TODO: mock the database tables in tests here
-        $this->studentService->termClasses($term, $email);
-//        return 1;
+//        return json_encode($this->studentService->termClasses($term, $email));
+//        return $this->generate_ics('2018-07-01', '2018-08-01', 'bunch-o-stuff');
+//        return $this->test();
+        $ical = new ICal();
+        return $ical->generateICS();
     }
 }

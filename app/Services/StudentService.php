@@ -1,7 +1,9 @@
 <?php
 namespace App\Services;
 
+use App\ClassMembership;
 use App\Contracts\StudentContract;
+use App\Event;
 
 class StudentService implements StudentContract{
     public function termClasses($term, $email){
@@ -9,8 +11,15 @@ class StudentService implements StudentContract{
 
         // TODO: where classMembership[email] = $email, get * class_id
 
-        // TODO: magically use 'events'
+        $myClasses = ClassMembership::email($email)->term($term)->get();
 
-        return $email;
+        $myEvents = [count($myClasses)];
+
+        for($i = 0; $i < count($myClasses); $i++){
+            $myEvents[$i] = Event::event($myClasses[$i]['classes_id'])->get();
+        }
+
+        return $myEvents;
+        //var_dump($classes->first()['email']);
     }
 }
