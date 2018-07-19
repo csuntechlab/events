@@ -21,3 +21,4 @@ $router->get('/', function () use ($router) {
 $router->get('1.0/terms/{term}/faculty/{email}','FacultyController@getClassList');
 // $router->get('/terms/{term}/faculty/{email}','FacultyController@getFinalExamTimes');
 
+$router->get('1.0/terms/{term}/faculty/{email}/office-hours/{event}','FacultyController@getOfficeHours');

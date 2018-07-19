@@ -17,15 +17,22 @@ class FacultyController extends Controller
         $this->facultyRetriever = $facultyRetriever;
     }
 
-    public function getClassList($term,$email){
+    public function getClassList($term,$email)
+    {
         // return $term.' '.$email;
         return $this->facultyRetriever->getClassList($term, $email);
     }
 
-    public function getFinalExamTimes($term,$email){
+    public function getFinalExamTimes($term,$email)
+    {
         return $this->facultyRetriever->getClassList($term, $email);
     }
-       
+
+    public function getOfficeHours($term, $email, $event)
+    {
+      return $this->facultyRetriever->getOfficeHours($term, $email, $event);
+    }
+
 
 
 }

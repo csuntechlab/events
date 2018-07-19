@@ -17,16 +17,16 @@ class FacultyService implements FacultyContract {
       ],
       [
           'classes_id' => '1234561',
-          'events' => [ 
+          'events' => [
               'entities_id' => 'entity:id',
-              'term_id' => '2187' 
+              'term_id' => '2187'
           ]
       ],
       [
           'classes_id' => '1234561',
-          'events' => [ 
+          'events' => [
               'entities_id' => 'entity:id',
-              'term_id' => '2187' 
+              'term_id' => '2187'
           ]
       ]
     ];
@@ -36,6 +36,9 @@ class FacultyService implements FacultyContract {
     return 'this is a test';
 
   }
-    
+  public function getOfficeHours($term,$email,$event){
+    return 'this is also a test';
+  }
+
 }
 ?>
