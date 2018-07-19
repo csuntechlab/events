@@ -39,4 +39,9 @@ class Event extends Model
         return $query->where('type',$type);
     }
 
+
+    public function scopeEvent($query, $classes_id){
+        return $query->where('$entities_id', $classes_id);
+    }
+
 }

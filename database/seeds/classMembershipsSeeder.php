@@ -1,5 +1,6 @@
 <?php
 
+
 use Illuminate\Database\Seeder;
 
 use App\ClassMemberships;
@@ -13,6 +14,7 @@ class classMembershipsSeeder extends Seeder
      */
     public function run()
     {
+
         for ($i=0; $i < 6; $i++) { 
         	# code...
     		ClassMemberships::create([
