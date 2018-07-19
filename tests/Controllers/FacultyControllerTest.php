@@ -46,98 +46,13 @@ class FacultyControllerTest extends TestCase
    }
 
    /**
-    * classMemberships	(from the base-table: nemo.classMemberships)
-    * classes_id: 		The unique id of the class
-    * term_id:		    The term in which the event is valid
-    * member_id:		The unique ID of the individual in the class
-    * role_position:	Academic standing in the class: e.g., Instructor
-    * members_status:	Indicates if the student is currently enrolled 
-    * email:            Email of member
-    *
     * Get a my Classes table for professors
     * @test
     */
     public function get_professor_myClassList()
     {
-        $this->retriever
-        ->shouldReceive('getClassList')
-        ->with('2173','nr_nerces.kazandjian')
-        ->andReturn(
-            json_encode(
-                [
-                    [
-                      "classes_id" => "classes:2173:99992",
-                      "term_id" => "2173",
-                      "members_id" => "members:000420312",
-                      "role_position" => "Instructor",
-                      "events" => []
-                    ],
-                    
-                    [
-                      "classes_id" => "classes:2173:99993",
-                      "term_id" => "2173",
-                      "members_id" => "members:000420312",
-                      "role_position" => "Instructor",
-                      "events" => []
-                    ],
-                    
-                    [
-                      "classes_id" => "classes:2173:99998",
-                      "term_id" => "2173",
-                      "members_id" => "members:000420312",
-                      "role_position" => "Instructor",
-                      "events" => 
-                        [
-                          [
-                            "entities_id" => "classes:2173:99998",
-                            "term_id" => 2173,
-                            "pattern_number" => 1,
-                            "type" => "class",
-                            "label" => "Class Time",
-                            "description" => "Comp 122",
-                            "start_time" => "1100h",
-                            "end_time" => "1200h",
-                            "days" => "MW",
-                            "from_date" => "2017-02-02",
-                            "to_date" => "2017-06-01",
-                            "location_type" => "NULL",
-                            "location" => "NULL",
-                            "is_byappointment" => 0,
-                            "is_walkin" => 0,
-                            "booking_url" => "NULL",
-                            "online_label" => "NULL",
-                            "online_url" => "NULL",
-                            "created_at" => "2017-05-01 14:32:56",
-                            "updated_at" => "2017-05-01 14:32:56"
-                          ]
-                        ]
-                    ]
-                ]
-            )
-        );
-
-        //need to create controller after mocking param, wont know what to mock?
-        $workingController = new FacultyController($this->retriever);
-        // dd($workingController);
-        
         $myClassList = json_encode(
-            [
-                [
-                  "classes_id" => "classes:2173:99992",
-                  "term_id" => "2173",
-                  "members_id" => "members:000420312",
-                  "role_position" => "Instructor",
-                  "events" => []
-                ],
-                
-                [
-                  "classes_id" => "classes:2173:99993",
-                  "term_id" => "2173",
-                  "members_id" => "members:000420312",
-                  "role_position" => "Instructor",
-                  "events" => []
-                ],
-                
+            [   
                 [
                   "classes_id" => "classes:2173:99998",
                   "term_id" => "2173",
@@ -169,9 +84,18 @@ class FacultyControllerTest extends TestCase
                       ]
                     ]
                 ]
-              ] 
+            ]
         );
 
+        $this->retriever
+        ->shouldReceive('getClassList')
+        ->with('2173','nr_nerces.kazandjian')
+        ->andReturn($myClassList);
+
+        //need to create controller after mocking param, wont know what to mock?
+        $workingController = new FacultyController($this->retriever);
+        // dd($workingController);
+        
         $response = $workingController->getClassList('2173','nr_nerces.kazandjian');
         
         // dd($response);
@@ -186,90 +110,52 @@ class FacultyControllerTest extends TestCase
     */
     public function get_professor_final_exam_times()
     {
-        $workingController = new FacultyController($this->retriever);
-
-        $this->retriever
-        ->shouldReceive('getFinalExamTimes')
-        ->with('2187','steven.fitzgerald')
-        ->andReturn(
-            [
+        $myClassList = json_encode(
+            [   
                 [
-                'classes_id' => '1234561',
-                'events' => [ 
-                    'entities_id' => 'entity:id',
-                    'term_id' => '2187' 
-                ]
-                ],
-                [
-                    'classes_id' => '1234561',
-                    'events' => [ 
-                        'entities_id' => 'entity:id',
-                        'term_id' => '2187' 
-                    ]
-                ],
-                [
-                    'classes_id' => '1234561',
-                    'events' => [ 
-                        'entities_id' => 'entity:id',
-                        'term_id' => '2187' 
+                  "classes_id" => "classes:2173:99998",
+                  "term_id" => "2173",
+                  "members_id" => "members:000420312",
+                  "role_position" => "Instructor",
+                  "events" => 
+                    [
+                      [
+                        "entities_id" => "classes:2173:99998",
+                        "term_id" => 2173,
+                        "pattern_number" => 1,
+                        "type" => "final-exam",
+                        "label" => "final Exam Time",
+                        "description" => "Comp 122",
+                        "start_time" => "1100h",
+                        "end_time" => "1200h",
+                        "days" => "MW",
+                        "from_date" => "2017-02-02",
+                        "to_date" => "2017-06-01",
+                        "location_type" => "NULL",
+                        "location" => "NULL",
+                        "is_byappointment" => 0,
+                        "is_walkin" => 0,
+                        "booking_url" => "NULL",
+                        "online_label" => "NULL",
+                        "online_url" => "NULL",
+                        "created_at" => "2017-05-01 14:32:56",
+                        "updated_at" => "2017-05-01 14:32:56"
+                      ]
                     ]
                 ]
             ]
         );
-        
-        $myClassList = 
-        [
-            [
-            'classes_id' => '1234561',
-            'events' => [
-                'entities_id' => 'entity:id',
-                'term_id' => '2187'
-                ]
-            ],
-            [
-                'classes_id' => '1234561',
-                'events' => [ 
-                    'entities_id' => 'entity:id',
-                    'term_id' => '2187' 
-                ]
-            ],
-            [
-                'classes_id' => '1234561',
-                'events' => [ 
-                    'entities_id' => 'entity:id',
-                    'term_id' => '2187' 
-                ]
-            ]
-        ];
-        
-        // $response = $workingController->getFinalExamTimes('2187','steven.fitzgerald');
-        // var_dump($response);
 
-        // $this->assertEquals('this is a test', $response);        
-        $this->assertEquals($myClassList,
-        [
-            [
-            'classes_id' => '1234561',
-            'events' => [
-                'entities_id' => 'entity:id',
-                'term_id' => '2187'
-                ]
-            ],
-            [
-                'classes_id' => '1234561',
-                'events' => [ 
-                    'entities_id' => 'entity:id',
-                    'term_id' => '2187' 
-                ]
-            ],
-            [
-                'classes_id' => '1234561',
-                'events' => [ 
-                    'entities_id' => 'entity:id',
-                    'term_id' => '2187' 
-                ]
-            ]
-        ]);
+        $this->retriever
+        ->shouldReceive('getFinalExamTimes')
+        ->with('2187','steven.fitzgerald')
+        ->andReturn($myClassList);
+
+        $workingController = new FacultyController($this->retriever);
+        
+        $response = $workingController->getFinalExamTimes('2187','steven.fitzgerald');
+
+        $this->assertEquals($myClassList,$response);
 
     }
 
@@ -281,44 +167,8 @@ class FacultyControllerTest extends TestCase
     */
    public function get_professor_office_hours()
    {
-        $this->retriever
-        ->shouldReceive('getClassList')
-        ->with('2173','nr_nerces.kazandjian')
-        ->andReturn(
-            json_encode( 
-                [
-                     [
-                         "entities_id" => "office-hours:2187:000420312",
-                         "term_id" => '2187',
-                         "pattern_number" => '1',
-                         "type" => "office-hours",
-                         "label" => "General Office Hours",
-                         "description" => "",
-                         "start_time" => "11:00 AM",
-                         "end_time" => "12:00 PM",
-                         "days" => "WF",
-                         "from_date" => 'null',
-                         "to_date" => 'null',
-                         "location_type" => "physical",
-                         "location" => "HOME",
-                         "is_byappointment" => '0',
-                         "is_walkin" => '1',
-                         "booking_url" => 'null',
-                         "online_label" => 'null',
-                         "online_url" => 'null',
-                         "created_at" => "2018-07-18 16:24:03",
-                         "updated_at" => "2018-07-18 16:24:03"
-                     ]
-                 ]
-             )
-            );
-
-        $workingController = new FacultyController($this->retriever);
-        $response = $workingController->getClassList('2173','nr_nerces.kazandjian');
-        
-       $officeHours = 
-       json_encode( 
-           [
+        $officeHours = json_encode( 
+            [
                 [
                     "entities_id" => "office-hours:2187:000420312",
                     "term_id" => '2187',
@@ -344,8 +194,15 @@ class FacultyControllerTest extends TestCase
             ]
         );
 
+        $this->retriever
+        ->shouldReceive('getClassList')
+        ->with('2173','nr_nerces.kazandjian')
+        ->andReturn($officeHours);
+
+        $workingController = new FacultyController($this->retriever);
+        $response = $workingController->getClassList('2173','nr_nerces.kazandjian');
+        
         $this->assertEquals($officeHours, $response);     
-   
    }
     
 }

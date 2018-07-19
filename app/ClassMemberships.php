@@ -38,7 +38,7 @@ class ClassMemberships extends Model
     protected $table = 'nemo.classMemberships';
 
 	protected $fillable =[
-        // 'classes_id','term_id',
+        'classes_id','term_id','role_position','members_id','email',
     ];
     
     protected $hidden = [
@@ -94,15 +94,26 @@ class ClassMemberships extends Model
 
      /**
      * Each class has one corresponding event
-     * Each office hour has one corresponding event. 
-     * Each final exam time has one corresponding event. 
-     * 
      * Gathers corresponding event of class. 
      */
     public function classEvents()
     {
         //Model col name w/in Events, corresponding col w/in classMemberships
-        return $this-> hasMany('App\Event','entities_id','classes_id');
+        return $this
+        ->hasMany('App\Event','entities_id','classes_id')
+        ->type('class');
+    }
+
+    /**
+     * Each final exam time has one corresponding event. 
+     * Gathers corresponding event of final Exams. 
+     */
+    public function finalExamEvents()
+    {
+        //Model col name w/in Events, corresponding col w/in classMemberships
+        return $this
+        ->hasMany('App\Event','entities_id','classes_id')
+        ->type('final-exam');
     }
 
     

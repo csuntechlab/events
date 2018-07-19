@@ -21,7 +21,13 @@ class FacultyService implements FacultyContract {
     
     public function getFinalExamTimes($term,$email)
     {
-        return 'this is a test';
+        $finalExamList = ClassMemberships::email($email)
+        ->term($term)
+        ->instructorRole()
+        ->with('finalExamEvents')
+        ->get();
+
+        return $finalExamList;
     }
 
     public function getOfficeHours($term,$email)
@@ -34,6 +40,7 @@ class FacultyService implements FacultyContract {
 
         $officeHours = Event::officeHours($entities_id)
         ->term($term)
+        ->type('office-hours')
         ->get();
 
         return $officeHours;

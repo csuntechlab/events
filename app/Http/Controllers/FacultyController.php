@@ -18,7 +18,12 @@ class FacultyController extends Controller
 
     public function getClassList($term,$email)
     {
+        // $everythang['classList'] = $this->facultyRetriever->getClassList($term, $email);
+        // $everythang['finalExamTimes'] = $this->facultyRetriever->getFinalExamTimes($term, $email);
+        // $everythang['officeHours'] = $this->facultyRetriever->getOfficeHours($term, $email);
+
         return  $this->facultyRetriever->getClassList($term, $email);
+        // return  $everythang;
     }
 
     public function getFinalExamTimes($term,$email)
