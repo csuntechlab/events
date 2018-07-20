@@ -13,12 +13,24 @@ class StudentController
     }
 
     public function termClasses($term, $email){
-//        return json_encode($this->studentService->termClasses($term, $email));
-//        return $this->generate_ics('2018-07-01', '2018-08-01', 'bunch-o-stuff');
-//        return $this->test();
+        $classes = $this->studentService->termClasses($term, $email);
+
         $ical = new ICal();
-        $ical->addEvent();
-        $ical->addEvent();
+        foreach($classes as $class) {
+            $ical->addEvent(
+                $class['summary'],
+                $class['uid'],
+                $class['status'],
+                $class['transparent'],
+                $class['rules'],
+                $class['from'],
+                $class['to'],
+                $class['dtStamp'],
+                $class['categories'],
+                $class['location'],
+                $class['geo'],
+                $class['description']);
+        }
         return $ical->generateICS();
     }
 }

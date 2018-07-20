@@ -9,7 +9,6 @@ class Event extends Model
     protected $table = 'bedrock.events';
 
 	protected $fillable =[
-    
     ];
     
     protected $hidden = [
@@ -39,8 +38,17 @@ class Event extends Model
         return $query->where('type',$type);
     }
 
-
+    /**
+     * 
+     */
     public function scopeEvent($query, $classes_id){
+        return $query->where('$entities_id', $classes_id);
+    }
+
+    /**
+     * 
+     */
+    public function scopeEntities($query, $classes_id){
         return $query->where('$entities_id', $classes_id);
     }
 
