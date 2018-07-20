@@ -53,8 +53,23 @@ class FacultyController extends Controller
     {
         $instructorInfo['classList'] =  $this->getClassList($term, $email);
         $instructorInfo['finalExamTimes'] = $this->getFinalExamTimes($term, $email);
-        $instructorInfo['officeHours'] = $this->getOfficeHours($term, $email);    
-        return  $instructorInfo;
+        $instructorInfo['officeHours'] = $this->getOfficeHours($term, $email);  
+
+        // return  $instructorInfo;
+
+        foreach($instructorInfo['classList']  as $class){
+            $course  = null;
+            $event = null;
+            foreach($class as $classInfo){
+                $course = $classInfo['course'];   
+                $event = $classInfo['class_events'];   
+            }
+
+            // return $class;
+            $icalParam = $this->getParam($class,$course,$event);
+            return $icalParam;
+        }
+       
     }
 
 
@@ -70,29 +85,45 @@ class FacultyController extends Controller
 //    LOCATION;ALTREP="http://academics.csun.edu/classrooms/JD3520":JD3520
 //    GEO:34.2373175;-118.533936
 //    DESCRIPTION: <Add some type of description>
-//    DTSTART;TZID=America/Los_Angeles:20180827T130000
 //    DTEND;TZID=America/Los_Angeles:20180827T135000
 //    RRULE:FREQ=WEEKLY;INTERVAL=1;UNTIL=20181212T135000Z;BYDAY=MO,WE
-
-// $summary = null,
-// $uid = null,
-// $status = null,
-// $transparent = null,
-// $rules = null,
-// $from = null,
-// $to = null,
-// $dtStamp = null,
-// $categories = null,
-// $location = null,
-// $geo = null,
-// $description = null
-
+/*
+    $uid = null, 
+    $dtStamp = null,
+    $created = null,
+    $lastModified = null,
+    $class = null,
+    $transpartent = null,
+    $status = null,
+    $catagories = null, 
+    $summary = null,
+    $location = null,
+    $geo = null, 
+    $desription = null,
+    $dtstart = null,
+    $dtend = null,
+    $rRule = null,
+    $interval = null,
+    $until = null,
+    $byDay = null, 
+    $categories = null,
+    $location = null,
+    $geo = null,
+    $description = null
+*/
     public function getICal()
     {
         $instructorInfo['classList'] =  $this->getClassList($term, $email);
         $instructorInfo['finalExamTimes'] = $this->getFinalExamTimes($term, $email);
         $instructorInfo['officeHours'] = $this->getOfficeHours($term, $email);  
+        
+
+        foreach($instructorInfo['classList']  as $class){
+            $icalParam = $this->getParam($class);
+        }
 
     }
+
+
 
 }

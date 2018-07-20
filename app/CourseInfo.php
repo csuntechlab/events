@@ -18,12 +18,13 @@ class CourseInfo extends Model
     protected $fillable =[
         'subject',
         'catalog_number',
-        'title'
+        'title',
+        'class_number',
     ];
 
     protected $hidden = [
         'session_code',
-        'class_number',
+        
         'courses_id',
         'description',
         'units',
