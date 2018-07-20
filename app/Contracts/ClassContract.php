@@ -9,6 +9,8 @@
 namespace App\Contracts;
 
 
+use Illuminate\Http\Request;
+
 interface ClassContract
 {
     public function isValidCourseId($course_id);
@@ -17,4 +19,7 @@ interface ClassContract
 
     public function course_details($term,$course_id);
 
+    public function classInfo($term,$course_id);
+
+    public function finalInfo($term, $course_id);
 }

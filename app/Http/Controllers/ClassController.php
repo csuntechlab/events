@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 
 
 use App\Contracts\ClassContract;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class ClassController extends Controller
@@ -21,18 +22,14 @@ class ClassController extends Controller
         $this->classContract = $classContract;
     }
 
-    public function courses($term,$course_id)
+    public function classInfo($term,$course_id)
     {
-        return $this->classContract->course_details($term,$course_id);
+        return $this->classContract->classInfo($term,$course_id);
     }
 
-//    public function courses($term,$course_id)
-//    {
-//        $result = $this->classContract->isValidCourseId($course_id);
-//        if(!$result)
-//        {
-//            return $this->classContract->test($course_id);
-//        }
-//        return $result;
-//    }
+    public function finalInfo($term,$course_id)
+    {
+        return $this->classContract->finalInfo($term , $course_id);
+    }
+
 }
