@@ -29,3 +29,11 @@ $router->get('1.0/terms/{term}/faculty/{email}','FacultyController@getClassList'
 
 
 $router->get('test','ClassController@test');
+// without name
+//$router->get('1.0/term/{term}/students/{email}', 'StudentController@termClasses');
+
+// with name
+// terms/2197/students/john.smith.302
+$router->get('1.0/terms/{term}/students/{email}', [
+    'as' => 'students.termClasses', 'uses' => 'StudentController@termClasses'
+]);

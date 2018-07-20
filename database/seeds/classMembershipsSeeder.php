@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 
 use App\ClassMemberships;
+use App\ClassMembership;
 
 class classMembershipsSeeder extends Seeder
 {
@@ -13,7 +14,7 @@ class classMembershipsSeeder extends Seeder
      */
     public function run()
     {
-        for ($i=0; $i < 6; $i++) { 
+        for ($i=0; $i < 6; $i++) {
         	# code...
     		ClassMemberships::create([
     			'classes_id' => '1234'.$i,
