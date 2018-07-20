@@ -8,6 +8,7 @@
 
 namespace App\Services;
 
+use App\Classes;
 use Illuminate\Support\Facades\Validator;
 
 use App\Contracts\ClassContract;
@@ -44,6 +45,26 @@ class ClassService implements ClassContract
                 'Final Exam' => 'Final Day'
             ]
          ];
+    }
+
+    public function classInfo($term, $course_id)
+    {
+        $queryBuilder = "classes:{$term}:{$course_id}";
+        $result = Classes::Classes_id($queryBuilder)
+            ->with('getDetails')
+            ->get();
+        return $result;
+    }
+
+    public function finalInfo($term,$course_id)
+    {
+        $queryBuilder = "classes:{$term}:{$course_id}";
+
+        $result = Classes::Final($queryBuilder)
+                    ->where('type','final-exam')
+                    ->get();
+
+        return $result;
     }
 
     public function isValidTermId($termId)
