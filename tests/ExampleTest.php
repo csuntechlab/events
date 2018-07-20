@@ -12,7 +12,7 @@ class ExampleTest extends TestCase
      */
 
     //use DatabaseMigration
-    public function testExample()
+   /* public function testExample()
     {
         $this->get('/');
 
@@ -53,7 +53,7 @@ class ExampleTest extends TestCase
 
             'professor' => 'schwartz'
 
-        ]);
+        ]);*/
 
-    }
+   // }
 }

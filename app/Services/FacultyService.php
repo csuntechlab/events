@@ -2,40 +2,61 @@
 namespace App\Services;
 
 use App\Contracts\FacultyContract;
+use App\User;
+use App\ClassMemberships;
+use App\Event;
 
 class FacultyService implements FacultyContract {
 
-  public function getClassList($term,$email)
-  {
-    return [
-      [
-      'classes_id' => '1234561',
-      'events' => [
-          'entities_id' => 'entity:id',
-          'term_id' => '2187'
-          ]
-      ],
-      [
-          'classes_id' => '1234561',
-          'events' => [ 
-              'entities_id' => 'entity:id',
-              'term_id' => '2187' 
-          ]
-      ],
-      [
-          'classes_id' => '1234561',
-          'events' => [ 
-              'entities_id' => 'entity:id',
-              'term_id' => '2187' 
-          ]
-      ]
-    ];
-  }
 
-  public function getFinalExamTimes($term,$email){
-    return 'this is a test';
+    public function getClassList($data)
+    {
+        $f_id = $data['email'];
+        $f_term = $data['term']->term_id;
+        $classList = ClassMemberships::email($f_id->email)
+            ->term($f_term)
+            ->instructorRole()
+            ->with('classEvents')
+            ->get();
+       // dd($f_term);
+        return $classList;
+    }
 
-  }
-    
+    public function getAllOfficeHours($facultyData){
+
+        //find term first then find faculty in that term thru email
+        $faculty_id = $facultyData['email'];
+        $faculty_term = $facultyData['term']->term_id;
+
+          //  return $faculty_id->user_id;
+            $faculty_id = str_replace("members:","",$faculty_id->user_id);
+
+        //$faculty_id = User::findOrFail($facultyData['term'])->find($facultyData['email']);
+
+        $entities_id = 'office-hours:'.$faculty_term.':'.$faculty_id;
+        $officeHours = Event::officeHours($entities_id)
+            ->term($faculty_term)
+            ->type('office-hours')
+            ->get();
+
+
+       // foreach ($officeHours as $officeHour) {
+
+           // $this->officeHoursData = [
+
+               // 'office_hours' => $officeHours->office_hours;
+            //];
+            //officeHour = Event::officeHours($new_id_from_strReplace)
+
+
+        //echo $officeHour['term_id'];
+
+
+
+      //  }
+       // dd($officeHours->term);
+        return $officeHours;
+       // return $this->jsonResponse();
+    }
 }
 ?>

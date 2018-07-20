@@ -1,32 +1,34 @@
 <?php
-
 namespace App;
-
-use Illuminate\Auth\Authenticatable;
-use Laravel\Lumen\Auth\Authorizable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
-
-class User extends Model implements AuthenticatableContract, AuthorizableContract
+class User extends Model
 {
-    use Authenticatable, Authorizable;
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email',
+        'user_id',
+        'email',
     ];
-
     /**
      * The attributes excluded from the model's JSON form.
      *
      * @var array
      */
     protected $hidden = [
-        'password',
+        'display_name',
+        'first_name',
+        'last_name',
+        'affiliation',
+        'rank',
+        'affiliation_status',
+        'created_at',
+        'updated_at'
     ];
+    public function scopeEmail($query,$email)
+    {
+        return $query->where('email',$email.'@csun.edu');
+    }
 }

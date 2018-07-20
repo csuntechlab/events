@@ -15,10 +15,12 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
+$router->get('1.0/terms/{term}/faculty/{email}', function($term, $email){
 
-// $router->get('/terms/{term}/faculty/{email}',function() use ($router){
-//     return $router->app->version();
-// });
-$router->get('1.0/terms/{term}/faculty/{email}','FacultyController@getClassList');
-// $router->get('/terms/{term}/faculty/{email}','FacultyController@getFinalExamTimes');
+    return $term.' '.$email;
+    //    return $term.' '.$email.'@csun.edu';
 
+});
+
+$router->get('1.0/terms/{term}/faculty/{email}/office-hours', 'FacultyController@getAllOfficeHours');
+$router->get('1.0/terms/{term}/faculty/{email}/office', 'FacultyController@getClassList');
