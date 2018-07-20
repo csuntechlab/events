@@ -11,9 +11,10 @@ class Controller extends BaseController
     {
         $icsInfo = [];
         $icsInfo['uid'] = $class['classes_id'].$event['patten_number'].'.vevent@metalab.csun.edu'; 
-        $icsInfo['dtStamp'] = null;
-        $icsInfo['created'] = \Carbon\Carbon::now();
-        $icsInfo['lastModified'] = \Carbon\Carbon::now();
+        //fix later hard coding
+        $icsInfo['dtStamp'] = '20180505T171003Z';
+        $icsInfo['created'] = '20180505T170922Z';
+        $icsInfo['lastModified'] = '20180505T171003Z';
         $icsInfo['class'] = 'public';
         $icsInfo['transpartent'] = 'OPAQUE';
         $icsInfo['status'] = 'CONFIRMED';

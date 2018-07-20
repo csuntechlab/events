@@ -57,6 +57,7 @@ class FacultyController extends Controller
 
         // return  $instructorInfo;
 
+        $icalParam = null;
         foreach($instructorInfo['classList']  as $class){
             $course  = null;
             $event = null;
@@ -65,52 +66,17 @@ class FacultyController extends Controller
                 $event = $classInfo['class_events'];   
             }
 
+            return $class;
+
             // return $class;
             $icalParam = $this->getParam($class,$course,$event);
-            return $icalParam;
         }
-       
+
+        $ical = new ICal();
+        $ical->addEvent($icalParam);
+        return $ical->generateICS();
     }
-
-
-//    UID:classes.2187.20433.1.vevent@metalab.csun.edu
-//    DTSTAMP:20180505T171003Z
-//    CREATED:20180505T170922Z
-//    LAST-MODIFIED:20180505T171003Z
-//    CLASS:PUBLIC
-//    TRANSP:OPAQUE
-//    STATUS:CONFIRMED
-//    CATEGORIES:Class
-//    SUMMARY:CIT 160 (20433)
-//    LOCATION;ALTREP="http://academics.csun.edu/classrooms/JD3520":JD3520
-//    GEO:34.2373175;-118.533936
-//    DESCRIPTION: <Add some type of description>
-//    DTEND;TZID=America/Los_Angeles:20180827T135000
-//    RRULE:FREQ=WEEKLY;INTERVAL=1;UNTIL=20181212T135000Z;BYDAY=MO,WE
-/*
-    $uid = null, 
-    $dtStamp = null,
-    $created = null,
-    $lastModified = null,
-    $class = null,
-    $transpartent = null,
-    $status = null,
-    $catagories = null, 
-    $summary = null,
-    $location = null,
-    $geo = null, 
-    $desription = null,
-    $dtstart = null,
-    $dtend = null,
-    $rRule = null,
-    $interval = null,
-    $until = null,
-    $byDay = null, 
-    $categories = null,
-    $location = null,
-    $geo = null,
-    $description = null
-*/
+    
     public function getICal()
     {
         $instructorInfo['classList'] =  $this->getClassList($term, $email);
