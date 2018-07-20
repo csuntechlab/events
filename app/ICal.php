@@ -5,10 +5,8 @@ namespace App;
 class ICal{
     protected $ics = null;
 
-    public function addEvent($summary = null, $uid = null, $status = null,
-                             $transparent = null, $rules = null, $from = null,
-                             $to = null, $dtStamp = null, $categories = null,
-                             $location = null, $geo = null, $description = null){
+    public function addEvent( $summary = null,$uid = null,$status = null,$transparent = null,$rules = null,$from = null,$to = null,$dtStamp = null,$categories = null,$location = null,$geo = null,$description = null )
+    {
         if($this->ics == null){
             $this->ics =
                 'BEGIN:VCALENDAR'.

@@ -65,7 +65,7 @@ class ClassMemberships extends Model
      */
     public function scopeEmail($query,$email)
     {
-        return $query->where('email',$email.'@csun.edu');
+        return $query->where('email','nr_'.$email.'@csun.edu');
     }
 
     /**
@@ -114,6 +114,11 @@ class ClassMemberships extends Model
         return $this
         ->hasMany('App\Event','entities_id','classes_id')
         ->type('final-exam');
+    }
+
+    public function course()
+    {
+        return $this->hasOne('App\CourseInfo','classes_id','classes_id' );
     }
     
 }

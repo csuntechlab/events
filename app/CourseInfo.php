@@ -22,7 +22,6 @@ class CourseInfo extends Model
     ];
 
     protected $hidden = [
-        'classes_id',
         'session_code',
         'class_number',
         'courses_id',

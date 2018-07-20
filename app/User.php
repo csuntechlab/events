@@ -34,7 +34,7 @@ class User extends Model
 
     public function scopeEmail($query,$email)
     {
-        return $query->where('email',$email.'@csun.edu');
+        return $query->where('email','nr_'.$email.'@csun.edu');
     }
 
 }

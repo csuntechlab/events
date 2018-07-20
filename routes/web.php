@@ -18,7 +18,8 @@ $router->get('/', function () use ($router) {
 
 
 
-// http://localhost:8888/metalab/calendar/public/1.0/terms/2187/faculty/nr_nerces.kazandjian
+// http://localhost:8888/metalab/calendar/public/1.0/terms/2153/faculty/shahriar.abachi
+
 
 // $router->get('1.0/terms/{term}/faculty/{email}','FacultyController@getClassList');
 
@@ -36,7 +37,7 @@ $router->get('1.0/terms/{term}/classes/{course_id}', [
     'as' => 'class', 'uses' => 'ClassController@classInfo'
 ]);
 
-$router->get('1.0/terms/{term}/faculty/{email}','FacultyController@getClassList');
+// $router->get('1.0/terms/{term}/faculty/{email}','FacultyController@getClassList');
 // $router->get('/terms/{term}/faculty/{email}','FacultyController@getFinalExamTimes');
 
 

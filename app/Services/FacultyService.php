@@ -14,7 +14,7 @@ class FacultyService implements FacultyContract {
         $classList = ClassMemberships::email($email)
         ->term($term)
         ->instructorRole()
-        ->with('classEvents')
+        ->with('course', 'classEvents')
         ->get();
 
         return $classList;
@@ -25,8 +25,9 @@ class FacultyService implements FacultyContract {
         $finalExamList = ClassMemberships::email($email)
         ->term($term)
         ->instructorRole()
-        ->with('finalExamEvents')
-        ->get();
+        ->with('course','finalExamEvents')
+        // ->get();
+        ->first();
 
         return $finalExamList;
     }
@@ -42,6 +43,7 @@ class FacultyService implements FacultyContract {
         $officeHours = Event::officeHours($entities_id)
         ->term($term)
         ->type('office-hours')
+        ->with('course')
         ->get();
 
         return $officeHours;

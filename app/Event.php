@@ -64,4 +64,9 @@ class Event extends Model
     public function scopeEntities($query, $classes_id){
         return $query->where('entities_id', $classes_id);
     }
+
+    public function course()
+    {
+        return $this->hasOne('App\CourseInfo','classes_id','classes_id' );
+    }
 }
