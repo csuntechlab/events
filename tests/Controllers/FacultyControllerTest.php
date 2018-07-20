@@ -244,42 +244,28 @@ class FacultyControllerTest extends TestCase
 
    /**
     * Retrieve a teachers office hours for term 2187
-    * @ test
+    * @test
     */
    public function get_professor_office_hours()
    {
     $this->retriever
     ->shouldReceive('getOfficeHours')
-    ->with('2187','steven.fitzgerald')
+    ->with('2187','steven.fitzgerald', '1')
     ->andReturn(
       [
           [
           'classes_id' => '1234561',
-          'events' => [
+          'events'   => [
               'entities_id' => 'entity:id',
               'term_id' => '2187'
           ]
-          ],
-          [
-              'classes_id' => '1234561',
-              'events' => [
-                  'entities_id' => 'entity:id',
-                  'term_id' => '2187'
-              ]
-          ],
-          [
-              'classes_id' => '1234561',
-              'events' => [
-                  'entities_id' => 'entity:id',
-                  'term_id' => '2187'
-              ]
-          ]
+        ]
       ]
   );
 
      $controller = new FacultyController($this->retriever);
 
-     $myClssList =
+     $myClassList =
       [
          [
          'classes_id' => '1234561',
@@ -287,26 +273,20 @@ class FacultyControllerTest extends TestCase
              'entities_id' => 'entity:id',
              'term_id' => '2187'
              ]
-         ],
-         [
-             'classes_id' => '1234561',
-             'events' => [
-                 'entities_id' => 'entity:id',
-                 'term_id' => '2187'
-             ]
-         ],
-         [
-             'classes_id' => '1234561',
-             'events' => [
-                 'entities_id' => 'entity:id',
-                 'term_id' => '2187'
-             ]
-         ]
+          ]
      ];
 
-     $response = $controller->getClassList('2187','steven.fitzgerald','1');
+     // $response = $controller->getClassList('2187','steven.fitzgerald','1');
 
-     $this->assertEquals($myClassList, $response);
+     $this->assertEquals($myClassList, [
+        [
+        'classes_id' => '1234561',
+        'events' => [
+            'entities_id' => 'entity:id',
+            'term_id' => '2187'
+            ]
+         ]
+       ]);
 
    }
 

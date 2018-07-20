@@ -11,6 +11,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+<<<<<<< HEAD
         $this->call('classMembershipsSeeder');
+=======
+        // $this->call('UsersTableSeeder');
+        $this->call('classMembershipsSeeder');
+        $this->call('eventsSeeder');
+>>>>>>> origin/ET-56
     }
 }

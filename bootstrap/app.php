@@ -23,9 +23,9 @@ $app = new Laravel\Lumen\Application(
     realpath(__DIR__.'/../')
 );
 
-// $app->withFacades();
+ $app->withFacades();
 
-// $app->withEloquent();
+ $app->withEloquent();
 
 /*
 |--------------------------------------------------------------------------
@@ -92,6 +92,9 @@ $app->singleton(
 | can respond to, as well as the controllers that may handle them.
 |
 */
+
+/* student service provider */
+$app->register(App\Providers\StudentServiceProvider::class);
 
 $app->configure('proxypass');
 $app->register(CSUNMetaLab\LumenProxyPass\Providers\ProxyPassServiceProvider::class);

@@ -1,8 +1,13 @@
 <?php
+<<<<<<< HEAD
 
 use Illuminate\Database\Seeder;
 
 use App\ClassMemberships;
+=======
+use Illuminate\Database\Seeder;
+use App\ClassMembership;
+>>>>>>> origin/ET-56
 
 class classMembershipsSeeder extends Seeder
 {
@@ -13,6 +18,7 @@ class classMembershipsSeeder extends Seeder
      */
     public function run()
     {
+<<<<<<< HEAD
         for ($i=0; $i < 6; $i++) { 
         	# code...
     		ClassMemberships::create([
@@ -73,3 +79,62 @@ class classMembershipsSeeder extends Seeder
         }
     }
 }
+=======
+        for ($i=0; $i < 6; $i++) {
+            # code...
+            ClassMembership::create([
+                'classes_id' => '1234'.$i,
+                'term_id' => '2187',
+                'member_id' => 'member:23456',
+                'role_position' => 'Student',
+                'member_status' => 'Enrolled',
+                'email' => 'student_1_@my.csun.edu'
+            ]);
+        }
+        for ($i=0; $i < 6; $i++) {
+            # code...
+            ClassMembership::create([
+                'classes_id' => '1234'.$i,
+                'term_id' => '2187',
+                'member_id' => 'member:23457',
+                'role_position' => 'Student',
+                'member_status' => 'Enrolled',
+                'email' => 'student_2_@my.csun.edu'
+            ]);
+        }
+        for ($i=0; $i < 6; $i++) {
+            # code...
+            ClassMembership::create([
+                'classes_id' => '1234'.$i,
+                'term_id' => '2187',
+                'member_id' => 'member:23458',
+                'role_position' => 'Student',
+                'member_status' => 'Enrolled',
+                'email' => 'student_3_@my.csun.edu'
+            ]);
+        }
+        for ($i=0; $i < 2; $i++) {
+            # code...
+            ClassMembership::create([
+                'classes_id' => '1234'.$i,
+                'term_id' => '2187',
+                'member_id' => 'member:23459',
+                'role_position' => 'Instructor',
+                'member_status' => 'Enrolled',
+                'email' => 's.f@my.csun.edu'
+            ]);
+        }
+        for ($i=3; $i < 6; $i++) {
+            # code...
+            ClassMembership::create([
+                'classes_id' => '1234'.$i,
+                'term_id' => '2187',
+                'member_id' => 'member:234510',
+                'role_position' => 'Instructor',
+                'member_status' => 'Enrolled',
+                'email' => 'LuisOG@my.csun.edu'
+            ]);
+        }
+    }
+}
+>>>>>>> origin/ET-56
