@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class ClassMemberships extends Model
 {
-    protected $table = 'nemo.classmemberships';
+    protected $table = 'nemo.classMemberships';
 
 	protected $fillable =[
-        // 'classes_id','term_id',
+        'classes_id','term_id', 'members_id'
     ];
     
     protected $hidden = [
@@ -36,7 +36,7 @@ class ClassMemberships extends Model
      */
     public function scopeEmail($query,$email)
     {
-        return $query->where('email',$email.'@csun.edu');
+        return $query->where('email',$email.'@csun.edu')->orWhere('email', $email.'@my.csun.edu');
     }
 
     /**
@@ -52,9 +52,13 @@ class ClassMemberships extends Model
      */ 
     public function scopeMemberId($query,$id)
     {
-        return $query->where('member_id','member_id:'.$id);
+        return $query->where('members_id',$id);
     }
 
+    public function scopeInstructor($query)
+    {
+        return $query->where('role_position', 'Instructor');
+    }
     /**
      * Each class has one corresponding event
      * Each office hour has one corresponding event. 
@@ -65,7 +69,7 @@ class ClassMemberships extends Model
     public function events()
     {
         //Model col name w/in Events, corresponding col w/in classMemberships
-        return $this-> hasMany('App\Event','entities_id','classes_id');
+        return $this->hasMany('App\Event','entities_id','classes_id');
     }
 
 }

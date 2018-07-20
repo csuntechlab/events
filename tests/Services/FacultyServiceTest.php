@@ -22,6 +22,8 @@ class FacultyServiceTest extends TestCase
         $response = $this->call('GET', '1.0/terms/2187/faculty/steven.fitzgerald');
         $this->assertEquals(200, $response->status());
     }
+
+    public function
     
 
 }

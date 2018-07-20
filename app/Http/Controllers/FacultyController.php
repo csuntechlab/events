@@ -26,7 +26,8 @@ class FacultyController extends Controller
     }
 
     public function getClassAndFinalExamTimes($term, $email){
-        return $this->facultyRetriever->getClassAndFinalExamTimes($term, $email);
+        $user = $this->facultyRetriever->getClassAndFinalExamTimes($term, $email);
+        return response()->json($user);
     }
 
 

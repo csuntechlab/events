@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Event extends Model
 {
     protected $table = 'bedrock.events';
+    protected $primaryKey = 'entities_id';
 
 	protected $fillable =[
         'entities_id',
@@ -24,9 +25,21 @@ class Event extends Model
         'is_walkin'
     ];
     
-    protected $hidden = [
-    ];
+    protected $hidden = [];
 
-    
+    public function scopeEmail($query,$email)
+    {
+        return $query->where('email', 'nr_'.$email.'@csun.edu')
+            ->orWhere('email', 'nr_'.$email.'@my.csun.edu');
+    }
 
+    public function scopeClass($query,$class_id)
+    {
+        return $query->where('entities_id', $class_id);
+    }
+
+    public function classInfo()
+    {
+        return $this->hasOne('App\Classes', 'classes_id', 'entities_id');
+    }
 }

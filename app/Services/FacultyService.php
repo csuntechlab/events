@@ -2,6 +2,8 @@
 namespace App\Services;
 use App\ClassMemberships;
 use App\Contracts\FacultyContract;
+use App\User;
+use App\Event;
 
 class FacultyService implements FacultyContract {
     
@@ -22,6 +24,24 @@ class FacultyService implements FacultyContract {
     public function getFinalExamTimes($term,$email){
         return 'this is a test';
     }
-    
+
+    public function getClassAndFinalExamTimes($term, $email){
+        $user = User::email($email)->first();
+
+        $classes = ClassMemberships::memberId($user->user_id)
+            ->term($term)
+            ->instructor()
+            ->pluck('classes_id');
+
+        $events = [];
+
+        // return Event::whereIn('classes_id', $classes);
+        foreach( $classes as $class ){
+            $temp = Event::class($class)->with('classInfo')->get();
+            array_push($events, $temp);
+            return $temp;
+        }
+        return $events;
+    }
 }
 ?>

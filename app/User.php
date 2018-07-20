@@ -29,4 +29,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $hidden = [
         'password',
     ];
+
+    public function scopeEmail($query,$email)
+    {
+        return $query->where('email', 'nr_'.$email.'@csun.edu')
+            ->orWhere('email', 'nr_'.$email.'@my.csun.edu');
+    }
 }
