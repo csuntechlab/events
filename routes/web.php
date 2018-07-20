@@ -17,7 +17,11 @@ $router->get('/', function () use ($router) {
 
 
 // http://localhost:8888/metalab/calendar/public/1.0/terms/2187/faculty/nr_nerces.kazandjian
-$router->get('1.0/terms/{term}/faculty/{email}','FacultyController@getClassList');
+
+// $router->get('1.0/terms/{term}/faculty/{email}','FacultyController@getClassList');
+
+$router->get('1.0/terms/{term}/faculty/{email}','FacultyController@getInstructorInfo');
+
 // $router->get('/terms/{term}/faculty/{email}','FacultyController@getFinalExamTimes');
 
 // without name
@@ -25,6 +29,7 @@ $router->get('1.0/terms/{term}/faculty/{email}','FacultyController@getClassList'
 
 // with name
 // terms/2197/students/john.smith.302
+
 $router->get('1.0/terms/{term}/students/{email}', [
     'as' => 'students.termClasses', 'uses' => 'StudentController@termClasses'
 ]);

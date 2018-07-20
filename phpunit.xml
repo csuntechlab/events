@@ -10,8 +10,6 @@
          stopOnFailure="false">
         <!--syntaxCheck="false">-->    
     <testsuites>
-         <!-- syntaxCheck="false"> -->
-    <testsuites>
 
         <testsuite name="Application Test Suite">
             <directory suffix="Test.php">./tests</directory>

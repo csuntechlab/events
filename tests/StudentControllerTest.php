@@ -14,7 +14,7 @@ class StudentControllerTest extends TestCase
      */
 
     /**
-     * @test
+     * test
      */
     public function testing_mockery(){
         $mock = Mockery::mock('\App\Services\StudentService');
@@ -25,7 +25,7 @@ class StudentControllerTest extends TestCase
     }
 
     /**
-     * @test
+     * test
      */
     public function termClasses_converts_array_to_a_json(){
 
@@ -63,7 +63,7 @@ class StudentControllerTest extends TestCase
     }
 
     /**
-     * @test
+     * test
      */
     public function ical_generator(){
         $ical = new ICal('Office Hours: Steven Fitzgerald', 'TZID=America/Los_Angeles:20180829T110000', 'America/Los_Angeles:20180829T115000');

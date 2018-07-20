@@ -8,6 +8,8 @@ use Laravel\Lumen\Testing\DatabaseTransactions;
 use \App\Contracts\FacultyContract;
 use \App\Http\Controllers\FacultyController;
 
+use App\ICal;
+
 class FacultyControllerTest extends TestCase
 { 
 
@@ -159,14 +161,12 @@ class FacultyControllerTest extends TestCase
 
     }
 
-
-
    /**
     * Retrieve a teachers office hours for term 2187
     * @test
     */
-   public function get_professor_office_hours()
-   {
+    public function get_professor_office_hours()
+    {
         $officeHours = json_encode( 
             [
                 [
@@ -203,6 +203,67 @@ class FacultyControllerTest extends TestCase
         $response = $workingController->getClassList('2173','nr_nerces.kazandjian');
         
         $this->assertEquals($officeHours, $response);     
+    }
+   
+   /**
+    * Retrieve Instructor info:
+    *   professor classes   
+    *   final exam times
+    *   professor office hours
+    * @test
+    */
+   public function get_Instructor_Info()
+   {
+       $ical = new ICal(); 
+       $ical->addEvent();  
+       $ical->addEvent();  
+    //    return $ical->generateICS();   
+
+       $instructorInfo = json_encode(
+        [
+           "classList" =>    NULL,
+           "finalExamTimes" =>     NULL,
+           "officeHours" =>    NULL
+        ]);
+        // dd($instructorInfo);
+
+       $this->retriever->shouldReceive('getInstructorInfo')
+        ->with('2173','nr_nerces.kazandjian')
+        ->andReturn($instructorInfo);
+
+        $workingController = new FacultyController($this->retriever);
+        
+        $response = $workingController->getInstructorInfo('2173','nr_nerces.kazandjian');
+        dd($response);
+
+        $this->assertEquals($instructorInfo, $response);
+
+   }
+
+   /**
+    * Create an ics with events
+    * @test
+    */
+   public function make_An_Ics_File()
+   {
+
+    $instructorInfo = json_encode(
+        [
+           "classList" =>    NULL,
+           "finalExamTimes" =>     NULL,
+           "officeHours" =>    NULL
+        ]);
+
+       $this->retriever->shouldReceive('getInstructorInfo')
+        ->with('2173','nr_nerces.kazandjian')
+        ->andReturn($instructorInfo);
+
+        $workingController = new FacultyController($this->retriever);
+        
+        $response = $workingController->getInstructorInfo('2173','nr_nerces.kazandjian');
+        dd($response);
+
+        $this->assertEquals($instructorInfo, $response);
    }
     
 }
