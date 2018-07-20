@@ -22,4 +22,4 @@ $router->get('/', function () use ($router) {
 // terms/2197/students/john.smith.302
 $router->get('1.0/terms/{term}/students/{email}', [
     'as' => 'students.termClasses', 'uses' => 'StudentController@termClasses'
-]);
+])-> middleware('APIKey');

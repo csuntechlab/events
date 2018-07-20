@@ -63,9 +63,10 @@ $app->singleton(
 //    App\Http\Middleware\ExampleMiddleware::class
 // ]);
 
-// $app->routeMiddleware([
+ $app->routeMiddleware([
 //     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+     'APIkey' => App\Http\Middleware\APIKeyMiddleware::class,
+ ]);
 
 $app->middleware([
     CSUNMetaLab\LumenForceHttps\Http\Middleware\ForceHttps::class,
@@ -86,6 +87,9 @@ $app->middleware([
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
+/*student service provider */
+$app->register(App\Providers\StudentServiceProvider::class);
+
 $app->configure('proxypass');
 $app->register(CSUNMetaLab\LumenProxyPass\Providers\ProxyPassServiceProvider::class);
 
@@ -101,5 +105,3 @@ $app->register(CSUNMetaLab\LumenForceHttps\Providers\ForceHttpsServiceProvider::
 | can respond to, as well as the controllers that may handle them.
 |
 */
-/*student service provider */
-$app->register(App\Providers\StudentServiceProvider::class);
