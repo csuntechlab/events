@@ -8,10 +8,23 @@ class Event extends Model
 {
     protected $table = 'bedrock.events';
 
-	protected $fillable =[
+    protected $fillable =[
+        'description',
+        'location',
+        'start_time',
+        'end_time',
+        'days',
+        'from_date',
+        'to_date',
+        'term'
     ];
-    
+
     protected $hidden = [
+        'meeting_id',
+        'meeting_number',
+        'entities_id',
+        'classes_id',
+        'term_id',
     ];
 
     /**
@@ -42,14 +55,13 @@ class Event extends Model
      * 
      */
     public function scopeEvent($query, $classes_id){
-        return $query->where('$entities_id', $classes_id);
+        return $query->where('entities_id', $classes_id);
     }
 
     /**
      * 
      */
     public function scopeEntities($query, $classes_id){
-        return $query->where('$entities_id', $classes_id);
+        return $query->where('entities_id', $classes_id);
     }
-
 }

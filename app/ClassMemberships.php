@@ -115,7 +115,5 @@ class ClassMemberships extends Model
         ->hasMany('App\Event','entities_id','classes_id')
         ->type('final-exam');
     }
-
     
-
 }

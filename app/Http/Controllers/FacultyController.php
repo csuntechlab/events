@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Contracts\FacultyContract;
 use App\ICal;
+
 class FacultyController extends Controller
 {
     protected $facultyRetriever;

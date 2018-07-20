@@ -29,7 +29,6 @@ class ICal{
             'RRULE:FREQ='.$rules['frequency'].';INTERVAL='.$rules['interval'].';UNTIL='.$rules['until'].';BYDAY='.$rules['byDay'].
             'DTSTART;America/Los_Angeles:'.$from.
             'DTEND;America/Los_Angeles:'.$to.
-
             'DTSTAMP:'.$dtStamp.
             'CATEGORIES:'.$categories.
             'CLASS:PUBLIC'.
@@ -79,6 +78,7 @@ class ICal{
             header('Content-type: text/calendar; charset=utf-8');
             header('Content-Disposition: attachment; filename=schedule.ics');
         }
+        
         return $this->ics;
     }
 

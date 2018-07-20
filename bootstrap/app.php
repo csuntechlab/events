@@ -77,8 +77,10 @@ $app->singleton(
 | totally optional, so you are not required to uncomment this line.
 |
 */
+// Classes
+$app->register(App\Providers\ClassServiceProvider::class);
 
-// $app->register(App\Providers\AppServiceProvider::class);
+$app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
@@ -105,6 +107,8 @@ $app->register(CSUNMetaLab\LumenForceHttps\Providers\ForceHttpsServiceProvider::
 $app->middleware([
     CSUNMetaLab\LumenForceHttps\Http\Middleware\ForceHttps::class,
 ]);
+
+
 
 $app->router->group([
     'namespace' => 'App\Http\Controllers',

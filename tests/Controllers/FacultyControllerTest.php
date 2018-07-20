@@ -7,9 +7,7 @@ use Laravel\Lumen\Testing\DatabaseMigrations;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use \App\Contracts\FacultyContract;
 use \App\Http\Controllers\FacultyController;
-
 use App\ICal;
-
 class FacultyControllerTest extends TestCase
 { 
 
@@ -148,6 +146,7 @@ class FacultyControllerTest extends TestCase
             ]
         );
 
+
         $this->retriever
         ->shouldReceive('getFinalExamTimes')
         ->with('2187','steven.fitzgerald')
@@ -265,7 +264,6 @@ class FacultyControllerTest extends TestCase
 
         $this->assertEquals($instructorInfo, $response);
    }
-    
 }
 
 ?>

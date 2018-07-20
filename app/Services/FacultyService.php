@@ -1,5 +1,6 @@
 <?php
 namespace App\Services;
+
 use App\ClassMemberships;
 use App\User;
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 use App\Contracts\StudentContract;
 use App\ICal;
