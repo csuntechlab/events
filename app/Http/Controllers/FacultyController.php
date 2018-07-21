@@ -52,31 +52,28 @@ class FacultyController extends Controller
     public function getInstructorInfo($term,$email)
     {
         $instructorInfo['classList'] =  $this->getClassList($term, $email);
-        $instructorInfo['finalExamTimes'] = $this->getFinalExamTimes($term, $email);
-        $instructorInfo['officeHours'] = $this->getOfficeHours($term, $email);  
+        // $instructorInfo['finalExamTimes'] = $this->getFinalExamTimes($term, $email);
+        // $instructorInfo['officeHours'] = $this->getOfficeHours($term, $email);  
 
-        // return  $instructorInfo;
+        return  $instructorInfo;
 
         $icalParam = null;
+        
+        $ical = new ICal();
+
+        $array = [];
+        $counter = 0;
+
         foreach($instructorInfo['classList']  as $class){
-            $course  = null;
-            $event = null;
-            foreach($class as $classInfo){
-                $course = $classInfo['course'];   
-                $event = $classInfo['class_events'];   
-            }
-
-            return $class;
-
-            // return $class;
+            $course  = $class->course;
+            $event = $class->class_events;
             $icalParam = $this->getParam($class,$course,$event);
         }
+        return $array;
 
-        $ical = new ICal();
-        $ical->addEvent($icalParam);
         return $ical->generateICS();
     }
-    
+
     public function getICal()
     {
         $instructorInfo['classList'] =  $this->getClassList($term, $email);
