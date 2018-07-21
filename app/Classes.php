@@ -28,15 +28,16 @@ class Classes extends Model
         'days',
         'from_date',
         'to_date',
-        'term'
+        'term',
+        'classes_id',
+        'term_id',
+        'label'
     ];
 
     protected $hidden = [
         'meeting_id',
         'meeting_number',
         'entities_id',
-        'classes_id',
-        'term_id',
         "created_at",
         "updated_at",
         'is_walkin',
@@ -48,7 +49,7 @@ class Classes extends Model
         return $query->where('entities_id',$queryBuilder);
     }
 
-    public function getDetails()
+    public function details()
     {
         return $this->hasOne('App\CourseInfo','classes_id','entities_id');
     }

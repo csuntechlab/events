@@ -21,7 +21,7 @@ $router->get('/', function () use ($router) {
 //    'as' => 'class', 'uses' => 'ClassController@courses'
 //]);
 $router->get('1.0/terms/{term}/classes/{course_id}', [
-    'as' => 'class', 'uses' => 'ClassController@classInfo'
+    'as' => 'class', 'uses' => 'ClassController@retrieveClassICS'
 ]);
 
 $router->get('1.0/terms/{term}/faculty/{email}','FacultyController@getClassList');
