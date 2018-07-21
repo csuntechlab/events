@@ -116,6 +116,14 @@ class ClassMemberships extends Model
         ->type('final-exam');
     }
 
+    public function events()
+    {
+        return $this
+        ->hasMany('App\Event','entities_id','classes_id');
+    }
+
+
+
     public function course()
     {
         return $this->hasOne('App\CourseInfo','classes_id','classes_id' );

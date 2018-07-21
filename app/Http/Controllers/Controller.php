@@ -6,40 +6,69 @@ use Laravel\Lumen\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {
-    //
-    public function getParam($course, $event)
+    protected $uid = null;
+    protected $summary = null;
+    protected $vAlarmDescription = null;
+    protected $status = null;
+    protected $transparent  = null;
+
+    /**
+     * sets global variables for ical parameter 
+     */
+    public function setParamForClassAndFinal($event,$course)
     {
-        $uid = $course['classes_id'].$event['patten_number'].'.vevent@metalab.csun.edu'; 
+        $this->uid = $course['classes_id'].'.'.$event['pattern_number'].'.vevent@metalab.csun.edu'; 
+        $this->summary = $course['subject'].' '.$course['catalog_number'].' ('.$course['class_number'].')';
+        $this->vAlarmDescription =  $course['subject'].' '.$course['catalog_number'].' starts in 15 minutes';
+        $this->status = 'CONFIRMED';
+        $this->transparent = 'OPAQUE';
+    }
+
+    /**
+     * sets global variables for ical parameter 
+     */
+    public function setParamForOfficeHours($event,$email)
+    {
+        $this->uid = $event['entities_id'].'.'.$event['pattern_number'].'.vevent@metalab.csun.edu';
+        $this->summary = $summary = 'Office Hours: ' . $email ;
+        $this->vAlarmDescription = null;
+        $this->status = 'TENTATIVE';
+        $this->transparent = 'TRANSPARENT';
+    }
+
+    /**
+     * gets ical parameter
+     */
+    public function getParam($event)
+    {
+        $icalParam = [];
         
-        $summary = $course['subject'].' '.$course['catalog_number'].' ('.$course['class_number'].')';
+        $icalParam['uid'] = $this->uid;
+        $icalParam['dtStamp'] = '20180505T171003Z';
+        $icalParam['created'] = '20180505T170922Z';
+        $icalParam['lastModified'] = '20180505T171003Z';
 
-        $altRep = 'http://academics.csun.edu/classrooms/'.$event['location'].':'.$event['location'];
+        $icalInfo['sequence'] = '0'; //check for class and final exam importance 
 
-        $icsInfo = [];
-        $icsInfo['uid'] = $uid;
-        $icsInfo['dtStamp'] = '20180505T171003Z';
-        $icsInfo['created'] = '20180505T170922Z';
-        $icsInfo['lastModified'] = '20180505T171003Z';
-        $icsInfo['class'] = 'public';
-        $icsInfo['transpartent'] = 'OPAQUE';
-        $icsInfo['status'] = 'CONFIRMED';
-        $icsInfo['catagories'] = $event['type']; 
-        $icsInfo['summary'] = $summary;
-        $icsInfo['locationAltRep'] = $altRep;
-        $icsInfo['geo'] = '34.2373175;-118.533936'; 
-        $icsInfo['desription'] = null;
-        $icsInfo['dtstart'] = 'America/Los_Angeles:20180827T130000';
-        $icsInfo['dtend'] = 'America/Los_Angeles:20180827T135000';
-        $icsInfo['rRule'] = 'weekly';
-        $icsInfo['interval'] = '1';
-        $icsInfo['until'] = '20181212T135000Z';
-//change later if satement 
-        $icsInfo['byDay'] = 'MO,WE'; 
+        $icalParam['class'] = 'PUBLIC';
+        $icalParam['transparent'] = $this->transparent;
+        $icalParam['status'] = $this->status;
+        $icalParam['catagories'] = $event['type']; 
+        $icalParam['summary'] = $this->summary;
+        $icalParam['locationAltRep'] = 'http://academics.csun.edu/classrooms/'.$event['location'].':'.$event['location'];
+        $icalParam['geo'] = '34.2373175;-118.533936'; 
+        $icalParam['description'] = null;
+        $icalParam['dtstart'] = 'America/Los_Angeles:20180827T130000';
+        $icalParam['dtend'] = 'America/Los_Angeles:20180827T135000';
+        $icalParam['rRule'] = 'weekly';
+        $icalParam['interval'] = '1';
+        $icalParam['until'] = '20181212T135000Z';
+        $icalParam['byDay'] = 'MO,WE'; 
 
-        $icsInfo['vAlarmDescription'] =  $course['subject'].' '.$course['catalog_number'].' starts in 15 minutes';
+        $icalParam['vAlarmDescription'] = $this->vAlarmDescription;
 
-        // dd($icsInfo);
-        return $icsInfo;
+        return $icalParam;
 
     }
+
 }
