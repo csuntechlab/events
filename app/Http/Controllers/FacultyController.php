@@ -55,7 +55,7 @@ class FacultyController extends Controller
         // $instructorInfo['finalExamTimes'] = $this->getFinalExamTimes($term, $email);
         // $instructorInfo['officeHours'] = $this->getOfficeHours($term, $email);  
 
-        return  $instructorInfo;
+        // return  $instructorInfo;
 
         $icalParam = null;
         
@@ -67,10 +67,11 @@ class FacultyController extends Controller
         foreach($instructorInfo['classList']  as $class){
             $course  = $class->course;
             $event = $class->class_events;
+            //check if event is null, if null.then skip
+            if($event)
             $icalParam = $this->getParam($class,$course,$event);
+            $ical->addEvent($icalParam);
         }
-        return $array;
-
         return $ical->generateICS();
     }
 
