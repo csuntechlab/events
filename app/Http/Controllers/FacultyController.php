@@ -52,40 +52,36 @@ class FacultyController extends Controller
     public function getInstructorInfo($term,$email)
     {
         $instructorInfo['classList'] =  $this->getClassList($term, $email);
-        // $instructorInfo['finalExamTimes'] = $this->getFinalExamTimes($term, $email);
-        // $instructorInfo['officeHours'] = $this->getOfficeHours($term, $email);  
+        $instructorInfo['finalExamTimes'] = $this->getFinalExamTimes($term, $email);
+        $instructorInfo['officeHours'] = $this->getOfficeHours($term, $email);  
 
         // return  $instructorInfo;
-
-        $icalParam = null;
         
         $ical = new ICal();
-
-        $array = [];
-        $counter = 0;
 
         foreach($instructorInfo['classList']  as $class){
             $course  = $class->course;
             $event = $class->class_events;
-            //check if event is null, if null.then skip
-            if($event)
-            $icalParam = $this->getParam($class,$course,$event);
-            $ical->addEvent($icalParam);
+            // if(!empty($event) ){
+                $icalParam = $this->getParam($course,$event);
+                $ical->addEvent($icalParam);
+            // }
         }
+
+        // $course = $instructorInfo['finalExamTimes']->course;
+        // $event = $instructorInfo['finalExamTimes']->final_exam_events;
+
+        // $icalParam = $this->getParam($course,$event);
+        // $ical->addEvent($icalParam);
+
+        // $course = $instructorInfo['officeHours']->course;
+        // $event = $instructorInfo['officeHours'];
+
+        // $icalParam = $this->getParam($course,$event);
+        // $ical->addEvent($icalParam);
+
+
         return $ical->generateICS();
-    }
-
-    public function getICal()
-    {
-        $instructorInfo['classList'] =  $this->getClassList($term, $email);
-        $instructorInfo['finalExamTimes'] = $this->getFinalExamTimes($term, $email);
-        $instructorInfo['officeHours'] = $this->getOfficeHours($term, $email);  
-        
-
-        foreach($instructorInfo['classList']  as $class){
-            $icalParam = $this->getParam($class);
-        }
-
     }
 
 

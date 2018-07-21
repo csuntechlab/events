@@ -16,26 +16,28 @@ class CourseInfo extends Model
     protected $table = "omar.classes";
 
     protected $fillable =[
+        'classes_id',
+        'term_id',
+        'class_number',
         'subject',
         'catalog_number',
         'title',
-        'class_number',
+        'description',
     ];
 
     protected $hidden = [
         'session_code',
-        
-        'courses_id',
-        'description',
+        'term',
+        'course_id',
+        'title',
         'units',
-        'created_at',
-        'updated_at',
-        'waitlist_total',
-        'waitlist_cap',
-        'enrollment_total',
-        'enrollment_cap',
+        'section_number',
+        'class_status',
         'class_type',
-        'class_status'
+        'enrollment_cap',
+        'enrollment_total',
+        'waitlist_cap',
+        'waitlist_total',
     ];
 
 }

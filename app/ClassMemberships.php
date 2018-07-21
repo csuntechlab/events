@@ -38,26 +38,26 @@ class ClassMemberships extends Model
     protected $table = 'nemo.classMemberships';
 
 	protected $fillable =[
-        'classes_id','term_id','role_position','members_id','email',
+        'classes_id',
+        'term_id',
+        'members_id',
+        'email',
+        'role_position',
     ];
     
     protected $hidden = [
-        'created_at',
-        'updated_at',
-        // 'role_position',
-        'member_status',
-        // 'member_id',
-        'term',	
+        'term',
         'class_number',
-        // 'members_id',
+        'members_id',
         'members_uid',
         'first_name',
         'middle_name',
         'last_name',
         'email',
-        'ad_hoc_member',	
-        'confidential',	
-        // 'email',
+        'role_position',
+        'ad_hoc_member',
+        'confidential',
+        'member_status',
     ];
 
     /**

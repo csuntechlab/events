@@ -9,22 +9,29 @@ class Event extends Model
     protected $table = 'bedrock.events';
 
     protected $fillable =[
-        'description',
-        'location',
+        'entities_id',
+        'term_id',
+        'pattern_number',
+        'type',
+        'label',
         'start_time',
         'end_time',
         'days',
         'from_date',
         'to_date',
-        'term'
+        'location_type',
+        'location',
+        'is_byappointment',
+        'is_walkin',
+        'booking_url',
+        'online_label',
+        'online_url',
     ];
 
     protected $hidden = [
-        'meeting_id',
-        'meeting_number',
-        'entities_id',
-        'classes_id',
-        'term_id',
+        'description',
+        'created_at',
+        'updated_at',
     ];
 
     /**
@@ -68,5 +75,10 @@ class Event extends Model
     public function course()
     {
         return $this->hasOne('App\CourseInfo','classes_id','classes_id' );
+    }
+
+    public function courseOfficeHours()
+    {
+        return $this->hasOne('App\CourseInfo','entities_id','classes_id' );
     }
 }
