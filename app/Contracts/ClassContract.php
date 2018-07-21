@@ -22,4 +22,6 @@ interface ClassContract
     public function classInfo($term,$course_id);
 
     public function finalInfo($term, $course_id);
+
+    public function ClassICS($output,$fileName);
 }

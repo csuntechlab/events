@@ -9,6 +9,7 @@
 namespace App\Services;
 
 use App\Classes;
+use App\ICal;
 use Illuminate\Support\Facades\Validator;
 
 use App\Contracts\ClassContract;
@@ -51,8 +52,9 @@ class ClassService implements ClassContract
     {
         $queryBuilder = "classes:{$term}:{$course_id}";
         $result = Classes::Classes_id($queryBuilder)
-            ->with('getDetails')
-            ->get();
+            ->where('type','class')
+            ->with('details')
+            ->first();
         return $result;
     }
 
@@ -62,7 +64,7 @@ class ClassService implements ClassContract
 
         $result = Classes::Final($queryBuilder)
                     ->where('type','final-exam')
-                    ->get();
+                    ->first();
 
         return $result;
     }
@@ -80,4 +82,36 @@ class ClassService implements ClassContract
         }
     }
 
+    public function ClassICS($output,$fileName)
+    {
+//        return $output;
+        $ical = new ICal();
+        $ical->addEvent($output);
+        return $ical->generateICS($fileName);
+    }
+
+//    public function ClassICS($output)
+//    {
+//        $ical = new ICal();
+//        $ical2 = new ICal();
+//
+//        $ical = ICall::addEvent($output);
+//        dd($ical2);
+//        $ical->addEvent(
+//            $summary = $output->details->subject . $output->details->catalog_number,
+//            $uid = 'classes.'.$output->details->term_id.'.'.$output->details->course_id.'.'.$output->pattern_number,
+//            $status = 'CONFIRMED',
+//            $transparent = 'OPAQUE',
+//            $rules = ['frequency' => 'WEEKLY' , 'interval' => 1, 'until' => $output->from_date, 'byDay' => $output->days] ,
+//            $from = $output->from_date,
+//            $to = $output->to_date,
+//            $categories = $output->label,
+//            $location = $output->location,
+//            $start_time = $output->start_time,
+//            $end_time = $output->end_time,
+//            $description = null,
+//            $geo = 0
+//        );
+//        return $ical->generateICS();
+//    }
 }
