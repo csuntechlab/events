@@ -1,24 +1,29 @@
 <?php
 namespace App\Services;
-
 use App\ClassMemberships;
 use App\User;
-
 use App\Event;
 use App\Contracts\FacultyContract;
-
 class FacultyService implements FacultyContract {
 
     public function getClassList($term,$email)
     {
-        $classList = ClassMemberships::email($email)
-        ->term($term)
-        ->instructorRole()
-        // ->with('course', 'classEvents')
-        ->with('course', 'events')
-        ->get();
+        $user = User::email($email)->first();
+        $classes = ClassMemberships::memberId($user->user_id)
+            ->term($term)
+            ->instructorRole()
+            ->pluck('classes_id');
 
-        return $classList;
+        $events = [];
+
+        foreach( $classes as $class ){
+            $temp = Event::class($class)
+            ->with('course')
+            ->get();
+            array_push($events, $temp);
+        }
+        return $events;
+
     }
     
     public function getFinalExamTimes($term,$email)
@@ -44,32 +49,10 @@ class FacultyService implements FacultyContract {
         $officeHours = Event::officeHours($entities_id)
         ->term($term)
         ->type('office-hours')
-        ->with('course')
+        // ->with('course')
         ->get();
 
         return $officeHours;
-    }
-
-    public function getInstructorInfo($term,$email)
-    {
-        $instructorInfo['classList'] = ClassMemberships::email($email)
-        ->term($term)
-        ->instructorRole()
-        ->with('course', 'events')
-        ->get();
-
-        $userId = User::email($email)->first();
-
-        $userId = str_replace("members:","",$userId['user_id']);
-
-        $entities_id = 'office-hours:'.$term.':'.$userId; 
-
-        $instructorInfo['officeHours'] = Event::officeHours($entities_id)
-        ->term($term)
-        ->type('office-hours')
-        ->get();
-
-        return $instructorInfo;
     }
     
 }

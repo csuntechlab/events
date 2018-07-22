@@ -64,10 +64,9 @@ class FacultyController extends Controller
         $controller = new Controller();
 
         foreach($instructorInfo['classList']  as $class){
-            $course  = $class->course;
-            $events = $class->events;
 
-            foreach($events as $event){
+            foreach($class as $event){
+                $course  = $event->course;
                 //sets global parm for class and final events
                 $controller->setParamForClassAndFinal($event,$course);
                 //gets ical param
@@ -75,6 +74,7 @@ class FacultyController extends Controller
                 //adds ical event with param , boolean is for adding alarm
                 $ical->addEvent($icalParam,true);
             }
+            
         }
 
         foreach ($instructorInfo['officeHours'] as $officeHours){

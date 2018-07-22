@@ -7,7 +7,6 @@ interface FacultyContract{
     public function getClassList($term,$email);
     public function getFinalExamTimes($term,$email);
     public function getOfficeHours($term,$email);
-    public function getInstructorInfo($term,$email);
 
 }
 ?>

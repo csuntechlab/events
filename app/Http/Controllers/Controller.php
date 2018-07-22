@@ -42,14 +42,14 @@ class Controller extends BaseController
     public function getParam($event)
     {
         $icalParam = [];
-        
+
+        $dayICal = $this->setMeetingDays($event['days']);
+            
         $icalParam['uid'] = $this->uid;
         $icalParam['dtStamp'] = '20180505T171003Z';
         $icalParam['created'] = '20180505T170922Z';
         $icalParam['lastModified'] = '20180505T171003Z';
-
         $icalInfo['sequence'] = '0'; //check for class and final exam importance 
-
         $icalParam['class'] = 'PUBLIC';
         $icalParam['transparent'] = $this->transparent;
         $icalParam['status'] = $this->status;
@@ -63,11 +63,51 @@ class Controller extends BaseController
         $icalParam['rRule'] = 'weekly';
         $icalParam['interval'] = '1';
         $icalParam['until'] = '20181212T135000Z';
-        $icalParam['byDay'] = 'MO,WE'; 
-
+        $icalParam['byDay'] = $dayICal; 
         $icalParam['vAlarmDescription'] = $this->vAlarmDescription;
 
         return $icalParam;
+    }
+
+
+    /**
+     * Sets ical's 'BYDAY=' input
+     */
+    public function setMeetingDays( $days )
+    { 
+        $dayICal = "";
+
+        $daysArray = str_split($days);
+
+        foreach($daysArray as $day){
+            if($day === 'M' ){
+                $dayICal .= 'MO,';
+            }
+            else if($day === 'T' ){
+                $dayICal .= 'TU,';
+            }
+            else if($day === 'W' ){
+                $dayICal .= 'WE,';
+            }
+            else if($day === 'R' ){
+                $dayICal .= 'TH,';
+            }
+            else if($day === 'F' ){
+                $dayICal .= 'FR,';
+            }
+            else if($day === 'S' ){
+                $dayICal .= 'SAT,';
+            }
+            else{
+                $dayICal .= 'NULL';
+            }
+        }
+
+        if($dayICal[( strlen($dayICal)-1) ] === ','){
+            $dayICal[( strlen($dayICal)-1) ] = " ";
+        }
+
+        return $dayICal;
 
     }
 

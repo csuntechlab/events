@@ -19,7 +19,7 @@ $router->get('/', function () use ($router) {
 
 
 // http://localhost:8888/metalab/calendar/public/1.0/terms/2153/faculty/shahriar.abachi
-// http://localhost:8888/metalab/calendar/public/1.0/terms/2153/faculty/nerces.kazandjian
+// http://localhost:8888/metalab/calendar/public/1.0/terms/2173/faculty/nerces.kazandjian
 
 
 // $router->get('1.0/terms/{term}/faculty/{email}','FacultyController@getClassList');

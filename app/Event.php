@@ -59,26 +59,18 @@ class Event extends Model
     }
 
     /**
-     * 
+     * Gets courses info 
      */
-    public function scopeEvent($query, $classes_id){
-        return $query->where('entities_id', $classes_id);
-    }
-
-    /**
-     * 
-     */
-    public function scopeEntities($query, $classes_id){
-        return $query->where('entities_id', $classes_id);
-    }
-
     public function course()
     {
-        return $this->hasOne('App\CourseInfo','classes_id','classes_id' );
+        return $this->hasOne('App\CourseInfo', 'classes_id', 'entities_id');
     }
-
-    public function courseOfficeHours()
+    
+    /**
+     * matches the entties id of event with classes_id
+     */
+    public function scopeClass($query,$class_id)
     {
-        return $this->hasOne('App\CourseInfo','entities_id','classes_id' );
+        return $query->where('entities_id', $class_id);
     }
 }
