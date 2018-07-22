@@ -5,6 +5,13 @@ namespace App;
 class ICal{
     protected $ics = null;
 
+    protected $fileName = null;
+
+    public function setFileName($fileName)
+    {
+        $this->fileName = $fileName;
+    }
+
     public function addEvent($icalParam,$addAlarm)
     {
         if($this->ics == null){
@@ -56,12 +63,12 @@ class ICal{
     }
     
 
-    public function generateICS($filename)
+    public function generateICS()
     {
         if($this->ics != null) {
             $this->ics .= 'END:VCALENDAR';
             header('Content-type: text/calendar; charset=utf-8');
-            header('Content-Disposition: attachment; filename='.$filename.'.ics');
+            header('Content-Disposition: attachment; filename='.$this->fileName.'.ics');
         }        
         return $this->ics;
     }

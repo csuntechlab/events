@@ -87,8 +87,9 @@ class FacultyController extends Controller
             $ical->addEvent($icalParam,false);
         }
 
+        $ical->setFileName($email);
         //generates an ics file for download
-        return $ical->generateICS($email);
+        return $ical->generateICS();
     }
 
 
