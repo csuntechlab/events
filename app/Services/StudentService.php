@@ -10,9 +10,25 @@ class StudentService implements StudentContract
 {
 
     // TODO: finish function
+    /**
+     * @param $term
+     * @param $email
+     * @return array
+     */
     public function termClasses($term, $email)
     {
-        $classMemberships = ClassMembership::email($email)->term($term)->get();
+
+        //$classMemberships = ClassMembership::email($email)->term($term)->get();
+
+        $studentEntities = Registry::email($email)->get();
+
+        $classMemberships = [];
+
+        foreach($studentEntities as $entity){
+            foreach (ClassMembership::member($entity['entities_id'])->term($term)->get() as $classMembership){
+                $classMemberships[] = $classMembership;
+            }
+        }
 
         $myEvents = [];
 
@@ -37,7 +53,7 @@ class StudentService implements StudentContract
                 $rules = [
                     // where to get?
                     // e.g.: 'WEEKLY'
-                    'frequency' => '',
+                    'frequency' => 'WEEKLY',
                     // pattern_number?
                     'interval' => $class['pattern_number'],
                     // dtStart
@@ -48,10 +64,12 @@ class StudentService implements StudentContract
                 $myEvent['rules'] = $rules;
                 $myEvent['from'] = $class['from'];
                 $myEvent['to'] = $class['to'];
-                $myEvent['dtStamp'] = $class['dtStamp'];
+                // dt
+                $myEvent['dtStamp'] = date('Y-m-d').time();
                 $myEvent['categories'] = $class['categories'];
                 $myEvent['location'] = $class['location'];
-                $myEvent['geo'] = $class['geo'];
+                // do we have a geo location in the db?
+                $myEvent['geo'] = null;
 
                 $myEvent['description'] = $class['description'];
                     /**/

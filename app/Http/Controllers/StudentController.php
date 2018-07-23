@@ -21,24 +21,32 @@ class StudentController
         $this->studentService = $studentService;
     }
 
+    /**
+     * @param $term
+     * @param $email
+     * @return null|string
+     */
     public function termClasses($term, $email){
-        $classes = $this->studentService->termClasses($term, $email);
+        $events = $this->studentService->termClasses($term, $email);
 
         $ical = new ICal();
-        foreach($classes as $class) {
-            $ical->addEvent(
-                $class['summary'],
-                $class['uid'],
-                $class['status'],
-                $class['transparent'],
-                $class['rules'],
-                $class['from'],
-                $class['to'],
-                $class['dtStamp'],
-                $class['categories'],
-                $class['location'],
-                $class['geo'],
-                $class['description']);
+        foreach($events as $event) {
+//            $ical->addEvent(
+//                $event['summary'],
+//                $event['uid'],
+//                $event['status'],
+//                $event['transparent'],
+//                $event['rules'],
+//                $event['from'],
+//                $event['to'],
+//                $event['dtStamp'],
+//                $event['categories'],
+//                $event['location'],
+//                $event['geo'],
+//                $event['description']
+//            );
+
+            $ical->addEventByArray($event);
         }
         return $ical->generateICS();
     }

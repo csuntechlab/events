@@ -2,6 +2,9 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Model;
+use phpDocumentor\Reflection\Types\String_;
+
 class ICal{
     protected $ics = null;
 

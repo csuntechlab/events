@@ -8,8 +8,8 @@ class ClassMembership extends Model
 {
     protected $table = 'nemo.class_memberships';
 
-    public function scopeEmail($query, $email){
-        return $query->where('email', $email.'@my.csun.edu');
+    public function scopeMember($query, $member_id){
+        return $query->where('member_id', $member_id);
     }
 
     public function scopeTerm($query, $term){
