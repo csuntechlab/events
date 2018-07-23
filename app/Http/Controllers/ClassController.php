@@ -36,20 +36,44 @@ class ClassController extends Controller
 
     public function retrieveClassDetails($term,$course_id)
     {
-        $classDetails = $this->classContract->classInfo($term,$course_id);
-        $finalDetails = $this->classContract->finalInfo($term,$course_id);
+        // original
+//        $classDetails = $this->classContract->classInfo($term,$course_id);
+//        $finalDetails = $this->classContract->finalInfo($term,$course_id);
+        $classDetails = ["classEvents" => $this->classContract->classInfo($term,$course_id)];
+        $finalDetails = ["finalEvent" => $this->classContract->finalInfo($term,$course_id)];
 
-        $output = $classDetails;
-
+        $output = $classDetails + $finalDetails;
         return $output;
     }
 
-
     public function retrieveClassICS($term, $course_id)
     {
+        // Gets the SQL data, method above
         $output = $this->retrieveClassDetails($term,$course_id);
-        $helper = $this->getClassParam($output);
-        $fileName = 'classes'.'.'.$output->term_id.'.'.$output->details->course_id.'.'.$output->details->section_number;
-        return $this->classContract->ClassICS($helper,$fileName);
+        $ical = new ICal();
+        $controller = new Controller();
+
+        $course = [];
+
+        /**
+         *  Each class might have a in person AND a online meeting
+         *  Each class deserves a Alarm
+         */
+        foreach ($output['classEvents'] as $class)
+        {
+            $course = $class->details;
+            $controller->setParamForClassAndFinal($class,$course);
+//            $controller->setParamForClassFinalHours($class);
+            $icalParam = $controller->getParam($class);
+            $ical->addEvent($icalParam,1);
+        }
+
+        $ical->addEvent($output['finalEvent'],1);
+
+        $fileName = 'classes'.'.'.$class['term_id'].'.'.$class['course_id'].'.'.$class['section_number'];
+
+        $ical->setFileName($fileName);
+
+        return $ical->generateICS();
     }
 }

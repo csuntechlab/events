@@ -54,7 +54,7 @@ class ClassService implements ClassContract
         $result = Classes::Classes_id($queryBuilder)
             ->where('type','class')
             ->with('details')
-            ->first();
+            ->get();
         return $result;
     }
 
@@ -84,34 +84,9 @@ class ClassService implements ClassContract
 
     public function ClassICS($output,$fileName)
     {
-//        return $output;
         $ical = new ICal();
-        $ical->addEvent($output);
-        return $ical->generateICS($fileName);
+        $ical->addEvent($output,1);
+        $ical->setFileName($fileName);
+        return $ical->generateICS();
     }
-
-//    public function ClassICS($output)
-//    {
-//        $ical = new ICal();
-//        $ical2 = new ICal();
-//
-//        $ical = ICall::addEvent($output);
-//        dd($ical2);
-//        $ical->addEvent(
-//            $summary = $output->details->subject . $output->details->catalog_number,
-//            $uid = 'classes.'.$output->details->term_id.'.'.$output->details->course_id.'.'.$output->pattern_number,
-//            $status = 'CONFIRMED',
-//            $transparent = 'OPAQUE',
-//            $rules = ['frequency' => 'WEEKLY' , 'interval' => 1, 'until' => $output->from_date, 'byDay' => $output->days] ,
-//            $from = $output->from_date,
-//            $to = $output->to_date,
-//            $categories = $output->label,
-//            $location = $output->location,
-//            $start_time = $output->start_time,
-//            $end_time = $output->end_time,
-//            $description = null,
-//            $geo = 0
-//        );
-//        return $ical->generateICS();
-//    }
 }
