@@ -7,12 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Classes extends Model
 {
     protected $table = 'omar.classes';
-    protected $primaryKey = 'classes_id';
 
     protected $fillable = [
         'classes_id',
         'term_id',
-        'session_code',
         'term',
         'class_number',
         'course_id',
@@ -22,12 +20,13 @@ class Classes extends Model
         'description',
         'units',
         'section_number',
-        'class_status',
         'class_type',
-        'enrollment_cap',
-        'enrollment_total',
-        'waitlist_cap',
-        'waitlist_total'
+    ];
+    
+    protected $hidden = [
+        'classes_id',
+        'term_id',
+
     ];
 
     // public function getClassInfo( $classes_id, $term_id){;}
