@@ -53,14 +53,21 @@ class Controller extends BaseController
         $icalParam['class'] = 'PUBLIC';
         $icalParam['transparent'] = $this->transparent;
         $icalParam['status'] = $this->status;
-        $icalParam['catagories'] = $event['type']; 
+        $icalParam['categories'] = $event['type']; 
         $icalParam['summary'] = $this->summary;
-        $icalParam['locationAltRep'] = 'http://academics.csun.edu/classrooms/'.$event['location'].':'.$event['location'];
+        
+        if($event['location_type']=='physical') {
+            $icalParam['locationAltRep'] = 'http://academics.csun.edu/classrooms/' . $event['location'] . ':' . $event['location'];
+        }
+        else {
+            $icalParam['locationAltRep'] = $event['online_url'];
+        }
+        // $icalParam['locationAltRep'] = 'http://academics.csun.edu/classrooms/'.$event['location'].':'.$event['location'];
         $icalParam['geo'] = '34.2373175;-118.533936'; 
         $icalParam['description'] = null;
         $icalParam['dtstart'] = 'America/Los_Angeles:20180827T130000';
         $icalParam['dtend'] = 'America/Los_Angeles:20180827T135000';
-        $icalParam['rRule'] = 'weekly';
+        $icalParam['rRule'] = 'WEEKLY';
         $icalParam['interval'] = '1';
         $icalParam['until'] = '20181212T135000Z';
         $icalParam['byDay'] = $dayICal; 
