@@ -82,6 +82,8 @@ class FacultyController extends Controller
                 $vEvent = new \Eluceo\iCal\Component\Event();
 
                 $controller->setEvent($vEvent, $event);
+
+                
                 
                 $vEvent->setRecurrenceRule($recurrenceRule);
 
