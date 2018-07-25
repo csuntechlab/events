@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 use App\Contracts\FacultyContract;
+use Eluceo\iCal\Property\Event\RecurrenceRule;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use App\ICal;
 
 // use Controller;
+// require_once __DIR__ . '/../vendor/autoload.php';
 
 class FacultyController extends Controller
 {
+
+
     protected $facultyRetriever;
     /**
      * Create a new controller instance.
@@ -57,7 +63,46 @@ class FacultyController extends Controller
         $instructorInfo['classList'] =  $this->getClassList($term, $email);
         $instructorInfo['officeHours'] = $this->getOfficeHours($term, $email);  
 
-        // return  $instructorInfo;
+        $vCalendar = new \Eluceo\iCal\Component\Calendar('-//events @ META+LAB//Version 1//EN');
+
+        $controller = new Controller();
+
+        foreach($instructorInfo['classList']  as $class){
+           
+           
+           
+           
+            foreach($class as $event){
+                $course  = $event->course;
+
+                $controller->setParamForClassAndFinal($event,$course);
+                
+                $controller->setEvent($event);
+
+                $vEvent = new \Eluceo\iCal\Component\Event();
+
+                $controller->setEvent($vEvent, $event);
+                
+                $vEvent->setRecurrenceRule($recurrenceRule);
+
+                $vAlarm = new \Eluceo\iCal\Component\Alarm();
+                $vAlarm->setTrigger('-PT15M');
+                $vAlarm->setDescription($vAlarmDescription);
+                $vAlarm->setAction('DISPLAY');
+
+                $vEvent->addComponent($vAlarm);
+
+                $vCalendar->addComponent($vEvent);
+            }
+            
+        }
+
+        header('Content-Type: text/calendar; charset=utf-8');
+        header('Content-Disposition: attachment; filename="cal.ics"');
+
+        return $vCalendar->render();
+        
+        // $vCalendar->addComponent($vEvent);
         
         $ical = new ICal();
         //make a controller obj so you can set global param

@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use Laravel\Lumen\Routing\Controller as BaseController;
 
+use Eluceo\iCal\Property\Event\RecurrenceRule;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use App\ICal;
+
 class Controller extends BaseController
 {
     protected $uid = null;
@@ -36,44 +41,61 @@ class Controller extends BaseController
         $this->transparent = 'TRANSPARENT';
     }
 
+    
+
     /**
      * gets ical parameter
      */
-    public function getParam($event)
+    public function setEvent(\Eluceo\iCal\Component\Event $vEvent,$event)
     {
-        $icalParam = [];
+        $eventTime = date("Y-m-d H:i:s");
+        $lastModified = $eventTime;
+        $dtStamp = $eventTime;
+        $class = 'PUBLIC';
+        $created = '2018-07-25';
+        $transparent = 'OPAQUE';
+        $status = 'CONFIRMED';
+        $categories = $event['type'];
 
-        $dayICal = $this->setMeetingDays($event['days']);
-            
-        $icalParam['uid'] = $this->uid;
-        $icalParam['dtStamp'] = '20180505T171003Z';
-        $icalParam['created'] = '20180505T170922Z';
-        $icalParam['lastModified'] = '20180505T171003Z';
-        $icalInfo['sequence'] = '0'; //check for class and final exam importance 
-        $icalParam['class'] = 'PUBLIC';
-        $icalParam['transparent'] = $this->transparent;
-        $icalParam['status'] = $this->status;
-        $icalParam['categories'] = $event['type']; 
-        $icalParam['summary'] = $this->summary;
-        
         if($event['location_type']=='physical') {
-            $icalParam['locationAltRep'] = 'http://academics.csun.edu/classrooms/' . $event['location'] . ':' . $event['location'];
+            $location =  $event['location']; 
+            $locationAltrep = "http://academics.csun.edu/classrooms/" . $event['location'] . ":" . $event['location'];
+        } else {
+            $location =  'ZOOM'; 
+            $locationAltrep = $event['online_url'];
         }
-        else {
-            $icalParam['locationAltRep'] = $event['online_url'];
-        }
-        // $icalParam['locationAltRep'] = 'http://academics.csun.edu/classrooms/'.$event['location'].':'.$event['location'];
-        $icalParam['geo'] = '34.2373175;-118.533936'; 
-        $icalParam['description'] = null;
-        $icalParam['dtstart'] = 'America/Los_Angeles:20180827T130000';
-        $icalParam['dtend'] = 'America/Los_Angeles:20180827T135000';
-        $icalParam['rRule'] = 'WEEKLY';
-        $icalParam['interval'] = '1';
-        $icalParam['until'] = '20181212T135000Z';
-        $icalParam['byDay'] = $dayICal; 
-        $icalParam['vAlarmDescription'] = $this->vAlarmDescription;
+        $dtStart = '2018-08-08 ' . str_replace('h', '00Z', $event['start_time']) ;
+        $dtEnd =  '2018-08-08 ' . str_replace('h', '00Z', $event['end_time']) ;
+        $rrule = 'WEEKLY';
+        $interval = '1';
+        $until = '2018-12-12 08:12:10';
+        $icalParam = [];
+        $byDay = $this->setMeetingDays($event['days'] );
 
-        return $icalParam;
+        $vEvent
+        ->setUniqueId($uid)
+        ->setDtStamp( new \DateTime($dtStamp) ) //dtStamp 169
+        ->setCreated( new \DateTime($created) ) // must create
+        ->setModified( new \DateTime($lastModified) ) // last Modified
+        ->setTrans($transparent)
+        ->setStatus($status)
+        ->setCategories($categories)
+        ->setSummary( $summary )
+        ->setTimezoneString('America/Los_Angeles')
+        ->setLocation($location,$locationAltrep)
+        ->setDtStart( new \DateTime($dtStart )  )
+        ->setDtEnd(new \DateTime( $dtEnd ) )
+        ;
+        $recurrenceRule = new \Eluceo\iCal\Property\Event\RecurrenceRule();
+        $recurrenceRule->setFreq(\Eluceo\iCal\Property\Event\RecurrenceRule::FREQ_WEEKLY);
+        $recurrenceRule->setInterval(1); // final exam 
+        $recurrenceRule->setByDay($byDay);
+        $recurrenceRule->setUntil( new \DateTime($until) );
+
+
+
+        // return $icalParam;
+
     }
 
 

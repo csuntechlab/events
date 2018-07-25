@@ -9,6 +9,7 @@ class FacultyService implements FacultyContract {
     public function getClassList($term,$email)
     {
         $user = User::email($email)->first();
+        
         $classes = ClassMemberships::memberId($user->user_id)
             ->term($term)
             ->instructorRole()
