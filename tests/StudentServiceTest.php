@@ -2,8 +2,9 @@
 
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Laravel\Lumen\Testing\DatabaseTransactions;
+use App\Services\StudentService;
 
-class DatabaseTest extends TestCase
+class StudentServiceTest extends TestCase
 {
     /**
      * this is an anotation
@@ -15,12 +16,14 @@ class DatabaseTest extends TestCase
      * @test
      */
     public function gets_classes_table_from_studentService(){
-        $term = '2197';
-        $email = 'john.smith.302';
+        $term = '2153';
+        // terms: 2153, 2157
+        //members:000021541
+        $email = 'nr_kim.goldberg-roth';
 
-        $studentService = new \App\Services\StudentService();
+        $studentService = new StudentService();
 
-//        $this->assertEquals($studentService->termClasses($term, $email), );
+//        $this->assertEquals(true, true);
 
         var_dump($studentService->termClasses($term, $email));
     }

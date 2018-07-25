@@ -14,6 +14,6 @@ class Registry extends Model
      * @return mixed
      */
     public function scopeEmail($query, $email){
-        return $query->where('email', $email);
+        return $query->where('email', 'LIKE', $email.'@'.'%'.'csun.edu');
     }
 }

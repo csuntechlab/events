@@ -69,9 +69,9 @@ class ICal{
             'DTSTAMP:'. (array_key_exists('dtStamp', $event)) ? $event['dtStamp'] : null.
             'CATEGORIES:'. (array_key_exists('categories', $event)) ? $event['categories'] : null.
             'CLASS:PUBLIC'.
-            'LOCATION;ALTREP='. (array_key_exists('summary', $event)) ? $event['location'].':META+LAB' : null.
-            'GEO:'. (array_key_exists('summary', $event)) ? $event['geo'] : null.
-            'DESCRIPTION:'. (array_key_exists('summary', $event)) ? $event['description'] : null.
+            'LOCATION;ALTREP='. (array_key_exists('location', $event)) ? $event['location'].':META+LAB' : null.
+            'GEO:'. (array_key_exists('geo', $event)) ? $event['geo'] : null.
+            'DESCRIPTION:'. (array_key_exists('description', $event)) ? $event['description'] : null.
             'END:VEVENT'
         ;
     }

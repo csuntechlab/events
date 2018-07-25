@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class ClassMembership extends Model
 {
-    protected $table = 'nemo.class_memberships';
+    protected $table = 'nemo.classMemberships';
 
     public function scopeMember($query, $member_id){
-        return $query->where('member_id', $member_id);
+        return $query->where('members_id', $member_id);
     }
 
     public function scopeTerm($query, $term){

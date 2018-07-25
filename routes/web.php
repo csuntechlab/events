@@ -16,7 +16,7 @@ $router->get('/', function () use ($router) {
 });
 
 // without name
-//$router->get('1.0/term/{term}/students/{email}', 'StudentController@termClasses');
+//$router->get('/1.0/term/{term}/students/{email}', 'StudentController@termClasses');
 
 // with name
 // terms/2197/students/john.smith.302
