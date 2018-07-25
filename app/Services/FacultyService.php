@@ -9,20 +9,9 @@ use App\Event;
 class FacultyService implements FacultyContract {
 
 
-    public function getClassList($data)
-    {
-        $f_id = $data['email'];
-        $f_term = $data['term']->term_id;
-        $classList = ClassMemberships::email($f_id->email)
-            ->term($f_term)
-            ->instructorRole()
-            ->with('classEvents')
-            ->get();
-       // dd($f_term);
-        return $classList;
-    }
 
     public function getAllOfficeHours($facultyData){
+
 
         //find term first then find faculty in that term thru email
         $faculty_id = $facultyData['email'];

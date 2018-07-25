@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Contracts\FacultyContract;
 use App\User;
 use App\Event;
+use App\ICal;
 
 class FacultyController extends Controller
 {
@@ -43,21 +44,41 @@ class FacultyController extends Controller
         //$faculty_id = User::email($email)->first();
         //$faculty_id = str_replace("members:","",$userId['user_id']);
 
+        //$instructorInfo['officeHours'] = $this->getAllOfficeHours($term, $email);
+
 
         $facultyData = [
-                'term' => Event::where('term_id', $term)->first(),
-                //'term' => Event::findOrFail($term),
-                'email'=> User::where('email', $email.'@csun.edu')->first(),
+            'term' => Event::where('term_id', $term)->first(),
+            //'term' => Event::findOrFail($term),
+            'email'=> User::where('email', $email.'@csun.edu')->first(),
 
         ];
 
+
         $officeHours = $this->facultyRetriever->getAllOfficeHours($facultyData);
-/*       $faculty = Faculty::with('term', 'office_hours.term')->find($id);*/
+        /* $faculty = Faculty::with('term', 'office_hours.term')->find($id);*/
 
-//       return $facultyData;
+        $ical = new ICal();
+        $controller = new Controller();
 
 
-        return $officeHours;
+// return $facultyData;
+        foreach ($officeHours as $officeHour){
+            $event = $officeHour;
+//sets global parm for office hours
+            $controller->setParamForOfficeHours($event,$email);
+//gets ical param
+            $icalParam = $controller->getParam($event);
+//adds ical event with param , boolean is for adding alarm
+            $ical->addEvent($icalParam,false);
+        }
+
+
+        $ical->setFileName($email);
+//generates an ics file for download
+        return $ical->generateICS();
+
+// return $officeHours;
     }
 
 

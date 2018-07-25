@@ -2,12 +2,12 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-
 try {
     (new Dotenv\Dotenv(__DIR__.'/../'))->load();
 } catch (Dotenv\Exception\InvalidPathException $e) {
     //
 }
+
 /*
 |--------------------------------------------------------------------------
 | Create The Application
@@ -23,9 +23,9 @@ $app = new Laravel\Lumen\Application(
     realpath(__DIR__.'/../')
 );
 
- $app->withFacades();
+$app->withFacades();
 
- $app->withEloquent();
+$app->withEloquent();
 
 /*
 |--------------------------------------------------------------------------
@@ -77,8 +77,10 @@ $app->singleton(
 | totally optional, so you are not required to uncomment this line.
 |
 */
+// Classes
+$app->register(App\Providers\ClassServiceProvider::class);
 
-// $app->register(App\Providers\AppServiceProvider::class);
+$app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
@@ -93,6 +95,9 @@ $app->singleton(
 |
 */
 
+/* student service provider */
+$app->register(App\Providers\StudentServiceProvider::class);
+
 $app->configure('proxypass');
 $app->register(CSUNMetaLab\LumenProxyPass\Providers\ProxyPassServiceProvider::class);
 
@@ -102,6 +107,8 @@ $app->register(CSUNMetaLab\LumenForceHttps\Providers\ForceHttpsServiceProvider::
 $app->middleware([
     CSUNMetaLab\LumenForceHttps\Http\Middleware\ForceHttps::class,
 ]);
+
+
 
 $app->router->group([
     'namespace' => 'App\Http\Controllers',
