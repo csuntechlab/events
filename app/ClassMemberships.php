@@ -55,9 +55,28 @@ class ClassMemberships extends Model
         return $query->where('members_id',$id);
     }
 
+    /*
+    * filter instructors
+    */
     public function scopeInstructor($query)
     {
         return $query->where('role_position', 'Instructor');
+    }
+
+    /*
+     * filter classes
+    */
+    public function scopeClasses($query)
+    {
+        return $query->orWhere('classes_id', 'LIKE', 'classes:%');
+    }
+
+    /*
+    * filter final exams
+    */
+    public function scopeExams($query)
+    {
+        return $query->orWhere('classes_id', 'LIKE', 'final-exams:%');
     }
     /**
      * Each class has one corresponding event

@@ -27,12 +27,12 @@ class FacultyController extends Controller
 
     public function getClassAndFinalExamTimes($term, $email){
         $events = $this->facultyRetriever->getClassAndFinalExamTimes($term, $email);
-        $ics = $this->exportICS($events);
+        // $ics = $this->exportICS($events);
         /*foreach( $events as $event ){
             return ($event->info);
         }*/
         
-        return $ics;
+        return $events;
     }
     
 }
