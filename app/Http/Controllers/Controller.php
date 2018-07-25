@@ -56,46 +56,30 @@ class Controller extends BaseController
         $transparent = 'OPAQUE';
         $status = 'CONFIRMED';
         $categories = $event['type'];
+        $dayICal = $this->setMeetingDays($event['days']);
+            
+        $icalParam['uid'] = $this->uid;
+        $icalParam['dtStamp'] = '20180505T171003Z';
+        $icalParam['created'] = '20180505T170922Z';
+        $icalParam['lastModified'] = '20180505T171003Z';
+        $icalInfo['sequence'] = '0'; //check for class and final exam importance 
+        $icalParam['class'] = 'PUBLIC';
+        $icalParam['transparent'] = $this->transparent;
+        $icalParam['status'] = $this->status;
+        $icalParam['catagories'] = $event['type']; 
+        $icalParam['summary'] = $this->summary;
+        $icalParam['locationAltRep'] = 'http://academics.csun.edu/classrooms/'.$event['location'].':'.$event['location'];
+        $icalParam['geo'] = '34.2373175;-118.533936'; 
+        $icalParam['description'] = null;
+        $icalParam['dtstart'] = 'America/Los_Angeles:20180827T130000';
+        $icalParam['dtend'] = 'America/Los_Angeles:20180827T135000';
+        $icalParam['rRule'] = 'weekly';
+        $icalParam['interval'] = '1';
+        $icalParam['until'] = '20181212T135000Z';
+        $icalParam['byDay'] = $dayICal; 
+        $icalParam['vAlarmDescription'] = $this->vAlarmDescription;
 
-        if($event['location_type']=='physical') {
-            $location =  $event['location']; 
-            $locationAltrep = "http://academics.csun.edu/classrooms/" . $event['location'] . ":" . $event['location'];
-        } else {
-            $location =  'ZOOM'; 
-            $locationAltrep = $event['online_url'];
-        }
-        $dtStart = '2018-08-08 ' . str_replace('h', '00Z', $event['start_time']) ;
-        $dtEnd =  '2018-08-08 ' . str_replace('h', '00Z', $event['end_time']) ;
-        $rrule = 'WEEKLY';
-        $interval = '1';
-        $until = '2018-12-12 08:12:10';
-        $icalParam = [];
-        $byDay = $this->setMeetingDays($event['days'] );
-
-        $vEvent
-        ->setUniqueId($uid)
-        ->setDtStamp( new \DateTime($dtStamp) ) //dtStamp 169
-        ->setCreated( new \DateTime($created) ) // must create
-        ->setModified( new \DateTime($lastModified) ) // last Modified
-        ->setTrans($transparent)
-        ->setStatus($status)
-        ->setCategories($categories)
-        ->setSummary( $summary )
-        ->setTimezoneString('America/Los_Angeles')
-        ->setLocation($location,$locationAltrep)
-        ->setDtStart( new \DateTime($dtStart )  )
-        ->setDtEnd(new \DateTime( $dtEnd ) )
-        ;
-        $recurrenceRule = new \Eluceo\iCal\Property\Event\RecurrenceRule();
-        $recurrenceRule->setFreq(\Eluceo\iCal\Property\Event\RecurrenceRule::FREQ_WEEKLY);
-        $recurrenceRule->setInterval(1); // final exam 
-        $recurrenceRule->setByDay($byDay);
-        $recurrenceRule->setUntil( new \DateTime($until) );
-
-
-
-        // return $icalParam;
-
+        return $icalParam;
     }
 
 

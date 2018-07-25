@@ -33,7 +33,7 @@ class ICal{
             'CLASS:'.$icalParam['class']."\n"."\t".
             'TRANSP:'.$icalParam['transparent']."\n"."\t".
             'STATUS:'.$icalParam['status']."\n"."\t".
-            'CATEGORIES:'.$icalParam['categories']."\n"."\t".
+            'CATEGORIES:'.$icalParam['catagories']."\n"."\t".
             'SUMMARY:'.$icalParam['summary']."\n"."\t".
             'LOCATION;ALTREP='.$icalParam['locationAltRep']."\n"."\t".
             'GEO:'.$icalParam['geo']."\n"."\t".
