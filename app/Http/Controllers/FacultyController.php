@@ -61,82 +61,40 @@ class FacultyController extends Controller
     public function getInstructorInfo($term,$email)
     {
         $instructorInfo['classList'] =  $this->getClassList($term, $email);
-        $instructorInfo['officeHours'] = $this->getOfficeHours($term, $email);  
-
+        $instructorInfo['officeHours'] = $this->getOfficeHours($term, $email);
+        
         $vCalendar = new \Eluceo\iCal\Component\Calendar('-//events @ META+LAB//Version 1//EN');
 
         $controller = new Controller();
 
         foreach($instructorInfo['classList']  as $class){
-           
-           
-           
-           
             foreach($class as $event){
                 $course  = $event->course;
-
+                
                 $controller->setParamForClassAndFinal($event,$course);
                 
-                $controller->setEvent($event);
-
                 $vEvent = new \Eluceo\iCal\Component\Event();
-
-                $controller->setEvent($vEvent, $event);
-
                 
-                
-                $vEvent->setRecurrenceRule($recurrenceRule);
-
-                $vAlarm = new \Eluceo\iCal\Component\Alarm();
-                $vAlarm->setTrigger('-PT15M');
-                $vAlarm->setDescription($vAlarmDescription);
-                $vAlarm->setAction('DISPLAY');
-
-                $vEvent->addComponent($vAlarm);
+                $vEvent = $controller->setEvent($vEvent, $event, true);
 
                 $vCalendar->addComponent($vEvent);
             }
-            
-        }
-
-        header('Content-Type: text/calendar; charset=utf-8');
-        header('Content-Disposition: attachment; filename="cal.ics"');
-
-        return $vCalendar->render();
-        
-        // $vCalendar->addComponent($vEvent);
-        
-        $ical = new ICal();
-        //make a controller obj so you can set global param
-        $controller = new Controller();
-
-        foreach($instructorInfo['classList']  as $class){
-
-            foreach($class as $event){
-                $course  = $event->course;
-                //sets global parm for class and final events
-                $controller->setParamForClassAndFinal($event,$course);
-                //gets ical param
-                $icalParam = $controller->getParam($event);
-                //adds ical event with param , boolean is for adding alarm
-                $ical->addEvent($icalParam,true);
-            }
-            
         }
 
         foreach ($instructorInfo['officeHours'] as $officeHours){
             $event = $officeHours;
-            //sets global parm for office hours
+            
             $controller->setParamForOfficeHours($event,$email);
-            //gets ical param
-            $icalParam = $controller->getParam($event);
-            //adds ical event with param , boolean is for adding alarm
-            $ical->addEvent($icalParam,false);
+            
+            $vEvent = new \Eluceo\iCal\Component\Event();
+            
+            $vEvent = $controller->setEvent($vEvent, $event, true);
+            
+            $vCalendar->addComponent($vEvent);
         }
 
-        $ical->setFileName($email);
-        //generates an ics file for download
-        return $ical->generateICS();
+        header('Content-type: text/calendar; charset=utf-8');
+        header('Content-Disposition: attachment; filename='.$email.'.ics');
     }
 
 

@@ -46,7 +46,7 @@ class Controller extends BaseController
     /**
      * gets ical parameter
      */
-    public function setEvent(\Eluceo\iCal\Component\Event $vEvent,$event)
+    public function setEvent($vEvent, $event, $addAlarm)
     {
         $eventTime = date("Y-m-d H:i:s");
         $lastModified = $eventTime;
@@ -73,29 +73,37 @@ class Controller extends BaseController
         $byDay = $this->setMeetingDays($event['days'] );
 
         $vEvent
-        ->setUniqueId($uid)
+        ->setUniqueId($this->uid)
         ->setDtStamp( new \DateTime($dtStamp) ) //dtStamp 169
         ->setCreated( new \DateTime($created) ) // must create
         ->setModified( new \DateTime($lastModified) ) // last Modified
-        ->setTrans($transparent)
-        ->setStatus($status)
+        ->setTrans($this->transparent)
+        ->setStatus($this->status)
         ->setCategories($categories)
-        ->setSummary( $summary )
+        ->setSummary( $this->summary )
         ->setTimezoneString('America/Los_Angeles')
         ->setLocation($location,$locationAltrep)
         ->setDtStart( new \DateTime($dtStart )  )
         ->setDtEnd(new \DateTime( $dtEnd ) )
         ;
         $recurrenceRule = new \Eluceo\iCal\Property\Event\RecurrenceRule();
+
         $recurrenceRule->setFreq(\Eluceo\iCal\Property\Event\RecurrenceRule::FREQ_WEEKLY);
         $recurrenceRule->setInterval(1); // final exam 
         $recurrenceRule->setByDay($byDay);
         $recurrenceRule->setUntil( new \DateTime($until) );
 
+        $vEvent->setRecurrenceRule($recurrenceRule);
 
+        if($addAlarm){
+            $vAlarm = new \Eluceo\iCal\Component\Alarm();
+            $vAlarm->setTrigger('-PT15M');
+            $vAlarm->setDescription($this->vAlarmDescription);
+            $vAlarm->setAction('DISPLAY');
+            $vEvent->addComponent($vAlarm);
+        }
 
-        // return $icalParam;
-
+        return $vEvent;
     }
 
 
