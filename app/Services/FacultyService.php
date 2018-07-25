@@ -4,7 +4,10 @@ use App\ClassMemberships;
 use App\User;
 use App\Event;
 use App\Contracts\FacultyContract;
-class FacultyService implements FacultyContract {
+use Eluceo\iCal\Property\Event\RecurrenceRule;
+// use App\this;
+
+class FacultyService extends ICalFormatter  implements FacultyContract {
 
     public function getClassList($term,$email)
     {
@@ -54,6 +57,53 @@ class FacultyService implements FacultyContract {
         ->get();
 
         return $officeHours;
+    }
+
+    public function getIcal($instructorInfo)
+    {
+
+        $vCalendar = new \Eluceo\iCal\Component\Calendar('-//events @ META+LAB//Version 1//EN');
+
+        // $this = this();
+
+        foreach($instructorInfo['classList']  as $class){
+            foreach($class as $event) {
+
+                if( $event['days'] != 'A' || $event['days'] != '-' || $event['days'] != 'NULL' ){
+
+                    $this->setParamForClassAndFinal($event,$event->course);
+                
+                    $vEvent = new \Eluceo\iCal\Component\Event();
+                    
+                    $vEvent = $this->setEvent($vEvent, $event, true);
+
+                    $vAlarm = new \Eluceo\iCal\Component\Alarm();
+                    
+                    $vAlarm = $this->setVAlarm($vAlarm);
+                    
+                    $vEvent->addComponent($vAlarm);
+                    
+                    $vCalendar->addComponent($vEvent);
+
+                }
+            }
+        }
+
+        foreach ($instructorInfo['officeHours'] as $officeHours){
+            $this->setParamForOfficeHours($officeHours,$email);
+            
+            $vEvent = new \Eluceo\iCal\Component\Event();
+            
+            $vEvent = $this->setEvent($vEvent, $officeHours , false);
+            
+            $vCalendar->addComponent($vEvent);
+        }
+
+        header('Content-type: text/calendar; charset=utf-8');
+        header('Content-Disposition: attachment; filename='.$email.'.ics');
+
+        return $vCalendar->render();
+
     }
     
 }

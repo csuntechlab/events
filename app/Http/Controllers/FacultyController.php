@@ -62,41 +62,12 @@ class FacultyController extends Controller
     {
         $instructorInfo['classList'] =  $this->getClassList($term, $email);
         $instructorInfo['officeHours'] = $this->getOfficeHours($term, $email);
+
+        $this->facultyRetriever->getIcal($instructorInfo);
+
+
         
-        $vCalendar = new \Eluceo\iCal\Component\Calendar('-//events @ META+LAB//Version 1//EN');
-
-        $controller = new Controller();
-
-        foreach($instructorInfo['classList']  as $class){
-            foreach($class as $event){
-                $course  = $event->course;
-                
-                $controller->setParamForClassAndFinal($event,$course);
-                
-                $vEvent = new \Eluceo\iCal\Component\Event();
-                
-                $vEvent = $controller->setEvent($vEvent, $event, true);
-
-                $vCalendar->addComponent($vEvent);
-            }
-        }
-
-        foreach ($instructorInfo['officeHours'] as $officeHours){
-            $event = $officeHours;
-            
-            $controller->setParamForOfficeHours($event,$email);
-            
-            $vEvent = new \Eluceo\iCal\Component\Event();
-            
-            $vEvent = $controller->setEvent($vEvent, $event, true);
-            
-            $vCalendar->addComponent($vEvent);
-        }
-
-        header('Content-type: text/calendar; charset=utf-8');
-        header('Content-Disposition: attachment; filename='.$email.'.ics');
-
-        return $vCalendar->render();
+       
     }
 
 

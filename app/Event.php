@@ -26,12 +26,13 @@ class Event extends Model
         'booking_url',
         'online_label',
         'online_url',
+        'created_at',
+        'updated_at',
     ];
 
     protected $hidden = [
         'description',
-        'created_at',
-        'updated_at',
+        
     ];
 
     /**
