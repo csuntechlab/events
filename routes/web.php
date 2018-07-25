@@ -21,7 +21,7 @@ $router->get('/terms/{term}/faculty/{email}',function() use ($router){
 $router->get('1.0/terms/{term}/faculty/{email}','FacultyController@getClassList');
 $router->get('/terms/{term}/faculty/{email}','FacultyController@getFinalExamTimes');
 
-$router->get('1.0/terms/{term}/faculty/{email}/office-hours/{pattern}','FacultyController@getOfficeHours');
+$router->get('1.0/terms/{term}/faculty/{email}/office-hours/{pattern}','FacultyController@getOfficeHoursWithPattern');
 
 // without name
 // $router->get('1.0/term/{term}/students/{email}', 'StudentController@termClasses');

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 use App\Contracts\FacultyContract;
+use App\ICal;
+
 
 class FacultyController extends Controller
 {
@@ -28,11 +30,70 @@ class FacultyController extends Controller
         return $this->facultyRetriever->getClassList($term, $email);
     }
 
-    public function getOfficeHours($term, $email, $event)
+    public function getOfficeHoursWithPattern($term, $email, $pattern)
     {
-      return $this->facultyRetriever->getOfficeHours($term, $email, $event);
+      $OfficeHours = $this->facultyRetriever->getOfficeHoursWithPattern($term, $email, $pattern);
+
+      // $instructorInfo['officeHours'] = $this->getOfficeHoursWithPattern($term, $email, $pattern);
+
+      // return  $instructorInfo;
+
+      $ical = new ICal();
+      //make a controller obj so you can set global param
+      $controller = new Controller();
+
+      foreach ($OfficeHours as $officeHour){
+          $event = $officeHour;
+          //sets global parm for office hours
+          $controller->setParamForOfficeHours($event,$email);
+          //gets ical param
+          $icalParam = $controller->getParam($event);
+          //adds ical event with param , boolean is for adding alarm
+          $ical->addEvent($icalParam,false);
+      }
+
+      $ical->setFileName($email);
+      //generates an ics file for download
+      return $ical->generateICS();
     }
 
-
-
+    // public function getInstructorInfo($term,$email)
+    // {
+    //     $instructorInfo['classList'] =  $this->getClassList($term, $email);
+    //     $instructorInfo['officeHours'] = $this->getOfficeHoursWithPattern($term, $email, $pattern);
+    //
+    //     // return  $instructorInfo;
+    //
+    //     $ical = new ICal();
+    //     //make a controller obj so you can set global param
+    //     $controller = new Controller();
+    //
+    //     foreach($instructorInfo['classList']  as $class){
+    //
+    //         foreach($class as $event){
+    //             $course  = $event->course;
+    //             //sets global parm for class and final events
+    //             $controller->setParamForClassAndFinal($event,$course);
+    //             //gets ical param
+    //             $icalParam = $controller->getParam($event);
+    //             //adds ical event with param , boolean is for adding alarm
+    //             $ical->addEvent($icalParam,true);
+    //         }
+    //
+    //     }
+    //
+    //     foreach ($instructorInfo['officeHours'] as $officeHours){
+    //         $event = $officeHours;
+    //         //sets global parm for office hours
+    //         $controller->setParamForOfficeHours($event,$email);
+    //         //gets ical param
+    //         $icalParam = $controller->getParam($event);
+    //         //adds ical event with param , boolean is for adding alarm
+    //         $ical->addEvent($icalParam,false);
+    //     }
+    //
+    //     $ical->setFileName($email);
+    //     //generates an ics file for download
+    //     return $ical->generateICS();
+    //   }
 }

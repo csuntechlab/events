@@ -22,12 +22,15 @@ class FacultyServiceTest extends TestCase
         $response = $this->call('GET', '1.0/terms/2187/faculty/steven.fitzgerald');
         $this->assertEquals(200, $response->status());
     }
-
+    /**
+      * Go to faculty member's page
+      * Reach ... terms/2187/faculty/steven.fitzgerald
+      * @test
+      */
     public function go_to_faculty_office_hours()
     {
       $response = $this->call('GET', '1.0/terms/2187/faculty/steven.fitzgerald/office-hours/1');
       $this->assertEquals(200, $response->status());
     }
-
 
 }
