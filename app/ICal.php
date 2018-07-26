@@ -11,7 +11,8 @@ class ICal{
     public function addEvent($summary = null, $uid = null, $status = null,
                              $transparent = null, $rules = null, $from = null,
                              $to = null, $dtStamp = null, $categories = null,
-                             $location = null, $geo = null, $description = null){
+                             $link = null, $location = null, $geo = null,
+                             $description = null){
         if($this->ics == null){
             $this->ics =
                 'BEGIN:VCALENDAR'.
@@ -34,8 +35,10 @@ class ICal{
             'DTEND;America/Los_Angeles:'.$to.
             'DTSTAMP:'.$dtStamp.
             'CATEGORIES:'.$categories.
-            'CLASS:PUBLIC'.
-            'LOCATION;ALTREP='.$location.':META+LAB'.
+            'CLASS:PUBLIC';
+        $this->ics .= 'LOCATION;ALTREP=' . ($link ? '"'. $link . '"': null) . ':' . $location;
+
+        $this->ics .=
             'GEO:'.$geo.
             'DESCRIPTION:'.$description.
             'END:VEVENT'
@@ -69,7 +72,8 @@ class ICal{
             'DTSTAMP:'. (array_key_exists('dtStamp', $event)) ? $event['dtStamp'] : null.
             'CATEGORIES:'. (array_key_exists('categories', $event)) ? $event['categories'] : null.
             'CLASS:PUBLIC'.
-            'LOCATION;ALTREP='. (array_key_exists('location', $event)) ? $event['location'].':META+LAB' : null.
+            'LOCATION;ALTREP='. ((array_key_exists('link', $event)) ? '"' . $event['link'] .'"' : null) .':'.
+                    ((array_key_exists('location', $event)) ? '"' . $event['location'] .'"' : null).
             'GEO:'. (array_key_exists('geo', $event)) ? $event['geo'] : null.
             'DESCRIPTION:'. (array_key_exists('description', $event)) ? $event['description'] : null.
             'END:VEVENT'

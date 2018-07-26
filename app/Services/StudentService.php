@@ -5,9 +5,10 @@ namespace App\Services;
 use App\ClassMembership;
 use App\Contracts\StudentContract;
 use App\Event;
+use App\ICalFormatter;
 use App\Registry;
 
-class StudentService implements StudentContract
+class StudentService extends ICalFormatter implements StudentContract
 {
 
     // TODO: finish function
@@ -25,22 +26,29 @@ class StudentService implements StudentContract
 
         //return $entity_id;
 
-        if(!$entity_id) {
+        if (!$entity_id) {
             return null;
         }
 
-        if(explode(':', $entity_id)[0] != 'members'){
+        if (explode(':', $entity_id)[0] != 'members') {
             return null;
         }
 
-        $classIDs = [];
+        $classIDs = ClassMembership::member($entity_id)->termID($term)->pluck('classes_id');
 
-        foreach (ClassMembership::member($entity_id)->term($term)->pluck('classes_id') as $classID){
-            $classIDs[] = $classID;
+        // bedrock.events CHECK
+        // omar.classes get courses
+
+        //TODO: use this shit
+        $json = [];
+        foreach ($classIDs as $class) {
+            $events[] = Event::entities($class)->get();
         }
 
-        //return $classIDs;
+        return $events;
+    }
 
+    private function throwAway($classIDs){
         $myEvents = [];
 
         // in case there is more than one event per class
@@ -66,6 +74,12 @@ class StudentService implements StudentContract
                         break;
                 }
 
+                $to_date = '2018-08-08';// $event['to_date'];
+                $from_date = '2018-12-12';// $event['from_date'];
+
+                $start_time = str_replace('h', '00Z', $event['start_time']);
+                $end_time = str_replace('h', '00Z', $event['end_time']);
+
                 // TODO: create rule array with ['frequency', 'interval', 'until', 'byDay']
                 $rules = [
                     // where to get?
@@ -74,15 +88,20 @@ class StudentService implements StudentContract
                     // pattern_number?
                     'interval' => $event['pattern_number'],
                     // dtStart
-                    'until' => $event['rules'],
-                    'byDay' => $event['rules']
+                    'until' =>  $to_date . 'T' . $end_time
                 ];
+
+                $trans = array("M" => "MO,", "T" => "TU,", "W" => "WE,", "R" => "TH,", "F" => "FR,", "S" => "SA," );
+
+                $dayICal = strtr($event['days'] , $trans);
+
+                $rules['byDay'] = substr($dayICal, 0 ,-1);
 
                 $myEvent['rules'] = $rules;
                 // dtStart
-                $myEvent['from'] = $event['from_date'] . 'T' . $event['start_time'];
+                $myEvent['from'] = $from_date . 'T' . $start_time;
                 // dtEnd
-                $myEvent['to'] = $event['from_date'] . 'T' . $event['end_time'];
+                $myEvent['to'] = $from_date . 'T' . $end_time;
                 // dt
                 $myEvent['dtStamp'] = $event['updated_at'];
                 $myEvent['categories'] = $event['type'];
@@ -94,9 +113,11 @@ class StudentService implements StudentContract
                 // prototype and best option:
                 // http://www.sandbox.csun.edu/classrooms/EU103
                 if($event['location_type'] == 'physical'){
-                    $myEvent['location'] .= '"https://academics.csun.edu/classrooms/'.$event['location'].'":'.$event['location'];
+                    $myEvent['link'] = 'https://academics.csun.edu/classrooms/'.$event['location'];
+                    $myEvent['location'] = $event['location'];
                 }else if($event['location_type'] == 'online'){
-                    $myEvent['location'] .= '"'.$event['online_url'].'":'.$event['online_label'];
+                    $myEvent['link'] = $event['online_url'];
+                    $myEvent['location'] = $event['online_label'];
                 }
                 // do we have a geo location in the db?
                 $myEvent['geo'] = null;
@@ -104,12 +125,11 @@ class StudentService implements StudentContract
                 $myEvent['description'] = $event['description'];
 
                 // just to test one event
-                return $myEvent;
-//                 $myEvents[] = $myEvent;
+                $myEvents[] = $myEvent;
              }
         }
 
-        return json_encode($myEvents);
+        return $myEvents;
         //var_dump($classes->first()['email']);
         /**/
     }

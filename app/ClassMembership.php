@@ -12,7 +12,7 @@ class ClassMembership extends Model
         return $query->where('members_id', $member_id);
     }
 
-    public function scopeTerm($query, $term){
+    public function scopeTermID($query, $term){
         return $query->where('term_id', $term);
     }
 }
