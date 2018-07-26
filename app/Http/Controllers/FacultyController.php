@@ -63,7 +63,7 @@ class FacultyController extends Controller
         $instructorInfo['classList'] =  $this->getClassList($term, $email);
         $instructorInfo['officeHours'] = $this->getOfficeHours($term, $email);
 
-        $this->facultyRetriever->getIcal($instructorInfo);
+        return $this->facultyRetriever->getIcal($instructorInfo,$email);
 
 
         

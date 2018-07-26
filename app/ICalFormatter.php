@@ -1,5 +1,6 @@
 <?php
 
+namespace App;
 class ICalFormatter{
 
     /**
@@ -109,20 +110,14 @@ class ICalFormatter{
      */
     public function setMeetingDays( $days )
     { 
-        $daysArray = str_split($days);
-
         $trans = array("M" => "MO,", "T" => "TU,", "W" => "WE,", "R" => "TH,", "F" => "FR,", "S" => "SA," );
 
-        $dayICal = strtr($days, $trans);
+        $dayICal = strtr($days , $trans);
 
-        if($dayICal[( strlen($dayICal)-1) ] === ','){
-            $dayICal[( strlen($dayICal)-1) ] = " ";
-        }
-
-        return $dayICal;
-
+        return substr($dayICal, 0 ,-1);
+        
     }
 
 
 }
-    
+?>

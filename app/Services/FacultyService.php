@@ -5,9 +5,9 @@ use App\User;
 use App\Event;
 use App\Contracts\FacultyContract;
 use Eluceo\iCal\Property\Event\RecurrenceRule;
-// use App\this;
+use App\ICalFormatter;
 
-class FacultyService extends ICalFormatter  implements FacultyContract {
+class FacultyService extends ICalFormatter implements FacultyContract {
 
     public function getClassList($term,$email)
     {
@@ -59,12 +59,10 @@ class FacultyService extends ICalFormatter  implements FacultyContract {
         return $officeHours;
     }
 
-    public function getIcal($instructorInfo)
+    public function getIcal($instructorInfo,$email)
     {
 
         $vCalendar = new \Eluceo\iCal\Component\Calendar('-//events @ META+LAB//Version 1//EN');
-
-        // $this = this();
 
         foreach($instructorInfo['classList']  as $class){
             foreach($class as $event) {

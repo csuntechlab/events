@@ -9,8 +9,8 @@ interface FacultyContract{
     public function getFinalExamTimes($term,$email);
 
     public function getOfficeHours($term,$email);
-    
-    public function getIcal($instructorInfo);
+
+    public function getIcal($instructorInfo,$email);
 
 }
 ?>
