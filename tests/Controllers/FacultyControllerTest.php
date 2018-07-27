@@ -10,11 +10,29 @@ use \App\Http\Controllers\FacultyController;
 
 class FacultyControllerTest extends TestCase
 {
-    public function test_assertTrue()
+    public $retriever;
+
+    public function setUp()
     {
-        $this->assertEquals(true, true);
+        parent::setUp();
+        $this->retriever = Mockery::spy(FacultyContract::class);
     }
-    
+
+    /**
+     * Retrieve faculty member's classes and corresponding final exam hours for a given term
+     * @test getClassAndFinalExamHours function in FacultyController
+     */
+    public function test_get_class_and_final_exam_hours()
+    {
+        $controller = new FacultyController($this->retriever);
+
+        $this->retriever
+            ->shouldReceive('getClassAndFinalExamTimes')
+            ->once();
+        
+        $controller->getClassAndFinalExamTimes('2173','nerces.kazandjian');
+    }
+
 }
 
 ?>

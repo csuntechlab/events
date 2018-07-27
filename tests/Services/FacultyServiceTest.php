@@ -21,7 +21,7 @@ class FacultyServiceTest extends TestCase
 
     /**
      * Retrieve faculty member's classes and corresponding final exam hours for a given term
-     * @test
+     * @test getClassAndFinalExamHours function in FacultyService
      */
     public function test_get_class_and_final_exam_hours() {
         $facultyService = new FacultyService($this->retriever);

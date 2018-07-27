@@ -31,8 +31,8 @@ class FacultyController extends Controller
         /*foreach( $events as $event ){
             return ($event->info);
         }*/
-        
-        return $events;
+
+        return json_encode($events);
     }
     
 }
