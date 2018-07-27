@@ -56,6 +56,7 @@ class FacultyService extends ICalFormatter implements FacultyContract {
 
     public function getIcal($instructorInfo,$email)
     {
+        //STEP 1
         $vCalendar = new \Eluceo\iCal\Component\Calendar('-//events @ META+LAB//Version 1//EN');
 
         foreach($instructorInfo['classList']  as $class){
@@ -63,21 +64,22 @@ class FacultyService extends ICalFormatter implements FacultyContract {
 
                 if( $event['days'] != 'A' && $event['days'] != '-' && $event['days'] != 'NULL' && $event['is_byappointment'] != '1' ){
 
+                    //STEP 2
                     $this->setParamForClass($event,$event->course);
-
+                    //STEP 3
                     $this->setParamByEvent($event);
-                    
+                    //STEP 4 check your requirements
                     $this->setParmBySpecifications('CONFIRMED','OPAQUE', 'PUBLIC', 'WEEKLY', '1');
 
                     //need to change
                     if($event['type'] != 'class' ){
                         $this->setParamForFinal($event,$event->course);
                     }
-                
+                    //STEP 5 SET EVENT
                     $vEvent = $this->setEvent();
-                    
+                    //STEP 6 (Optional based on your requirements)
                     $vEvent->addComponent( $this->setVAlarm() );
-                    
+                    //STEP 7 
                     $vCalendar->addComponent( $vEvent );
 
                 }
@@ -85,7 +87,7 @@ class FacultyService extends ICalFormatter implements FacultyContract {
         }
 
         foreach ($instructorInfo['officeHours'] as $officeHours){
-            if( $officeHours['days'] != 'A' && $officeHours['days'] != '-' && $officeHours['days'] != 'NULL' && $officeHours['is_byappointment'] != 1 ){
+            // if( $officeHours['days'] != 'A' && $officeHours['days'] != '-' && $officeHours['days'] != 'NULL' && $officeHours['is_byappointment'] != 1 ){
                 $this->setParamForOfficeHours($officeHours,$email);
 
                 $this->setParamByEvent($officeHours);
@@ -95,7 +97,7 @@ class FacultyService extends ICalFormatter implements FacultyContract {
                 $vEvent = $this->setEvent();
                 
                 $vCalendar->addComponent($vEvent);
-            }
+            // }
         }
 
         $this->setFileName( $email );

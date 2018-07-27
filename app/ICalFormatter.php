@@ -62,6 +62,7 @@ class ICalFormatter{
         $this->uid = $event['entities_id'].'.'.$event['pattern_number'].'.vevent@metalab.csun.edu';
         $this->summary = $summary = 'Office Hours: ' . $email ;
         $this->vAlarmDescription = null;
+        $this->description =  $event['label'];
     }
 
     public function setParamForFinal($event, $course)
@@ -126,7 +127,7 @@ class ICalFormatter{
         ->setLocation($this->location,$this->locationAltrep)
         ->setDtStart( new \DateTime($this->dtStart )  )
         ->setDtEnd(new \DateTime( $this->dtEnd ) ) 
-        ->setDescription($description);
+        ->setDescription($this->description);
 
         $recurrenceRule = new \Eluceo\iCal\Property\Event\RecurrenceRule();
         
