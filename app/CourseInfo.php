@@ -29,7 +29,6 @@ class CourseInfo extends Model
         'session_code',
         'term',
         'course_id',
-        'title',
         'units',
         'section_number',
         'class_status',

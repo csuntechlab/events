@@ -15,13 +15,6 @@ class ICalFormatter{
      * TODO: We need to have a way to record
      *          First day of Instruction
      *          Last day of Instruction
-     *          The list of dates in which the campus is closed
-     *          
-     * TODO: Add the EXDATE to all .ics files to specify the days in which the campus is closed 
-     *      E.g., EXDATE;TZID=America/Los_Angeles:20180903T130000
-     *      E.g., EXDATE;TZID=America/Los_Angeles:20181112T130000
-     * 
-     * 
      */
 
 
@@ -33,6 +26,8 @@ class ICalFormatter{
     protected $rrule ;
     protected $interval ;
     protected $freq;
+
+    protected $description; 
 
     protected $eventTime ;
     protected $lastModified ;
@@ -56,6 +51,7 @@ class ICalFormatter{
         $this->uid = $course['classes_id'].'.'.$event['pattern_number'].'.vevent@metalab.csun.edu'; 
         $this->summary = $course['subject'].' '.$course['catalog_number'].' ('.$course['class_number'].')';
         $this->vAlarmDescription =  $course['subject'].' '.$course['catalog_number'].' starts in 15 minutes';
+        $this->description =  $course['title'];
     }
 
     /**
@@ -66,7 +62,6 @@ class ICalFormatter{
         $this->uid = $event['entities_id'].'.'.$event['pattern_number'].'.vevent@metalab.csun.edu';
         $this->summary = $summary = 'Office Hours: ' . $email ;
         $this->vAlarmDescription = null;
-        
     }
 
     public function setParamForFinal($event, $course)
@@ -83,7 +78,6 @@ class ICalFormatter{
         $this->class = $publicOrPrivate;
         $this->freq = $freq;
         $this->interval = $interval;
-        
     }
 
     public function setParamByEvent($event)
@@ -91,8 +85,7 @@ class ICalFormatter{
         $eventTime = date("Y-m-d H:i:s");
         
         $this->dtStart = '2018-08-08 ' . str_replace('h', '00Z', $event['start_time']) ; // $event['from_date']
-        $this->dtEnd =  '2018-08-08 ' . str_replace('h', '00Z', $event['end_time']) 
-        ;// $event['from_date']
+        $this->dtEnd =  '2018-08-08 ' . str_replace('h', '00Z', $event['end_time']) ;// $event['from_date']
 
         $this->lastModified = $eventTime; // $event['updated_at']  
         $this->dtStamp = $eventTime; // $event['updated_at']  
@@ -101,6 +94,7 @@ class ICalFormatter{
         $this->categories = $event['type'];
 
         $this->until = '2018-12-12 08:12:10'; // $event['to_date']
+        // $this->until = $event['to_date'] ; 
 
         if($event['location_type']=='physical') {
             $this->location =  $event['location']; 
@@ -121,9 +115,9 @@ class ICalFormatter{
         $vEvent = new \Eluceo\iCal\Component\Event();
         
         $vEvent->setUniqueId($this->uid)
-        ->setDtStamp( new \DateTime($this->dtStamp) ) //dtStamp 169
-        ->setCreated( new \DateTime($this->created) ) // must create
-        ->setModified( new \DateTime($this->lastModified) ) // last Modified
+        ->setDtStamp( new \DateTime($this->dtStamp) ) 
+        ->setCreated( new \DateTime($this->created) ) 
+        ->setModified( new \DateTime($this->lastModified) ) 
         ->setTrans($this->transparent)
         ->setStatus($this->status)
         ->setCategories($this->categories)
@@ -131,7 +125,8 @@ class ICalFormatter{
         ->setTimezoneString('America/Los_Angeles')
         ->setLocation($this->location,$this->locationAltrep)
         ->setDtStart( new \DateTime($this->dtStart )  )
-        ->setDtEnd(new \DateTime( $this->dtEnd ) ) ;
+        ->setDtEnd(new \DateTime( $this->dtEnd ) ) 
+        ->setDescription($description);
 
         $recurrenceRule = new \Eluceo\iCal\Property\Event\RecurrenceRule();
         
