@@ -47,6 +47,10 @@ class FacultyService implements FacultyContract {
                         $temp->from_date = $terms_table->begin_date;
                         $temp->to_date = $terms_table->end_date;
                     }
+
+                    if( $temp->course != null ){
+                        array_push($events, $temp);
+                    }
                 }
             }
             
