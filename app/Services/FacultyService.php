@@ -6,9 +6,6 @@ use App\User;
 use App\Event;
 
 class FacultyService implements FacultyContract {
-    
-    protected $table = 'nemo.classmemberships';
-
     public function getClassList($term,$email)
     {
         // $first = ClassMemberships::all();
@@ -50,7 +47,7 @@ class FacultyService implements FacultyContract {
                 array_push($events, $temp);
             }
         }
-        return $events;
+        return json_encode($events);
     }
 }
 ?>
