@@ -9,22 +9,30 @@ class Event extends Model
     protected $table = 'bedrock.events';
 
     protected $fillable =[
-        'description',
-        'location',
+        'entities_id',
+        'term_id',
+        'pattern_number',
+        'type',
+        'label',
         'start_time',
         'end_time',
         'days',
         'from_date',
         'to_date',
-        'term'
+        'location_type',
+        'location',
+        'is_byappointment',
+        'is_walkin',
+        'booking_url',
+        'online_label',
+        'online_url',
+        'created_at',
+        'updated_at',
     ];
 
     protected $hidden = [
-        'meeting_id',
-        'meeting_number',
-        'entities_id',
-        'classes_id',
-        'term_id',
+        'description',
+        
     ];
 
     /**
@@ -52,21 +60,18 @@ class Event extends Model
     }
 
     /**
-     * 
+     * Gets courses info 
      */
-    public function scopeEvent($query, $classes_id){
-        return $query->where('entities_id', $classes_id);
-    }
-
-    /**
-     * 
-     */
-    public function scopeEntities($query, $classes_id){
-        return $query->where('entities_id', $classes_id);
-    }
-
     public function course()
     {
-        return $this->hasOne('App\CourseInfo','classes_id','classes_id' );
+        return $this->hasOne('App\CourseInfo', 'classes_id', 'entities_id');
+    }
+    
+    /**
+     * matches the entties id of event with classes_id
+     */
+    public function scopeClass($query,$class_id)
+    {
+        return $query->where('entities_id', $class_id);
     }
 }

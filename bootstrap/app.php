@@ -120,6 +120,7 @@ $app->router->group([
 // Service Providers
 $app->register(App\Providers\FacultyServiceProvider::class);
 
+
 return $app;
 
 

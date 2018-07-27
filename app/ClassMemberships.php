@@ -8,56 +8,30 @@ class ClassMemberships extends Model
 {
     //check for rank not affilation 
     // if not null then faculty (rank)
-    //nemo entities
-    // nemo means nobody everybody 
-    //calendar user
-    // all indivuals are enties
-    // not all enties are individuals 
-    /**
-     * 
-     * registery data os metadata
-     * on your account
-     * 
-     * 
-     * 
-     * events composite key, 
-     * entities 
-     * term
-     * pattern
-     * type
-     * 
-     * type: 
-     *      Class
-     *      Final-exam
-     *      Office-Hours 
-     * 
-     *
-     * 
-     */
 
     protected $table = 'nemo.classMemberships';
 
 	protected $fillable =[
-        'classes_id','term_id','role_position','members_id','email',
+        'classes_id',
+        'term_id',
+        'members_id',
+        'email',
+        'role_position',
     ];
     
     protected $hidden = [
-        'created_at',
-        'updated_at',
-        // 'role_position',
-        'member_status',
-        // 'member_id',
-        'term',	
+        'term',
         'class_number',
-        // 'members_id',
+        'members_id',
         'members_uid',
         'first_name',
         'middle_name',
         'last_name',
         'email',
-        'ad_hoc_member',	
-        'confidential',	
-        // 'email',
+        'role_position',
+        'ad_hoc_member',
+        'confidential',
+        'member_status',
     ];
 
     /**
@@ -81,7 +55,7 @@ class ClassMemberships extends Model
      */ 
     public function scopeMemberId($query,$id)
     {
-        return $query->where('member_id','member_id:'.$id);
+        return $query->where('members_id',$id);
     }
 
     /**
@@ -92,33 +66,14 @@ class ClassMemberships extends Model
         return $query->where('role_position','Instructor');
     }
 
-     /**
-     * Each class has one corresponding event
-     * Gathers corresponding event of class. 
-     */
-    public function classEvents()
-    {
-        //Model col name w/in Events, corresponding col w/in classMemberships
-        return $this
-        ->hasMany('App\Event','entities_id','classes_id')
-        ->type('class');
-    }
-
     /**
-     * Each final exam time has one corresponding event. 
-     * Gathers corresponding event of final Exams. 
+     * gets course info
      */
-    public function finalExamEvents()
-    {
-        //Model col name w/in Events, corresponding col w/in classMemberships
-        return $this
-        ->hasMany('App\Event','entities_id','classes_id')
-        ->type('final-exam');
-    }
-
     public function course()
     {
         return $this->hasOne('App\CourseInfo','classes_id','classes_id' );
     }
+
+    
     
 }
