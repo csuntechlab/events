@@ -116,7 +116,7 @@ class FacultyServiceTest extends TestCase
         
         $response = $facultyService->getClassAndFinalExamTimes('2173', 'nerces.kazandjian');
 
-        $this->assertEquals($response, $classesAndFinalsList);
+        $this->assertEquals(json_encode($response), $classesAndFinalsList);
 
     }
 

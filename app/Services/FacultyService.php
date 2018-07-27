@@ -47,7 +47,7 @@ class FacultyService implements FacultyContract {
                 array_push($events, $temp);
             }
         }
-        return json_encode($events);
+        return $events;
     }
 }
 ?>
