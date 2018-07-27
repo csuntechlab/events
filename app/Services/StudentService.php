@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\ClassMembership;
+use App\ClassRosters;
 use App\Contracts\StudentContract;
 use App\Event;
 use App\ICalFormatter;
@@ -19,27 +20,29 @@ class StudentService extends ICalFormatter implements StudentContract
         if(!$user)
             return null;
 
-        $classesID = ClassMembership::memberID($user->user_id)
-            ->term($term)
-            ->instructor()
+        $classesID = ClassMembership::member($user->user_id)
+            ->termID($term)
             ->pluck('classes_id')
         ;
 
         $events = [];
 
         foreach($classesID as $classID){
-            foreach(Event::class($classID)->with('course')->get() as $event){
-                if($event){
-                    $events[] = $event;
+            if(ClassRosters::individualsID($user->user_id)->classes($classID)->student()) {
+
+                foreach (Event::entities($classID)->with('course')->get() as $event) {
+                    if ($event) {
+                        $events[] = $event;
+                    }
                 }
+                $exam = str_replace('classes', 'final-exams', $classID);
+                $exam = Event::entities($exam)->term($term)->first();
+                if ($exam)
+                    $events[] = $exam;
             }
-            $exam = str_replace('classes', 'final-exams', $classID);
-            $exam = Event::entities($exam)->term($term)->first();
-            if($exam)
-                $events[] = $exam;
         }
 
-        return json_encode($events);
+        return $events;
     }
 
     /**

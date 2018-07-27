@@ -10,6 +10,7 @@ class ExampleTest extends TestCase
      *
      * @return void
      */
+    
     public function testExample()
     {
         $this->get('/');

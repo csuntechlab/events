@@ -13,6 +13,7 @@ class ICal{
                              $to = null, $dtStamp = null, $categories = null,
                              $link = null, $location = null, $geo = null,
                              $description = null){
+
         if($this->ics == null){
             $this->ics =
                 'BEGIN:VCALENDAR'."\n".
@@ -113,5 +114,4 @@ class ICal{
 //DESCRIPTION:grsregsergsergserg
 //END:VEVENT
 //END:VCALENDAR
-
 }
