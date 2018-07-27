@@ -37,7 +37,7 @@ class FacultyService implements FacultyContract {
 
         // return Event::whereIn('classes_id', $classes);
         foreach( $classes as $class ){
-            $temps = Event::entities($class)->term($term)->with('info')->get();
+            $temps = Event::entities($class)->term($term)->with('course')->get();
             foreach( $temps as $temp ){
                 if( $temp != null ){
                     array_push($events, $temp);

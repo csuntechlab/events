@@ -45,7 +45,7 @@ class Event extends Model
         return $query->where('entities_id', $entities);
     }
 
-    public function info()
+    public function course()
     {
         return $this->hasOne('App\Classes', 'classes_id', 'entities_id');
     }
