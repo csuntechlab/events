@@ -10,11 +10,11 @@ namespace App\Services;
 
 use App\Classes;
 use App\ICal;
+use App\ICalFormatter;
 use Illuminate\Support\Facades\Validator;
-
 use App\Contracts\ClassContract;
 
-class ClassService implements ClassContract
+class ClassService extends ICalFormatter implements ClassContract
 {
 
     public function isValidCourseId($course_id)
@@ -65,7 +65,6 @@ class ClassService implements ClassContract
         $result = Classes::Final($queryBuilder)
                     ->where('type','final-exam')
                     ->first();
-
         return $result;
     }
 
@@ -82,11 +81,82 @@ class ClassService implements ClassContract
         }
     }
 
-    public function ClassICS($output,$fileName)
+    public function ClassICS($output)
     {
-        $ical = new ICal();
-        $ical->addEvent($output,1);
-        $ical->setFileName($fileName);
-        return $ical->generateICS();
+        $fileName;
+        $potentialFinalDetails;
+
+        $vCalendar = new \Eluceo\iCal\Component\Calendar('-//events @ META+LAB//Version 1//EN');
+
+
+        foreach ($output['classEvents'] as $event)
+        {
+            if( $event['days'] != 'A' && $event['days'] != '-' && $event['days'] != 'NULL' ){
+
+                $this->setParamForClass($event,$event->details);
+                $this->setParamByEvent($event);
+
+                $this->setParamBySpecifications('CONFIRMED','OPAQUE', 'PUBLIC', 'WEEKLY', '1');
+                $vEvent = $this->setEvent();
+
+                $vEvent->addComponent( $this->setVAlarm() );
+
+                $vCalendar->addComponent( $vEvent );
+
+                $fileName = 'classes.'.$event->details->term_id.'.'.$event->details->course_id.'.'.$event->pattern_number;
+                $potentialFinalDetails = $event->details;
+            }
+        }
+
+        // if a final exists
+        if(!empty($output['finalEvent']))
+        {
+            $event = $output['finalEvent'];
+            if( $event['days'] != 'A' && $event['days'] != '-' && $event['days'] != 'NULL' ){
+                $this->setParamForFinal($event, $potentialFinalDetails);
+                $this->setParamByEvent($event);
+
+                $this->setParamBySpecifications('CONFIRMED','OPAQUE', 'PUBLIC', 'DAILY', '1');
+                //need to change
+
+                $vEvent = $this->setEvent();
+
+                $vEvent->addComponent( $this->setVAlarm() );
+
+                $vCalendar->addComponent( $vEvent );
+            }
+        }
+        $this->setFileName( $fileName );
+        return $vCalendar->render();
     }
 }
+
+// old for each classes
+//                //csac
+//                $this->setParamForClassAndFinal($event,$event->details);
+//                $this->setOpaqueAndConfirmed();
+//
+//                $vEvent = new \Eluceo\iCal\Component\Event();
+//
+//                $vEvent = $this->setEvent($event);
+//                $vAlarm = new \Eluceo\iCal\Component\Alarm();
+//
+//                $vEvent->addComponent( $this->setVAlarm() );
+//
+//
+//                $vEvent->addComponent($vAlarm);
+//
+//                $vCalendar->addComponent($vEvent);
+
+// old final details
+
+//                $this->setParamForFinal($event,$potentialFinalDetails);
+//                $this->setParamBySpecifications('CONFIRMED','OPAQUE', 'PUBLIC', 'WEEKLY', '1');
+//                $this->setParamByEvent($event);
+//                $vEvent = new \Eluceo\iCal\Component\Event();
+//
+//                $vEvent = $this->setEvent($vEvent, $event, true);
+//                $vAlarm = new \Eluceo\iCal\Component\Alarm();
+//                $vAlarm = $this->setVAlarm($vAlarm);
+//                $vEvent->addComponent($vAlarm);
+//                $vCalendar->addComponent($vEvent);

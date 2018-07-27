@@ -24,9 +24,7 @@ class StudentControllerTest extends TestCase
         var_dump($mock->termClasses('fall', 'some.email'));
     }
 
-    /**
-     * @test
-     */
+
     public function termClasses_converts_array_to_a_json(){
 
         $events = [6];
@@ -62,9 +60,6 @@ class StudentControllerTest extends TestCase
         $this->assertJson($studentController->termClasses('3124', 'me.me'));
     }
 
-    /**
-     * @test
-     */
     public function ical_generator(){
         $ical = new ICal('Office Hours: Steven Fitzgerald', 'TZID=America/Los_Angeles:20180829T110000', 'America/Los_Angeles:20180829T115000');
         var_dump($ical->generateICS());

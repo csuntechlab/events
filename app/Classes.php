@@ -31,15 +31,15 @@ class Classes extends Model
         'term',
         'classes_id',
         'term_id',
-        'label'
+        'label',
+        "created_at",
+        "updated_at",
     ];
 
     protected $hidden = [
         'meeting_id',
         'meeting_number',
         'entities_id',
-        "created_at",
-        "updated_at",
         'is_walkin',
         'is_byappointment'
     ];

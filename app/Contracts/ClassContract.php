@@ -23,5 +23,5 @@ interface ClassContract
 
     public function finalInfo($term, $course_id);
 
-    public function ClassICS($output,$fileName);
+    public function ClassICS($output);
 }

@@ -11,9 +11,7 @@ class DatabaseTest extends TestCase
      * @return void
      */
 
-    /**
-     * @test
-     */
+
     public function gets_classes_table_from_studentService(){
         $term = '2197';
         $email = 'john.smith.302';
