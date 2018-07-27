@@ -4,6 +4,7 @@ use App\ClassRosters;
 use App\Contracts\FacultyContract;
 use App\User;
 use App\Event;
+use App\Terms;
 
 class FacultyService implements FacultyContract {
     public function getClassList($term,$email)
@@ -37,7 +38,15 @@ class FacultyService implements FacultyContract {
             $temps = Event::entities($class)->term($term)->with('course')->get();
             foreach( $temps as $temp ){
                 if( $temp != null ){
-                    array_push($events, $temp);
+                    /*
+                    check if the start_date are null
+                    if null, use omar.terms and get begin_date & end_date
+                    */
+                    if( $temp->from_date == null || $temp->to_date == null ){
+                        $terms_table = Terms::term($temp->term_id)->first();
+                        $temp->from_date = $terms_table->begin_date;
+                        $temp->to_date = $terms_table->end_date;
+                    }
                 }
             }
             
@@ -45,6 +54,7 @@ class FacultyService implements FacultyContract {
             $temp = Event::entities($exam)->term($term)->first();
             if( $temp != null ){
                 array_push($events, $temp);
+                // final exam will never be null
             }
         }
         return $events;
