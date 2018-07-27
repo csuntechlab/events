@@ -57,39 +57,8 @@ class FacultyController extends Controller
         $instructorInfo['classList'] =  $this->getClassList($term, $email);
         $instructorInfo['officeHours'] = $this->getOfficeHours($term, $email);  
 
-        // return  $instructorInfo;
+        return  $instructorInfo;
         
-        $ical = new ICal();
-        //make a controller obj so you can set global param
-        $controller = new Controller();
-
-        foreach($instructorInfo['classList']  as $class){
-
-            foreach($class as $event){
-                $course  = $event->course;
-                //sets global parm for class and final events
-                $controller->setParamForClassAndFinal($event,$course);
-                //gets ical param
-                $icalParam = $controller->getParam($event);
-                //adds ical event with param , boolean is for adding alarm
-                $ical->addEvent($icalParam,true);
-            }
-            
-        }
-
-        foreach ($instructorInfo['officeHours'] as $officeHours){
-            $event = $officeHours;
-            //sets global parm for office hours
-            $controller->setParamForOfficeHours($event,$email);
-            //gets ical param
-            $icalParam = $controller->getParam($event);
-            //adds ical event with param , boolean is for adding alarm
-            $ical->addEvent($icalParam,false);
-        }
-
-        $ical->setFileName($email);
-        //generates an ics file for download
-        return $ical->generateICS();
     }
 
 

@@ -73,4 +73,5 @@ class Event extends Model
     {
         return $query->where('entities_id', $class_id);
     }
+    
 }
