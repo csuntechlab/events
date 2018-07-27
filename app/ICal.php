@@ -25,15 +25,15 @@ class ICal{
 
         $this->ics .=
             'BEGIN:VEVENT'."\n".
-            'SUMMARY:'.$summary."\n".
             'UID:'.$uid."\n".
+            'DTSTAMP:'.$dtStamp."\n".
+            'SUMMARY:'.$summary."\n".
             'SEQUENCE:0'."\n".
             'STATUS:'.$status."\n".
             'TRANSP:'.$transparent."\n".
             'RRULE:FREQ='.$rules['frequency'].';INTERVAL='.$rules['interval'].';UNTIL='.$rules['until'].';BYDAY='.$rules['byDay']."\n".
             'DTSTART;America/Los_Angeles:'.$from."\n".
             'DTEND;America/Los_Angeles:'.$to."\n".
-            'DTSTAMP:'.$dtStamp."\n".
             'CATEGORIES:'.$categories."\n".
             'CLASS:PUBLIC'."\n"
         ;

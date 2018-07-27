@@ -19,6 +19,7 @@ class StudentService extends ICalFormatter implements StudentContract
      */
     public function termClasses($term, $email)
     {
+        
 
         //$classMemberships = ClassMembership::email($email)->term($term)->get();
 
