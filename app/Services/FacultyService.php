@@ -1,110 +1,57 @@
 <?php
 namespace App\Services;
-use App\ClassMemberships;
-use App\User;
-use App\Event;
+
 use App\Contracts\FacultyContract;
-use Eluceo\iCal\Property\Event\RecurrenceRule;
-use App\ICalFormatter;
+use App\User;
+use App\ClassMemberships;
+use App\Event;
 
-class FacultyService extends ICalFormatter implements FacultyContract {
+class FacultyService implements FacultyContract {
 
-    public function getClassList($term,$email)
-    {
-        $user = User::email($email)->first();
-        
-        $classes = ClassMemberships::memberId($user->user_id)->term($term)->instructorRole()->pluck('classes_id');
 
-        $events = [];
 
-        foreach( $classes as $class ){
-            $temp = Event::class($class)->with('course')->get();
-            array_push($events, $temp);
-        }
-        return $events;
+    public function getAllOfficeHours($facultyData){
 
-    }
-    
-    public function getFinalExamTimes($term,$email)
-    {
-        $finalExamList = ClassMemberships::email($email)
-        ->term($term)
-        ->instructorRole()
-        ->with('course','finalExamEvents')
-        // ->get();
-        ->first();
 
-        return $finalExamList;
-    }
+        //find term first then find faculty in that term thru email
+        $faculty_id = $facultyData['email'];
+        $faculty_term = $facultyData['term']->term_id;
 
-    public function getOfficeHours($term,$email)
-    {
-        $userId = User::email($email)->first();
+          //  return $faculty_id->user_id;
+            $faculty_id = str_replace("members:","",$faculty_id->user_id);
 
-        $userId = str_replace("members:","",$userId['user_id']);
+        //$faculty_id = User::findOrFail($facultyData['term'])->find($facultyData['email']);
 
-        $entities_id = 'office-hours:'.$term.':'.$userId; 
-
+        $entities_id = 'office-hours:'.$faculty_term.':'.$faculty_id;
         $officeHours = Event::officeHours($entities_id)
-        ->term($term)
-        ->type('office-hours')
-        // ->with('course')
-        ->get();
+            ->term($faculty_term)
+            ->type('office-hours')
+            ->get();
 
-        return $officeHours;
-    }
+        foreach ($officeHours as $officeList){
 
-    public function getIcal($instructorInfo,$email)
-    {
-        //STEP 1
-        $vCalendar = new \Eluceo\iCal\Component\Calendar('-//events @ META+LAB//Version 1//EN');
+            $officeList = $officeHours;
 
-        foreach($instructorInfo['classList']  as $class){
-            foreach($class as $event) {
 
-                if( $event['days'] != 'A' && $event['days'] != '-' && $event['days'] != 'NULL' && $event['is_byappointment'] != '1' ){
-
-                    //STEP 2
-                    $this->setParamForClass($event,$event->course);
-                    //STEP 3
-                    $this->setParamByEvent($event);
-                    //STEP 4 check your requirements
-                    $this->setParmBySpecifications('CONFIRMED','OPAQUE', 'PUBLIC', 'WEEKLY', '1');
-
-                    //need to change
-                    if($event['type'] != 'class' ){
-                        $this->setParamForFinal($event,$event->course);
-                    }
-                    //STEP 5 SET EVENT
-                    $vEvent = $this->setEvent();
-                    //STEP 6 (Optional based on your requirements)
-                    $vEvent->addComponent( $this->setVAlarm() );
-                    //STEP 7 
-                    $vCalendar->addComponent( $vEvent );
-
-                }
             }
-        }
 
-        foreach ($instructorInfo['officeHours'] as $officeHours){
-            // if( $officeHours['days'] != 'A' && $officeHours['days'] != '-' && $officeHours['days'] != 'NULL' && $officeHours['is_byappointment'] != 1 ){
-                $this->setParamForOfficeHours($officeHours,$email);
+       // foreach ($officeHours as $officeHour) {
 
-                $this->setParamByEvent($officeHours);
-                        
-                $this->setParmBySpecifications('CONFIRMED','OPAQUE', 'PUBLIC', 'WEEKLY', '1');
-                
-                $vEvent = $this->setEvent();
-                
-                $vCalendar->addComponent($vEvent);
-            // }
-        }
+           // $this->officeHoursData = [
 
-        $this->setFileName( $email );
+               // 'office_hours' => $officeHours->office_hours;
+            //];
+            //officeHour = Event::officeHours($new_id_from_strReplace)
 
-        return $vCalendar->render();
 
+        //echo $officeHour['term_id'];
+
+
+
+      //  }
+       // dd($officeHours->term);
+        return $officeHours;
+       // return $this->jsonResponse();
     }
-    
 }
 ?>

@@ -58,27 +58,27 @@ class FacultyController extends Controller
         $officeHours = $this->facultyRetriever->getAllOfficeHours($facultyData);
         /* $faculty = Faculty::with('term', 'office_hours.term')->find($id);*/
 
-        $ical = new ICal();
-        $controller = new Controller();
+       // $ical = new ICal();
+        //$controller = new Controller();
 
 
 // return $facultyData;
-        foreach ($officeHours as $officeHour){
-            $event = $officeHour;
+      //  foreach ($officeHours as $officeHour){
+        //    $event = $officeHour;
 //sets global parm for office hours
-            $controller->setParamForOfficeHours($event,$email);
+           // $controller->setParamForOfficeHours($event,$email);
 //gets ical param
-            $icalParam = $controller->getParam($event);
+            //$icalParam = $controller->getParam($event);
 //adds ical event with param , boolean is for adding alarm
-            $ical->addEvent($icalParam,false);
-        }
+            //$ical->addEvent($icalParam,false);
+      //  }
 
 
-        $ical->setFileName($email);
+        //$ical->setFileName($email);
 //generates an ics file for download
-        return $ical->generateICS();
+        //return $ical->generateICS();
 
-// return $officeHours;
+         return json_encode($officeHours);
     }
 
 
