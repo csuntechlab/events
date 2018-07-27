@@ -32,29 +32,29 @@ class FacultyController extends Controller
 
     public function getOfficeHoursWithPattern($term, $email, $pattern)
     {
-      $OfficeHours = $this->facultyRetriever->getOfficeHoursWithPattern($term, $email, $pattern);
+      return $this->facultyRetriever->getOfficeHoursWithPattern($term, $email, $pattern);
 
-      // $instructorInfo['officeHours'] = $this->getOfficeHoursWithPattern($term, $email, $pattern);
-
-      // return  $instructorInfo;
-
-      $ical = new ICal();
-      //make a controller obj so you can set global param
-      $controller = new Controller();
-
-      foreach ($OfficeHours as $officeHour){
-          $event = $officeHour;
-          //sets global parm for office hours
-          $controller->setParamForOfficeHours($event,$email);
-          //gets ical param
-          $icalParam = $controller->getParam($event);
-          //adds ical event with param , boolean is for adding alarm
-          $ical->addEvent($icalParam,false);
-      }
-
-      $ical->setFileName($email);
-      //generates an ics file for download
-      return $ical->generateICS();
+      // // $instructorInfo['officeHours'] = $this->getOfficeHoursWithPattern($term, $email, $pattern);
+      //
+      // // return  $instructorInfo;
+      //
+      // $ical = new ICal();
+      // //make a controller obj so you can set global param
+      // $controller = new Controller();
+      //
+      // foreach ($OfficeHours as $officeHour){
+      //     $event = $officeHour;
+      //     //sets global parm for office hours
+      //     $controller->setParamForOfficeHours($event,$email);
+      //     //gets ical param
+      //     $icalParam = $controller->getParam($event);
+      //     //adds ical event with param , boolean is for adding alarm
+      //     $ical->addEvent($icalParam,false);
+      // }
+      //
+      // $ical->setFileName($email);
+      // //generates an ics file for download
+      // return $ical->generateICS();
     }
 
     // public function getInstructorInfo($term,$email)

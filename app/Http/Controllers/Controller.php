@@ -19,6 +19,8 @@ class Controller extends BaseController
       $this->vAlarmDescription = null;
       $this->status = 'TENTATIVE';
       $this->transparent = 'TRANSPARENT';
+      $this->dtstart = $event['from_date'];
+      $this->dtend = $event['to_date'];
   }
 
   public function getParam($event)
