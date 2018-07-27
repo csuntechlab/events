@@ -18,7 +18,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'name', 'email',
+        'user_id', 'first_name', 'last_name', 'display_name', 'email', 'affiliation', 'rank'
     ];
 
     /**
@@ -29,4 +29,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $hidden = [
         'password',
     ];
+
+    public function scopeEmail($query,$email)
+    {
+        return $query->where('email', 'nr_'.$email.'@csun.edu')
+            ->orWhere('email', 'nr_'.$email.'@my.csun.edu');
+    }
 }

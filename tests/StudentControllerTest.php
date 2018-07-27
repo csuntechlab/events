@@ -17,11 +17,13 @@ class StudentControllerTest extends TestCase
      * @test
      */
     public function testing_mockery(){
-        $mock = Mockery::mock('\App\Services\StudentService');
+        $mock = Mockery::mock('\App\Contracts\StudentContract');
 
         $mock->shouldReceive('termClasses')->once()->andReturn('1');
 
-        var_dump($mock->termClasses('fall', 'some.email'));
+        $mock->termClasses('fall', 'some.email');
+        $this->assertTrue(true);
+        //var_dump($mock->termClasses('fall', 'some.email'));
     }
 
     /**

@@ -7,20 +7,48 @@ use App\Contracts\StudentContract;
 use App\Event;
 use App\ICalFormatter;
 use App\Registry;
+use App\User;
 
 class StudentService extends ICalFormatter implements StudentContract
 {
 
-    // TODO: finish function
+    public function termClasses($term, $email){
+        // TODO: see if pluck('user_id') querys quicker
+        $user = User::email($email)->first();
+
+        if(!$user)
+            return null;
+
+        $classesID = ClassMembership::memberID($user->user_id)
+            ->term($term)
+            ->instructor()
+            ->pluck('classes_id')
+        ;
+
+        $events = [];
+
+        foreach($classesID as $classID){
+            foreach(Event::class($classID)->with('course')->get() as $event){
+                if($event){
+                    $events[] = $event;
+                }
+            }
+            $exam = str_replace('classes', 'final-exams', $classID);
+            $exam = Event::entities($exam)->term($term)->first();
+            if($exam)
+                $events[] = $exam;
+        }
+
+        return json_encode($events);
+    }
+
     /**
      * @param $term
      * @param $email
      * @return array
      */
-    public function termClasses($term, $email)
+    public function ftermClasses($term, $email)
     {
-        
-
         //$classMemberships = ClassMembership::email($email)->term($term)->get();
 
         $entity_id = Registry::email($email)->first()['entities_id'];
@@ -132,6 +160,6 @@ class StudentService extends ICalFormatter implements StudentContract
 
         return $myEvents;
         //var_dump($classes->first()['email']);
-        /**/
     }
+    /**/
 }
