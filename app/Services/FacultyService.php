@@ -13,17 +13,12 @@ class FacultyService extends ICalFormatter implements FacultyContract {
     {
         $user = User::email($email)->first();
         
-        $classes = ClassMemberships::memberId($user->user_id)
-            ->term($term)
-            ->instructorRole()
-            ->pluck('classes_id');
+        $classes = ClassMemberships::memberId($user->user_id)->term($term)->instructorRole()->pluck('classes_id');
 
         $events = [];
 
         foreach( $classes as $class ){
-            $temp = Event::class($class)
-            ->with('course')
-            ->get();
+            $temp = Event::class($class)->with('course')->get();
             array_push($events, $temp);
         }
         return $events;
@@ -61,44 +56,49 @@ class FacultyService extends ICalFormatter implements FacultyContract {
 
     public function getIcal($instructorInfo,$email)
     {
-
         $vCalendar = new \Eluceo\iCal\Component\Calendar('-//events @ META+LAB//Version 1//EN');
 
         foreach($instructorInfo['classList']  as $class){
             foreach($class as $event) {
 
-                if( $event['days'] != 'A' || $event['days'] != '-' || $event['days'] != 'NULL' ){
+                if( $event['days'] != 'A' && $event['days'] != '-' && $event['days'] != 'NULL' && $event['is_byappointment'] != '1' ){
 
-                    $this->setParamForClassAndFinal($event,$event->course);
+                    $this->setParamForClass($event,$event->course);
+
+                    $this->setParamByEvent($event);
+                    
+                    $this->setParmBySpecifications('CONFIRMED','OPAQUE', 'PUBLIC', 'WEEKLY', '1');
+
+                    //need to change
+                    if($event['type'] != 'class' ){
+                        $this->setParamForFinal($event,$event->course);
+                    }
                 
-                    $vEvent = new \Eluceo\iCal\Component\Event();
+                    $vEvent = $this->setEvent();
                     
-                    $vEvent = $this->setEvent($vEvent, $event, true);
-
-                    $vAlarm = new \Eluceo\iCal\Component\Alarm();
+                    $vEvent->addComponent( $this->setVAlarm() );
                     
-                    $vAlarm = $this->setVAlarm($vAlarm);
-                    
-                    $vEvent->addComponent($vAlarm);
-                    
-                    $vCalendar->addComponent($vEvent);
+                    $vCalendar->addComponent( $vEvent );
 
                 }
             }
         }
 
         foreach ($instructorInfo['officeHours'] as $officeHours){
-            $this->setParamForOfficeHours($officeHours,$email);
-            
-            $vEvent = new \Eluceo\iCal\Component\Event();
-            
-            $vEvent = $this->setEvent($vEvent, $officeHours , false);
-            
-            $vCalendar->addComponent($vEvent);
+            if( $officeHours['days'] != 'A' && $officeHours['days'] != '-' && $officeHours['days'] != 'NULL' && $officeHours['is_byappointment'] != 1 ){
+                $this->setParamForOfficeHours($officeHours,$email);
+
+                $this->setParamByEvent($officeHours);
+                        
+                $this->setParmBySpecifications('CONFIRMED','OPAQUE', 'PUBLIC', 'WEEKLY', '1');
+                
+                $vEvent = $this->setEvent();
+                
+                $vCalendar->addComponent($vEvent);
+            }
         }
 
-        header('Content-type: text/calendar; charset=utf-8');
-        header('Content-Disposition: attachment; filename='.$email.'.ics');
+        $this->setFileName( $email );
 
         return $vCalendar->render();
 

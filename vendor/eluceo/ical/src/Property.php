@@ -81,7 +81,11 @@ class Property
             $line .= ':' . $this->value->getEscapedValue();
         }
         else{
-            $line .= "\"".$this->value->getEscapedValue()."\"";
+            $pieces = explode(":", $this->value->getEscapedValue());
+            $temp = '"';
+            $line .= $temp . $pieces[0]  . $pieces[1]. $temp .":". $pieces[2];
+            // $line .= $temp . $this->value->getEscapedValue() . $temp;
+            // $line .= $this->value->getEscapedValue();
         }
 
         // $line .= $this->value->getEscapedValue();

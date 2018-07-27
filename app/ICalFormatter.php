@@ -6,6 +6,22 @@ class ICalFormatter{
     /**
      * TODO: Check Public vs Private Class
      * TODO: CHECK if this is going to be weekly 
+     * TODO: Events are either Transparent & Tentative or Opaque & Confirmed. 
+     *          For Students or as an individual Office Hour: the event it Transparent & Tentative
+     *          For Faculty: the event is Opaque & Confirmed
+     * 
+     * TODO: “By Appointment Only”
+     *          If an Office Hour has a label of “By Appointment Only” no .ics file is created
+     * TODO: We need to have a way to record
+     *          First day of Instruction
+     *          Last day of Instruction
+     *          The list of dates in which the campus is closed
+     *          
+     * TODO: Add the EXDATE to all .ics files to specify the days in which the campus is closed 
+     *      E.g., EXDATE;TZID=America/Los_Angeles:20180903T130000
+     *      E.g., EXDATE;TZID=America/Los_Angeles:20181112T130000
+     * 
+     * 
      */
 
 
@@ -14,17 +30,32 @@ class ICalFormatter{
     protected $vAlarmDescription = null;
     protected $status = null;
     protected $transparent  = null;
+    protected $rrule ;
+    protected $interval ;
+    protected $freq;
+
+    protected $eventTime ;
+    protected $lastModified ;
+    protected $dtStamp ;
+    protected $class ;
+    protected $created ;
+    protected $categories ;
+    protected $dtStart ;
+    protected $dtEnd ;
+    
+    protected $until ;
+    protected $location;
+    protected $locationAltrep;
+    protected $byDay;
 
     /**
      * sets global variables for ical parameter 
      */
-    public function setParamForClassAndFinal($event,$course)
+    public function setParamForClass($event,$course)
     {
         $this->uid = $course['classes_id'].'.'.$event['pattern_number'].'.vevent@metalab.csun.edu'; 
         $this->summary = $course['subject'].' '.$course['catalog_number'].' ('.$course['class_number'].')';
         $this->vAlarmDescription =  $course['subject'].' '.$course['catalog_number'].' starts in 15 minutes';
-        $this->status = 'CONFIRMED';
-        $this->transparent = 'OPAQUE';
     }
 
     /**
@@ -35,66 +66,86 @@ class ICalFormatter{
         $this->uid = $event['entities_id'].'.'.$event['pattern_number'].'.vevent@metalab.csun.edu';
         $this->summary = $summary = 'Office Hours: ' . $email ;
         $this->vAlarmDescription = null;
-        $this->status = 'TENTATIVE';
-        $this->transparent = 'TRANSPARENT';
+        
+    }
+
+    public function setParamForFinal($event, $course)
+    {
+        $this->uid = $course['classes_id'].'.'.$event['pattern_number'].'.vevent@metalab.csun.edu';
+        $this->summary = $course['subject'].' '.$course['catalog_number'].' FINAL ('.$course['class_number'].')';
+        $this->vAlarmDescription =  $course['subject'].' '.$course['catalog_number'].' FINAL starts in 15 minutes';
+    }
+
+    public function setParmBySpecifications($status, $trans, $publicOrPrivate, $freq, $interval)
+    {
+        $this->status = $status;
+        $this->transparent = $trans;
+        $this->class = $publicOrPrivate;
+        $this->freq = $freq;
+        $this->interval = $interval;
+        
+    }
+
+    public function setParamByEvent($event)
+    {
+        $eventTime = date("Y-m-d H:i:s");
+        
+        $this->dtStart = '2018-08-08 ' . str_replace('h', '00Z', $event['start_time']) ; // $event['from_date']
+        $this->dtEnd =  '2018-08-08 ' . str_replace('h', '00Z', $event['end_time']) 
+        ;// $event['from_date']
+
+        $this->lastModified = $eventTime; // $event['updated_at']  
+        $this->dtStamp = $eventTime; // $event['updated_at']  
+
+        $this->created = '2018-07-25'; // $event['created_at']
+        $this->categories = $event['type'];
+
+        $this->until = '2018-12-12 08:12:10'; // $event['to_date']
+
+        if($event['location_type']=='physical') {
+            $this->location =  $event['location']; 
+            $this->locationAltrep = "\""."http://academics.csun.edu/classrooms/" . $event['location'] ."\"". ":" . $event['location'];
+        } else {
+            $this->location =  'ZOOM'; 
+            $this->locationAltrep = $event['online_url'];
+        }
+
+        $this->byDay = $this->setMeetingDays( $event['days'] );
     }
 
     /**
      * gets ical parameter
      */
-    public function setEvent($vEvent, $event, $addAlarm)
+    public function setEvent()
     {
-        $eventTime = date("Y-m-d H:i:s");
-
-        $lastModified = $eventTime;
-        $dtStamp = $eventTime;
-        $class = 'PUBLIC';
-        $created = '2018-07-25';
-
-        $categories = $event['type'];
-        $dtStart = '2018-08-08 ' . str_replace('h', '00Z', $event['start_time']) ;
-        $dtEnd =  '2018-08-08 ' . str_replace('h', '00Z', $event['end_time']) ;
-        $rrule = 'WEEKLY';
-        $interval = '1';
-        $until = '2018-12-12 08:12:10';
-
-
-        if($event['location_type']=='physical') {
-            $location =  $event['location']; 
-            $locationAltrep = "http://academics.csun.edu/classrooms/" . $event['location'] . ":" . $event['location'];
-        } else {
-            $location =  'ZOOM'; 
-            $locationAltrep = $event['online_url'];
-        }
-
-        $byDay = $this->setMeetingDays($event['days'] );
-
+        $vEvent = new \Eluceo\iCal\Component\Event();
+        
         $vEvent->setUniqueId($this->uid)
-        ->setDtStamp( new \DateTime($dtStamp) ) //dtStamp 169
-        ->setCreated( new \DateTime($created) ) // must create
-        ->setModified( new \DateTime($lastModified) ) // last Modified
+        ->setDtStamp( new \DateTime($this->dtStamp) ) //dtStamp 169
+        ->setCreated( new \DateTime($this->created) ) // must create
+        ->setModified( new \DateTime($this->lastModified) ) // last Modified
         ->setTrans($this->transparent)
         ->setStatus($this->status)
-        ->setCategories($categories)
+        ->setCategories($this->categories)
         ->setSummary( $this->summary )
         ->setTimezoneString('America/Los_Angeles')
-        ->setLocation($location,$locationAltrep)
-        ->setDtStart( new \DateTime($dtStart )  )
-        ->setDtEnd(new \DateTime( $dtEnd ) ) ;
+        ->setLocation($this->location,$this->locationAltrep)
+        ->setDtStart( new \DateTime($this->dtStart )  )
+        ->setDtEnd(new \DateTime( $this->dtEnd ) ) ;
 
         $recurrenceRule = new \Eluceo\iCal\Property\Event\RecurrenceRule();
-
-        $recurrenceRule->setFreq(\Eluceo\iCal\Property\Event\RecurrenceRule::FREQ_WEEKLY);
-        $recurrenceRule->setInterval(1); // final exam 
-        $recurrenceRule->setByDay($byDay);
-        $recurrenceRule->setUntil( new \DateTime($until) );
+        
+        $recurrenceRule->setFreq($this->freq)
+        ->setInterval($this->interval) // final exam 
+        ->setByDay($this->byDay)
+        ->setUntil( new \DateTime($this->until) );
 
         $vEvent->setRecurrenceRule($recurrenceRule);
 
         return $vEvent;
     }
 
-    public function setVAlarm ($vAlarm)
+    public function setVAlarm()
     {
         $vAlarm = new \Eluceo\iCal\Component\Alarm();
         $vAlarm->setTrigger('-PT15M');
@@ -102,6 +153,12 @@ class ICalFormatter{
         $vAlarm->setAction('DISPLAY');
 
         return $vAlarm;
+    }
+
+    public function setFileName($fileName)
+    {
+        header('Content-type: text/calendar; charset=utf-8');
+        header('Content-Disposition: attachment; filename='.$fileName.'.ics');
     }
 
 
@@ -115,7 +172,6 @@ class ICalFormatter{
         $dayICal = strtr($days , $trans);
 
         return substr($dayICal, 0 ,-1);
-        
     }
 
 
