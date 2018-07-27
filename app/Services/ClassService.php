@@ -11,6 +11,7 @@ namespace App\Services;
 use App\Classes;
 use App\ICal;
 use App\ICalFormatter;
+use App\Terms;
 use Illuminate\Support\Facades\Validator;
 use App\Contracts\ClassContract;
 
@@ -68,6 +69,15 @@ class ClassService extends ICalFormatter implements ClassContract
         return $result;
     }
 
+    public function termInfo($term)
+    {
+        $queryBuilder = "term:{$term}";
+
+        $result = Terms::Term($queryBuilder)
+            ->first();
+        return $result;
+    }
+
     public function isValidTermId($termId)
     {
         $data = ['course_id' => $termId];
@@ -88,10 +98,17 @@ class ClassService extends ICalFormatter implements ClassContract
 
         $vCalendar = new \Eluceo\iCal\Component\Calendar('-//events @ META+LAB//Version 1//EN');
 
-
         foreach ($output['classEvents'] as $event)
         {
             if( $event['days'] != 'A' && $event['days'] != '-' && $event['days'] != 'NULL' ){
+
+                if(empty($event['from_date']) || empty($event['to_date']))
+                {
+                    $date = $this->termInfo($event['term_id']);
+
+                    $event['from_date'] = $date['begin_date'];
+                    $event['to_date'] = $date['end_date'];
+                }
 
                 $this->setParamForClass($event,$event->details);
                 $this->setParamByEvent($event);
@@ -105,6 +122,7 @@ class ClassService extends ICalFormatter implements ClassContract
 
                 $fileName = 'classes.'.$event->details->term_id.'.'.$event->details->course_id.'.'.$event->pattern_number;
                 $potentialFinalDetails = $event->details;
+
             }
         }
 

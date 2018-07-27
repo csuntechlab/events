@@ -77,11 +77,18 @@ class ICalFormatter{
         $this->lastModified = $event['updated_at'];
         $this->dtStamp = $event['updated_at'];
         $this->categories = $event['type'];
-        $this->dtStart = '2018-08-08 ' . str_replace('h', '00', $event['start_time']) ;
-        $this->dtEnd =  '2018-08-08 ' . str_replace('h', '00', $event['end_time']) ;
+
+        $from_date = explode(" ", $event['from_date']);
+
+        $this->dtStart = $from_date[0] . str_replace('h', '00', $event['start_time']) ;
+        $this->dtEnd =  $from_date[0] . str_replace('h', '00', $event['end_time']) ;
         $this->rrule = 'WEEKLY';
         $this->interval = '1';
-        $this->until = '2018-12-12 08:12:10';
+
+//        $to_date = explode(" ", $event['from_date']);
+        $this->until = $event['to_date'];
+
+//        dd($this->until);
 
         if($event['location_type']=='physical') {
             $this->location =  $event['location'];
