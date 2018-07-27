@@ -87,7 +87,7 @@ class FacultyService extends ICalFormatter implements FacultyContract {
         }
 
         foreach ($instructorInfo['officeHours'] as $officeHours){
-            // if( $officeHours['days'] != 'A' && $officeHours['days'] != '-' && $officeHours['days'] != 'NULL' && $officeHours['is_byappointment'] != 1 ){
+            if( $officeHours['days'] != 'A' && $officeHours['days'] != '-' && $officeHours['days'] != 'NULL' && $officeHours['is_byappointment'] != 1 ){
                 $this->setParamForOfficeHours($officeHours,$email);
 
                 $this->setParamByEvent($officeHours);
@@ -97,7 +97,7 @@ class FacultyService extends ICalFormatter implements FacultyContract {
                 $vEvent = $this->setEvent();
                 
                 $vCalendar->addComponent($vEvent);
-            // }
+            }
         }
 
         $this->setFileName( $email );

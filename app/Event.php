@@ -73,5 +73,5 @@ class Event extends Model
     public function scopeClass($query,$class_id)
     {
         return $query->where('entities_id', $class_id);
-    }
+    }    
 }
