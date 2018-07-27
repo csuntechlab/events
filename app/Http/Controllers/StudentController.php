@@ -28,11 +28,11 @@ class StudentController
      */
     public function termClasses($term, $email){
         $events = $this->studentService->termClasses($term, $email);
-        return ($events);
-//        $ical = new ICal();
-//        foreach($events as $event) {
-//            $ical->addEventByArray($event);
-//        }
-//        return $ical->generateICS();
+//        return ($events);
+        $ical = new ICal();
+        foreach($events as $event) {
+            $ical->addEventByArray($event);
+        }
+        return $ical->generateICS();
     }
 }

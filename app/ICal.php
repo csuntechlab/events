@@ -15,33 +15,34 @@ class ICal{
                              $description = null){
         if($this->ics == null){
             $this->ics =
-                'BEGIN:VCALENDAR'.
-                'VERSION:2.0'.
-                'PRODID:-//events @ META+LAB//Version 1//EN'.
-                'CALSCALE:GREGORIAN'.
-                'METHOD:PUBLISH'
+                'BEGIN:VCALENDAR'."\n".
+                'VERSION:2.0'."\n".
+                'PRODID:-//events @ META+LAB//Version 1//EN'."\n".
+                'CALSCALE:GREGORIAN'."\n".
+                'METHOD:PUBLISH'."\n"
             ;
         }
 
         $this->ics .=
-            'BEGIN:VEVENT'.
-            'SUMMARY:'.$summary.
-            'UID:'.$uid.
-            'SEQUENCE:0'.
-            'STATUS:'.$status.
-            'TRANSP:'.$transparent.
-            'RRULE:FREQ='.$rules['frequency'].';INTERVAL='.$rules['interval'].';UNTIL='.$rules['until'].';BYDAY='.$rules['byDay'].
-            'DTSTART;America/Los_Angeles:'.$from.
-            'DTEND;America/Los_Angeles:'.$to.
-            'DTSTAMP:'.$dtStamp.
-            'CATEGORIES:'.$categories.
-            'CLASS:PUBLIC';
-        $this->ics .= 'LOCATION;ALTREP=' . ($link ? '"'. $link . '"': null) . ':' . $location;
+            'BEGIN:VEVENT'."\n".
+            'SUMMARY:'.$summary."\n".
+            'UID:'.$uid."\n".
+            'SEQUENCE:0'."\n".
+            'STATUS:'.$status."\n".
+            'TRANSP:'.$transparent."\n".
+            'RRULE:FREQ='.$rules['frequency'].';INTERVAL='.$rules['interval'].';UNTIL='.$rules['until'].';BYDAY='.$rules['byDay']."\n".
+            'DTSTART;America/Los_Angeles:'.$from."\n".
+            'DTEND;America/Los_Angeles:'.$to."\n".
+            'DTSTAMP:'.$dtStamp."\n".
+            'CATEGORIES:'.$categories."\n".
+            'CLASS:PUBLIC'."\n"
+        ;
+        $this->ics .= 'LOCATION;ALTREP=' . ($link ? '"'. $link . '"': null) . ':' . $location."\n";
 
         $this->ics .=
-            'GEO:'.$geo.
-            'DESCRIPTION:'.$description.
-            'END:VEVENT'
+            'GEO:'.$geo."\n".
+            'DESCRIPTION:'.$description."\n".
+            'END:VEVENT'."\n"
         ;
     }
 
@@ -49,34 +50,34 @@ class ICal{
     public function addEventByArray($event){
         if($this->ics == null){
             $this->ics =
-                'BEGIN:VCALENDAR'.
-                'VERSION:2.0'.
-                'PRODID:-//events @ META+LAB//Version 1//EN'.
-                'CALSCALE:GREGORIAN'.
-                'METHOD:PUBLISH'
+                'BEGIN:VCALENDAR'."\n".
+                'VERSION:2.0'."\n".
+                'PRODID:-//events @ META+LAB//Version 1//EN'."\n".
+                'CALSCALE:GREGORIAN'."\n".
+                'METHOD:PUBLISH'."\n"
             ;
         }
 
         $this->ics .=
-            'BEGIN:VEVENT'.
-            'SUMMARY:'. (array_key_exists('summary', $event)) ? $event['summary'] : null.
-            'UID:'. (array_key_exists('uid', $event)) ? $event['uid'] : null.
-            'SEQUENCE:0'.
-            'STATUS:'. (array_key_exists('status', $event)) ? $event['status'] : null.
-            'TRANSP:'. (array_key_exists('transparent', $event)) ? $event['transparent'] : null.
+            'BEGIN:VEVENT'."\n".
+            'SUMMARY:'. (array_key_exists('summary', $event)) ? $event['summary'] : null."\n".
+            'UID:'. (array_key_exists('uid', $event)) ? $event['uid'] : null."\n".
+            'SEQUENCE:0'."\n".
+            'STATUS:'. (array_key_exists('status', $event)) ? $event['status'] : null."\n".
+            'TRANSP:'. (array_key_exists('transparent', $event)) ? $event['transparent'] : null."\n".
             'RRULE:FREQ='. (array_key_exists('rules', $event)) ?
                 ($event['rules']['frequency'].';INTERVAL='.$event['rules']['interval'].';UNTIL='.$event['rules']['until'].';BYDAY='.$event['rules']['byDay']) :
-                null.
-            'DTSTART;America/Los_Angeles:'. (array_key_exists('from', $event)) ? $event['from'] : null.
-            'DTEND;America/Los_Angeles:'. (array_key_exists('to', $event)) ? $event['to'] : null.
-            'DTSTAMP:'. (array_key_exists('dtStamp', $event)) ? $event['dtStamp'] : null.
-            'CATEGORIES:'. (array_key_exists('categories', $event)) ? $event['categories'] : null.
-            'CLASS:PUBLIC'.
-            'LOCATION;ALTREP='. ((array_key_exists('link', $event)) ? '"' . $event['link'] .'"' : null) .':'.
-                    ((array_key_exists('location', $event)) ? '"' . $event['location'] .'"' : null).
-            'GEO:'. (array_key_exists('geo', $event)) ? $event['geo'] : null.
-            'DESCRIPTION:'. (array_key_exists('description', $event)) ? $event['description'] : null.
-            'END:VEVENT'
+                null."\n".
+            'DTSTART;America/Los_Angeles:'. (array_key_exists('from', $event)) ? $event['from'] : null."\n".
+            'DTEND;America/Los_Angeles:'. (array_key_exists('to', $event)) ? $event['to'] : null."\n".
+            'DTSTAMP:'. (array_key_exists('dtStamp', $event)) ? $event['dtStamp'] : null."\n".
+            'CATEGORIES:'. (array_key_exists('categories', $event)) ? $event['categories'] : null."\n".
+            'CLASS:PUBLIC'."\n".
+            'LOCATION;ALTREP='. ((array_key_exists('link', $event)) ? '"' . $event['link'] .'"' : null) .':'."\n".
+                    ((array_key_exists('location', $event)) ? '"' . $event['location'] .'"' : null)."\n".
+            'GEO:'. (array_key_exists('geo', $event)) ? $event['geo'] : null."\n".
+            'DESCRIPTION:'. (array_key_exists('description', $event)) ? $event['description'] : null."\n".
+            'END:VEVENT'."\n"
         ;
     }
 

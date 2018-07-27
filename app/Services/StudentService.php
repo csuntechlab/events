@@ -40,15 +40,15 @@ class StudentService extends ICalFormatter implements StudentContract
         // omar.classes get courses
 
         //TODO: use this shit
-        $json = [];
-        foreach ($classIDs as $class) {
-            $events[] = Event::entities($class)->get();
-        }
-
-        return $events;
-    }
-
-    private function throwAway($classIDs){
+//        $json = [];
+//        foreach ($classIDs as $class) {
+//            $events[] = Event::entities($class)->get();
+//        }
+//
+//        return $events;
+//    }
+//
+//    private function throwAway($classIDs){
         $myEvents = [];
 
         // in case there is more than one event per class
