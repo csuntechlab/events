@@ -85,7 +85,7 @@ class Event extends Component
     /**
      * @var string
      */
-    protected $altRep;
+    protected $locationTitle;
 
     /**
      * @var Geo
@@ -220,22 +220,6 @@ class Event extends Component
      */
     protected $recurrenceId;
 
-
-    /**
-     * NEW CODE
-     */
-
-     protected $class; 
-
-     
-    public function setClass($class)
-    {
-        $this->class = $class;
-    }
-
-
-
-
     public function __construct(string $uniqueId = null)
     {
         if (null == $uniqueId) {
@@ -254,7 +238,137 @@ class Event extends Component
         return 'VEVENT';
     }
 
-   
+    /**
+     * {@inheritdoc}
+     */
+    public function buildPropertyBag()
+    {
+        $propertyBag = new PropertyBag();
+
+        // mandatory information
+        $propertyBag->set('UID', $this->uniqueId);
+
+        $propertyBag->add(new DateTimeProperty('DTSTART', $this->dtStart, $this->noTime, $this->useTimezone, $this->useUtc, $this->timezoneString));
+        $propertyBag->set('SEQUENCE', $this->sequence);
+        $propertyBag->set('TRANSP', $this->transparency);
+
+        if ($this->status) {
+            $propertyBag->set('STATUS', $this->status);
+        }
+
+        // An event can have a 'dtend' or 'duration', but not both.
+        if ($this->dtEnd !== null) {
+            $dtEnd = clone $this->dtEnd;
+            if ($this->noTime === true) {
+                $dtEnd = $dtEnd->add(new \DateInterval('P1D'));
+            }
+            $propertyBag->add(new DateTimeProperty('DTEND', $dtEnd, $this->noTime, $this->useTimezone, $this->useUtc, $this->timezoneString));
+        } elseif ($this->duration !== null) {
+            $propertyBag->set('DURATION', $this->duration->format('P%dDT%hH%iM%sS'));
+        }
+
+        // optional information
+        if (null != $this->url) {
+            $propertyBag->set('URL', $this->url);
+        }
+
+        if (null != $this->location) {
+            $propertyBag->set('LOCATION', $this->location);
+
+            if (null != $this->locationGeo) {
+                $propertyBag->add(
+                    new Property(
+                        'X-APPLE-STRUCTURED-LOCATION',
+                        new RawStringValue('geo:' . $this->locationGeo->getGeoLocationAsString(',')),
+                        [
+                            'VALUE' => 'URI',
+                            'X-ADDRESS' => $this->location,
+                            'X-APPLE-RADIUS' => 49,
+                            'X-TITLE' => $this->locationTitle,
+                        ]
+                    )
+                );
+            }
+        }
+
+        if (null != $this->locationGeo) {
+            $propertyBag->add($this->locationGeo);
+        }
+
+        if (null != $this->summary) {
+            $propertyBag->set('SUMMARY', $this->summary);
+        }
+
+        if (null != $this->attendees) {
+            $propertyBag->add($this->attendees);
+        }
+
+        $propertyBag->set('CLASS', $this->isPrivate ? 'PRIVATE' : 'PUBLIC');
+
+        if (null != $this->description) {
+            $propertyBag->set('DESCRIPTION', $this->description);
+        }
+
+        if (null != $this->descriptionHTML) {
+            $propertyBag->add(
+                new Property(
+                    'X-ALT-DESC',
+                    $this->descriptionHTML,
+                    [
+                        'FMTTYPE' => 'text/html',
+                    ]
+                )
+            );
+        }
+
+        if (null != $this->recurrenceRule) {
+            $propertyBag->set('RRULE', $this->recurrenceRule);
+        }
+
+        foreach ($this->recurrenceRules as $recurrenceRule) {
+            $propertyBag->set('RRULE', $recurrenceRule);
+        }
+
+        if (null != $this->recurrenceId) {
+            $this->recurrenceId->applyTimeSettings($this->noTime, $this->useTimezone, $this->useUtc, $this->timezoneString);
+            $propertyBag->add($this->recurrenceId);
+        }
+
+        if (!empty($this->exDates)) {
+            $propertyBag->add(new DateTimesProperty('EXDATE', $this->exDates, $this->noTime, $this->useTimezone, $this->useUtc, $this->timezoneString));
+        }
+
+        if ($this->cancelled) {
+            $propertyBag->set('STATUS', 'CANCELLED');
+        }
+
+        if (null != $this->organizer) {
+            $propertyBag->add($this->organizer);
+        }
+
+        if ($this->noTime) {
+            $propertyBag->set('X-MICROSOFT-CDO-ALLDAYEVENT', 'TRUE');
+        }
+
+        if (null != $this->categories) {
+            $propertyBag->set('CATEGORIES', $this->categories);
+        }
+
+        $propertyBag->add(
+            new DateTimeProperty('DTSTAMP', $this->dtStamp ?: new \DateTimeImmutable(), false, false, true)
+        );
+
+        if ($this->created) {
+            $propertyBag->add(new DateTimeProperty('CREATED', $this->created, false, false, true));
+        }
+
+        if ($this->modified) {
+            $propertyBag->add(new DateTimeProperty('LAST-MODIFIED', $this->modified, false, false, true));
+        }
+
+        return $propertyBag;
+    }
+
     /**
      * @param $dtEnd
      *
@@ -310,27 +424,26 @@ class Event extends Component
 
     /**
      * @param string     $location
-     * @param string     $altRep
+     * @param string     $title
      * @param Geo|string $geo
      *
      * @return $this
      */
-    // public function setLocation($location, $altRep = '', $geo = null)
-    public function setLocation($location, $altRep = '')
+    public function setLocation($location, $title = '', $geo = null)
     {
-        // if (is_scalar($geo)) {
-        //     $geo = Geo::fromString($geo);
-        // } elseif (!is_null($geo) && !$geo instanceof Geo) {
-        //     $className = get_class($geo);
-        //     throw new \InvalidArgumentException(
-        //         "The parameter 'geo' must be a string or an instance of " . Geo::class
-        //         . " but an instance of {$className} was given."
-        //     );
-        // }
+        if (is_scalar($geo)) {
+            $geo = Geo::fromString($geo);
+        } elseif (!is_null($geo) && !$geo instanceof Geo) {
+            $className = get_class($geo);
+            throw new \InvalidArgumentException(
+                "The parameter 'geo' must be a string or an instance of " . Geo::class
+                . " but an instance of {$className} was given."
+            );
+        }
 
         $this->location = $location;
-        $this->altRep = $altRep;
-        // $this->locationGeo = $geo;
+        $this->locationTitle = $title;
+        $this->locationGeo = $geo;
 
         return $this;
     }
@@ -567,7 +680,7 @@ class Event extends Component
      */
     public function setCancelled($status)
     {
-        $this->cancelled = $status;
+        $this->cancelled = (bool) $status;
 
         return $this;
     }
@@ -581,29 +694,15 @@ class Event extends Component
      */
     public function setTimeTransparency($transparency)
     {
-        // $transparency = strtoupper($transparency);
-        // if ($transparency === self::TIME_TRANSPARENCY_OPAQUE
-        //     || $transparency === self::TIME_TRANSPARENCY_TRANSPARENT
-        // ) {
-        //     $this->transparency = $transparency;
-        // } else {
-        //     throw new \InvalidArgumentException('Invalid value for transparancy');
-        // }
+        $transparency = strtoupper($transparency);
+        if ($transparency === self::TIME_TRANSPARENCY_OPAQUE
+            || $transparency === self::TIME_TRANSPARENCY_TRANSPARENT
+        ) {
+            $this->transparency = $transparency;
+        } else {
+            throw new \InvalidArgumentException('Invalid value for transparancy');
+        }
 
-        dd($this->transparency);
-
-        return $this->transparency = $transparency;
-
-        // dd($this->transparency);
-
-        // return $this;
-    }
-
-    public function setTrans($transparency)
-    {
-
-        
-        $this->transparency = $transparency;
         return $this;
     }
 
@@ -778,156 +877,4 @@ class Event extends Component
 
         return $this;
     }
-    
-
-     /**
-     * {@inheritdoc}
-     */
-    public function buildPropertyBag()
-    {
-        $propertyBag = new PropertyBag();
-
-        // mandatory information
-        $propertyBag->set('UID', $this->uniqueId);
-
-        $propertyBag->add(new DateTimeProperty('DTSTART', $this->dtStart, $this->noTime, $this->useTimezone, $this->useUtc, $this->timezoneString));
-        $propertyBag->set('SEQUENCE', $this->sequence);
-        $propertyBag->set('TRANSP', $this->transparency);
-
-        if ($this->status) {
-            $propertyBag->set('STATUS', $this->status);
-        }
-
-        // An event can have a 'dtend' or 'duration', but not both.
-        if ($this->dtEnd !== null) {
-            $dtEnd = clone $this->dtEnd;
-            if ($this->noTime === true) {
-                $dtEnd = $dtEnd->add(new \DateInterval('P1D'));
-            }
-            $propertyBag->add(new DateTimeProperty('DTEND', $dtEnd, $this->noTime, $this->useTimezone, $this->useUtc, $this->timezoneString));
-        } elseif ($this->duration !== null) {
-            $propertyBag->set('DURATION', $this->duration->format('P%dDT%hH%iM%sS'));
-        }
-
-        // optional information
-        if (null != $this->url) {
-            $propertyBag->set('URL', $this->url);
-        }
-
-        if (null != $this->location) {
-            $propertyBag->set('LOCATION', $this->location);
-
-            if (null != $this->locationGeo) {
-                $propertyBag->add(
-                    new Property(
-                        'X-APPLE-STRUCTURED-LOCATION',
-                        new RawStringValue('geo:' . $this->locationGeo->getGeoLocationAsString(',')),
-                        [
-                            'VALUE' => 'URI',
-                            'X-ADDRESS' => $this->location,
-                            'X-APPLE-RADIUS' => 49,
-                            'X-TITLE' => $this->altRep,
-                        ]
-                    )
-                );
-            }
-        }
-
-        if (null != $this->locationGeo) {
-            $propertyBag->add($this->locationGeo);
-        }
-
-        if (null != $this->summary) {
-            $propertyBag->set('SUMMARY', $this->summary);
-        }
-
-        // if (null != $this->attendees) {
-        //     $propertyBag->add($this->attendees);
-        // }
-// //******CHECK THIS */
-        // $propertyBag->set('CLASS', $this->isPrivate ? 'PRIVATE' : 'PUBLIC');
-
-        if (null != $this->description) {
-            $propertyBag->set('DESCRIPTION', $this->description);
-        }
-
-        if (null != $this->descriptionHTML) {
-            $propertyBag->add(
-                new Property(
-                    'X-ALT-DESC',
-                    $this->descriptionHTML,
-                    [
-                        'FMTTYPE' => 'text/html',
-                    ]
-                )
-            );
-        }
-
-        if (null != $this->recurrenceRule) {
-            $propertyBag->set('RRULE', $this->recurrenceRule);
-        }
-
-        foreach ($this->recurrenceRules as $recurrenceRule) {
-            $propertyBag->set('RRULE', $recurrenceRule);
-        }
-
-        if (null != $this->recurrenceId) {
-            $this->recurrenceId->applyTimeSettings($this->noTime, $this->useTimezone, $this->useUtc, $this->timezoneString);
-            $propertyBag->add($this->recurrenceId);
-        }
-
-        if (!empty($this->exDates)) {
-            $propertyBag->add(new DateTimesProperty('EXDATE', $this->exDates, $this->noTime, $this->useTimezone, $this->useUtc, $this->timezoneString));
-        }
-
-        if ($this->cancelled) {
-            $propertyBag->set('STATUS',$this->cancelled );
-        }
-
-        if (null != $this->organizer) {
-            $propertyBag->add($this->organizer);
-        }
-
-        if ($this->noTime) {
-            $propertyBag->set('X-MICROSOFT-CDO-ALLDAYEVENT', 'TRUE');
-        }
-
-        if (null != $this->categories) {
-            $propertyBag->set('CATEGORIES', $this->categories);
-        }
-
-        $propertyBag->add(
-            new DateTimeProperty('DTSTAMP', $this->dtStamp ?: new \DateTimeImmutable(), false, false, true)
-        );
-
-        if ($this->created) {
-            $propertyBag->add(new DateTimeProperty('CREATED', $this->created, false, false, true));
-        }
-
-        if ($this->modified) {
-            $propertyBag->add(new DateTimeProperty('LAST-MODIFIED', $this->modified, false, false, true));
-        }
-
-        /**
-         * NEW CODE
-         * 
-         */
-        if ($this->class) {
-            $propertyBag->set('CLASS', $this->class);
-        }
-
-        if($this->altRep){
-            $propertyBag->set('LOCATION;ALTREP=', $this->altRep);
-        }
-
-
-
-        return $propertyBag;
-    }
-
-
-
-
-
 }
-

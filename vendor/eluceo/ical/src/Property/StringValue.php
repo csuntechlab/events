@@ -29,13 +29,7 @@ class StringValue implements ValueInterface
     {
         $value = $this->value;
 
-        // var_dump($value);
-
         $value = str_replace('\\', '\\\\', $value);
-        /**
-         * this allows me to print html when i remove it. 
-         */
-
         $value = str_replace('"', '\\"', $value);
         $value = str_replace(',', '\\,', $value);
         $value = str_replace(';', '\\;', $value);

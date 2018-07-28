@@ -71,26 +71,8 @@ class Property
             $line .= ';' . $this->parameterBag->toString();
         }
 
-        // var_dump( $this->value->getEscapedValue() );
-
-        $myString = $this->value->getEscapedValue();
-        $findMe = 'http';
-        $bool = strpos(  $myString , $findMe );
-        
-        if( $bool === false ) {
-            $line .= ':' . $this->value->getEscapedValue();
-        }
-        else{
-            $pieces = explode(":", $this->value->getEscapedValue());
-            $temp = '"';
-            $line .= $temp . $pieces[0]  . $pieces[1]. $temp .":". $pieces[2];
-            // $line .= $temp . $this->value->getEscapedValue() . $temp;
-            // $line .= $this->value->getEscapedValue();
-        }
-
-        // $line .= $this->value->getEscapedValue();
         // Property value
-        
+        $line .= ':' . $this->value->getEscapedValue();
 
         return $line;
     }
