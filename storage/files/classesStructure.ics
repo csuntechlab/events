@@ -1,0 +1,69 @@
+X- FOR PHP Content-Type: text/calendar
+X- FOR PHP Content-Disposition: attachment; filename="classes.2187.20433.1.ics"
+X- CLASSES STRCUTURE
+X- DATA must be modular...
+X- Use a event array?
+BEGIN:VCALENDAR
+VERSION:2.0
+CALSCALE:GREGORIAN
+PRODID:-//events @ META+LAB//Version 1//EN
+METHOD:PUBLISH
+BEGIN:VEVENT
+X- UNIQURE ID wrt class and term ID
+UID:classes.2187.20433.1.vevent@metalab.csun.edu
+X- DATE object was created
+DTSTAMP:20180505T171003Z
+X- created by the calendar user agent in the calendar store. Note: This is analogous to the creation date and time for a file in the file system.
+CREATED:20180505T170922Z
+LAST-MODIFIED:20180505T171003Z
+X- Security? 
+CLASS:PUBLIC
+X- Color
+TRANSP:OPAQUE
+X- Varies within method, in VEVENT meeting is tentative, confirmed or cancelled, IN VTODO it can be completed, in process
+STATUS:CONFIRMED
+X- The categories are useful in searching for a calendar component of a particular type and category
+CATEGORIES:Class
+SUMMARY:CIT 160 (20433)
+X- Link wrt class ID
+LOCATION;ALTREP="http://academics.csun.edu/classrooms/JD3520":JD3520
+GEO:34.2373175;-118.533936
+DESCRIPTION: <Add some type of description>
+X- When the event begins, AUG 27, 1PM? (weekly event)
+DTSTART;TZID=America/Los_Angeles:20180827T130000
+X- When the event ends, AUG 27, 1:50PM (weekly event)
+DTEND;TZID=America/Los_Angeles:20180827T135000
+X- how often this event occurs, what day does it end
+RRULE:FREQ=WEEKLY;INTERVAL=1;UNTIL=20181212T135000Z;BYDAY=MO,WE
+BEGIN:VALARM
+UID:classes.2187.20433.1.valarm@metalab.csun.edu
+TRIGGER:-PT15M
+DESCRIPTION:CIT 160 starts in 15 minutes
+ACTION:DISPLAY
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+X- Required, should be VALARM?
+UID:classes.2187.20433.1.vevent@metalab.csun.edu
+CATEGORIES:FINAL
+SUMMARY:CIT 160 FINAL (20433)
+LOCATION;ALTREP="http://academics.csun.edu/classrooms/JD3520":JD3520
+GEO:34.2373175;-118.533936
+DTSTART;TZID=America/Los_Angeles:20181215T120000
+DTEND;TZID=America/Los_Angeles:20181215T140000
+BEGIN:VALARM
+UID:classes.2187.20433.1.valarm@metalab.csun.edu
+TRIGGER:-PT15M
+DESCRIPTION:CIT 160 FINAL starts in 15 minutes
+END:VALARM
+X- want a week before reminder?
+X- reminder at morning, today you have XYZ final
+X- DTSTART;TZID=America/Los_Anglese: TIME START FOR FINAL
+X- DTEND;TZID = America/Los_Angeles: TIME END FOR FINAL
+X- COLOR should be distinct?
+X- Summary Final for XYZ!
+X- Description= <Add some type of description>
+X- GEO, have to find the room of final, i.e. final for math is different from lecture roon
+X- RRULE should be none...
+END:VEVENT
+END:VCALENDAR

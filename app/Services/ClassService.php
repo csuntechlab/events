@@ -131,10 +131,19 @@ class ClassService extends ICalFormatter implements ClassContract
         {
             $event = $output['finalEvent'];
             if( $event['days'] != 'A' && $event['days'] != '-' && $event['days'] != 'NULL' ){
+
+                if(empty($event['from_date']) || empty($event['to_date']))
+                {
+                    $date = $this->termInfo($event['term_id']);
+
+                    $event['from_date'] = $date['begin_date'];
+                    $event['to_date'] = $date['end_date'];
+                }
+
                 $this->setParamForFinal($event, $potentialFinalDetails);
                 $this->setParamByEvent($event);
 
-                $this->setParamBySpecifications('CONFIRMED','OPAQUE', 'PUBLIC', 'DAILY', '1');
+                $this->setParamBySpecifications('CONFIRMED','OPAQUE', 'PUBLIC', 'Weekly', '1');
                 //need to change
 
                 $vEvent = $this->setEvent();
