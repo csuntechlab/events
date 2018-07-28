@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 
 
 use App\Contracts\StudentContract;
+use App\ICal;
 
 class StudentController
 {
@@ -20,9 +21,13 @@ class StudentController
         $this->studentService = $studentService;
     }
 
+    /**
+     * @param $term
+     * @param $email
+     * @return null|string
+     */
     public function termClasses($term, $email){
-        // TODO: mock the database tables in tests here
-        $this->studentService->termClasses($term, $email);
-//        return 1;
+        $events = $this->studentService->termClasses($term, $email);
+        return ($events);
     }
 }
