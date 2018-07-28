@@ -10,7 +10,7 @@ use App\ICalFormatter;
 use App\Registry;
 use App\User;
 
-class StudentService extends ICalFormatter implements StudentContract
+class StudentService implements StudentContract
 {
     public function user($email){
         return User::email($email)->first();
