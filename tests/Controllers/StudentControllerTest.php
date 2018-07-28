@@ -63,12 +63,4 @@ class StudentControllerTest extends TestCase
 
         $this->assertJson($studentController->termClasses('3124', 'me.me'));
     }
-
-    /**
-     * @test
-     */
-    public function ical_generator(){
-        $ical = new ICal('Office Hours: Steven Fitzgerald', 'TZID=America/Los_Angeles:20180829T110000', 'America/Los_Angeles:20180829T115000');
-        var_dump($ical->generateICS());
-    }
 }

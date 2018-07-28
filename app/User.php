@@ -32,7 +32,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public function scopeEmail($query,$email)
     {
-        return $query->where('email', 'nr_'.$email.'@csun.edu')
-            ->orWhere('email', 'nr_'.$email.'@my.csun.edu');
+        return $query->where('email', $email.'@csun.edu')
+            ->orWhere('email', $email.'@my.csun.edu');
     }
 }

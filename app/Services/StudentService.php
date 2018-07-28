@@ -12,23 +12,34 @@ use App\User;
 
 class StudentService extends ICalFormatter implements StudentContract
 {
+    public function user($email){
+        return User::email($email)->first();
+    }
+
+    public function classesID($user_id, $term){
+        return ClassMembership::member($user_id)
+            ->termID($term)
+            ->pluck('classes_id')
+            ;
+    }
+
+    public function is_a_student($user_id, $classID){
+        return ClassRosters::individualsID($user_id)->classes($classID)->student() ? true : false;
+    }
 
     public function termClasses($term, $email){
         // TODO: see if pluck('user_id') querys quicker
-        $user = User::email($email)->first();
+        $user = $this->user($email);
 
         if(!$user)
             return null;
 
-        $classesID = ClassMembership::member($user->user_id)
-            ->termID($term)
-            ->pluck('classes_id')
-        ;
+        $classesID = $this->classesID($user->user_id, $term);
 
         $events = [];
 
         foreach($classesID as $classID){
-            if(ClassRosters::individualsID($user->user_id)->classes($classID)->student()) {
+            if($this->is_a_student($user->user_id, $classID)) {
 
                 foreach (Event::entities($classID)->with('course')->get() as $event) {
                     if ($event) {
@@ -50,7 +61,7 @@ class StudentService extends ICalFormatter implements StudentContract
      * @param $email
      * @return array
      */
-    public function ftermClasses($term, $email)
+    private function ftermClasses($term, $email)
     {
         //$classMemberships = ClassMembership::email($email)->term($term)->get();
 
