@@ -6,29 +6,32 @@ use Illuminate\Database\Eloquent\Model;
 
 class ClassMemberships extends Model
 {
+    //check for rank not affilation 
+    // if not null then faculty (rank)
+
     protected $table = 'nemo.classMemberships';
 
 	protected $fillable =[
-        'classes_id','term_id', 'members_id'
+        'classes_id',
+        'term_id',
+        'members_id',
+        'email',
+        'role_position',
     ];
     
     protected $hidden = [
-        'created_at',
-        'updated_at',
-        // 'role_position',
-        // 'member_status',
-        // 'member_id',
-        'term',	
+        'term',
         'class_number',
-        // 'members_id',
+        'members_id',
         'members_uid',
         'first_name',
         'middle_name',
         'last_name',
         'email',
-        'ad_hoc_member',	
-        'confidential',	
-        // 'email',
+        'role_position',
+        'ad_hoc_member',
+        'confidential',
+        'member_status',
     ];
 
     /**
@@ -79,16 +82,21 @@ class ClassMemberships extends Model
         return $query->orWhere('classes_id', 'LIKE', 'final-exams:%');
     }
     /**
-     * Each class has one corresponding event
-     * Each office hour has one corresponding event. 
-     * Each final exam time has one corresponding event. 
-     * 
-     * Gathers corresponding event of class. 
+     * filters instructor
      */
-    public function events()
+    public function scopeInstructorRole($query)
     {
-        //Model col name w/in Events, corresponding col w/in classMemberships
-        return $this->hasMany('App\Event','entities_id','classes_id');
+        return $query->where('role_position','Instructor');
     }
 
+    /**
+     * gets course info
+     */
+    public function course()
+    {
+        return $this->hasOne('App\CourseInfo','classes_id','classes_id' );
+    }
+
+    
+    
 }

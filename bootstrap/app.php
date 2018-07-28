@@ -77,8 +77,10 @@ $app->singleton(
 | totally optional, so you are not required to uncomment this line.
 |
 */
+// Classes
+$app->register(App\Providers\ClassServiceProvider::class);
 
-// $app->register(App\Providers\AppServiceProvider::class);
+$app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
@@ -93,6 +95,9 @@ $app->singleton(
 |
 */
 
+/* student service provider */
+$app->register(App\Providers\StudentServiceProvider::class);
+
 $app->configure('proxypass');
 $app->register(CSUNMetaLab\LumenProxyPass\Providers\ProxyPassServiceProvider::class);
 
@@ -103,6 +108,8 @@ $app->middleware([
     CSUNMetaLab\LumenForceHttps\Http\Middleware\ForceHttps::class,
 ]);
 
+
+
 $app->router->group([
     'namespace' => 'App\Http\Controllers',
 ], function ($router) {
@@ -112,6 +119,7 @@ $app->router->group([
 
 // Service Providers
 $app->register(App\Providers\FacultyServiceProvider::class);
+
 
 return $app;
 
