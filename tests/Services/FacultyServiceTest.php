@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 namespace Tests\Services;
+
 use App\Contracts\FacultyContract;
 use App\Services\FacultyService;
 use Mockery;
@@ -9,6 +10,7 @@ use TestCase;
 
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Laravel\Lumen\Testing\DatabaseTransactions;
+
 class FacultyServiceTest extends TestCase
 {
     protected $retriever;
@@ -23,7 +25,7 @@ class FacultyServiceTest extends TestCase
      * Retrieve faculty member's classes and corresponding final exam hours for a given term
      * @test getClassAndFinalExamHours function in FacultyService
      */
-    public function test_get_class_and_final_exam_hours() {
+    public function test_get_class_and_final_exam_times() {
         $facultyService = new FacultyService($this->retriever);
 
         $classesAndFinalsList = json_encode([
@@ -37,8 +39,8 @@ class FacultyServiceTest extends TestCase
                 "start_time" => "0900h",
                 "end_time" => "0945h",
                 "days" => "MW",
-                "from_date" => null,
-                "to_date" => null,
+                "from_date" => "2000-08-28 00:00:00",
+                "to_date" => "2000-12-21 23:59:59",
                 "location_type" => "physical",
                 "location" => "ED1100",
                 "is_byappointment" => 0,
@@ -77,8 +79,8 @@ class FacultyServiceTest extends TestCase
                 "start_time" => "1100h",
                 "end_time" => "1200h",
                 "days" => "MW",
-                "from_date" => null,
-                "to_date" => null,
+                "from_date" => "2000-08-28 00:00:00",
+                "to_date" => "2000-12-21 23:59:59",
                 "location_type" => "physical",
                 "location" => "BP3100",
                 "is_byappointment" => 0,
@@ -119,16 +121,4 @@ class FacultyServiceTest extends TestCase
         $this->assertEquals(json_encode($response), $classesAndFinalsList);
 
     }
-  /**
-    * Go to faculty member's page
-    * Reach ... terms/2187/faculty/steven.fitzgerald
-    * @ test
-    */
-    // public function go_to_faculty_member_page()
-    // {
-    //     $response = $this->call('GET', '1.0/terms/2187/faculty/steven.fitzgerald');
-    //     $this->assertEquals(200, $response->status());
-    // }
- 
-
 }
