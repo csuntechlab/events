@@ -47,17 +47,17 @@ class FacultyController extends Controller
         //$instructorInfo['officeHours'] = $this->getAllOfficeHours($term, $email);
 
 
-        $facultyData = [
+       /* $facultyData = [
             'term' => Event::where('term_id', $term)->first(),
             //'term' => Event::findOrFail($term),
             'email'=> User::where('email', $email.'@csun.edu')->first(),
 
-        ];
+        ];*/
 
 //        return $facultyData;
 
 
-        return $this->facultyRetriever->getAllOfficeHours($facultyData);
+        return $this->facultyRetriever->getAllOfficeHours($term,$email);
 
 
 //        dd($facultyData);

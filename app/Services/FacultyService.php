@@ -12,8 +12,14 @@ class FacultyService extends ICalFormatter implements FacultyContract
 {
 
 
-    public function getAllOfficeHours($facultyData)
+    public function getAllOfficeHours($term,$email)
     {
+        $facultyData = [
+            'term' => Event::where('term_id', $term)->first(),
+            //'term' => Event::findOrFail($term),
+            'email'=> User::where('email', $email.'@csun.edu')->first(),
+
+        ];
 
 
         $faculty_id = $facultyData['email'];

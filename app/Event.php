@@ -32,12 +32,12 @@ class Event extends Model
 
     protected $hidden = [
         'description',
-        
+
     ];
 
     /**
-     * Each office hour has one corresponding event. 
-     */ 
+     * Each office hour has one corresponding event.
+     */
     public function scopeOfficeHours($query,$entities_id)
     {
         //Model col name w/in Events, corresponding col w/in classMemberships
@@ -60,13 +60,13 @@ class Event extends Model
     }
 
     /**
-     * Gets courses info 
+     * Gets courses info
      */
     public function course()
     {
         return $this->hasOne('App\CourseInfo', 'classes_id', 'entities_id');
     }
-    
+
     /**
      * matches the entties id of event with classes_id
      */

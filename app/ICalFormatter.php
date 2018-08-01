@@ -121,7 +121,7 @@ class ICalFormatter{
         ->setDtStamp( new \DateTime($this->dtStamp) ) 
         ->setCreated( new \DateTime($this->created) ) 
         ->setModified( new \DateTime($this->lastModified) ) 
-        ->setTimeTransparency($this->transparent)
+        ->setTrans($this->transparent)
         ->setStatus($this->status)
         ->setCategories($this->categories)
         ->setSummary( $this->summary )
