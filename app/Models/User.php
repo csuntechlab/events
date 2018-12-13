@@ -22,7 +22,7 @@ class User extends Model
         'updated_at'
     ];
 
-    public function scopeEmail($query,$email)
+    public function scopeEmail($query, $email)
     {
         return $query->whereEmail($email.'@csun.edu');
     }

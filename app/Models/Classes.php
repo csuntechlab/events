@@ -18,15 +18,15 @@ class Classes extends Model
         'entities_id',
         'classes_id',
         'term_id',
-        "created_at",
-        "updated_at",
+        'created_at',
+        'updated_at',
         'is_walkin',
         'is_byappointment'
     ];
 
     public function scopeClasses_id($query, $queryBuilder)
     {
-        return $query->where('entities_id',$queryBuilder);
+        return $query->where('entities_id', $queryBuilder);
     }
 
     public function getDetails()
@@ -34,7 +34,7 @@ class Classes extends Model
         return $this->hasOne('App\Models\CourseInfo','classes_id','entities_id');
     }
 
-    public function scopeFinal($query,$queryBuilder)
+    public function scopeFinal($query, $queryBuilder)
     {
         return $query->where('entities_id', $queryBuilder);
     }

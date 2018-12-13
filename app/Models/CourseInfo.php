@@ -9,6 +9,7 @@ class CourseInfo extends Model
     protected $table = "omar.classes";
 
     protected $hidden = [
+        'classes_id',
         'session_code',
         'term',
         'course_id',
@@ -20,5 +21,7 @@ class CourseInfo extends Model
         'enrollment_total',
         'waitlist_cap',
         'waitlist_total',
+        'updated_at',
+        'created_at'
     ];
 }

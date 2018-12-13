@@ -24,12 +24,14 @@ class ClassMembership extends Model
         'ad_hoc_member',
         'confidential',
         'member_status',
+        'updated_at',
+        'created_at'
     ];
 
     /**
      * filters the associated email
      */
-    public function scopeEmail($query,$email)
+    public function scopeEmail($query, $email)
     {
         return $query->whereEmail($email.'@csun.edu');
     }
@@ -37,17 +39,17 @@ class ClassMembership extends Model
     /**
      * filters the associated term
      */
-    public function scopeTerm($query,$term)
+    public function scopeTerm($query, $term)
     {
-        return $query->where('term_id',$term);
+        return $query->where('term_id', $term);
     }
 
     /**
      * filters the associated member:id
      */ 
-    public function scopeMemberId($query,$id)
+    public function scopeMemberId($query, $id)
     {
-        return $query->where('members_id',$id);
+        return $query->where('members_id', $id);
     }
 
     /**

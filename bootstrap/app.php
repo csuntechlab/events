@@ -116,6 +116,13 @@ $app->router->group([
     require __DIR__.'/../routes/web.php';
 });
 
+$app->router->group([
+    'prefix' => '1.0',
+    'namespace' => 'App\Http\Controllers',
+], function ($router) {
+    require __DIR__.'/../routes/1.0.php';
+});
+
 
 // Service Providers
 $app->register(App\Providers\FacultyServiceProvider::class);
