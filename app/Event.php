@@ -8,31 +8,8 @@ class Event extends Model
 {
     protected $table = 'bedrock.events';
 
-    protected $fillable =[
-        'entities_id',
-        'term_id',
-        'pattern_number',
-        'type',
-        'label',
-        'start_time',
-        'end_time',
-        'days',
-        'from_date',
-        'to_date',
-        'location_type',
-        'location',
-        'is_byappointment',
-        'is_walkin',
-        'booking_url',
-        'online_label',
-        'online_url',
-        'created_at',
-        'updated_at',
-    ];
-
     protected $hidden = [
         'description',
-        
     ];
 
     /**

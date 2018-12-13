@@ -10,14 +10,6 @@ class ClassMemberships extends Model
     // if not null then faculty (rank)
 
     protected $table = 'nemo.classMemberships';
-
-	protected $fillable =[
-        'classes_id',
-        'term_id',
-        'members_id',
-        'email',
-        'role_position',
-    ];
     
     protected $hidden = [
         'term',
@@ -39,7 +31,7 @@ class ClassMemberships extends Model
      */
     public function scopeEmail($query,$email)
     {
-        return $query->where('email','nr_'.$email.'@csun.edu');
+        return $query->whereEmail($email.'@csun.edu');
     }
 
     /**

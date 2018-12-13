@@ -15,16 +15,6 @@ class CourseInfo extends Model
 {
     protected $table = "omar.classes";
 
-    protected $fillable =[
-        'classes_id',
-        'term_id',
-        'class_number',
-        'subject',
-        'catalog_number',
-        'title',
-        'description',
-    ];
-
     protected $hidden = [
         'session_code',
         'term',

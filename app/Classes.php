@@ -20,17 +20,6 @@ class Classes extends Model
 
     protected $table = "bedrock.events";
 
-    protected $fillable =[
-        'description',
-        'location',
-        'start_time',
-        'end_time',
-        'days',
-        'from_date',
-        'to_date',
-        'term'
-    ];
-
     protected $hidden = [
         'meeting_id',
         'meeting_number',
