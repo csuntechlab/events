@@ -1,11 +1,10 @@
 <?php
 namespace App\Services;
-use App\ClassMemberships;
-use App\User;
-use App\Event;
 use App\Contracts\FacultyContract;
-use Eluceo\iCal\Property\Event\RecurrenceRule;
-use App\ICalFormatter;
+use App\Classes\ICalFormatter;
+use App\Models\ClassMembership;
+use App\Models\Event;
+use App\Models\User;
 
 class FacultyService extends ICalFormatter implements FacultyContract {
 
@@ -13,7 +12,7 @@ class FacultyService extends ICalFormatter implements FacultyContract {
     {
         $user = User::email($email)->first();
         
-        $classes = ClassMemberships::memberId($user->user_id)->term($term)->instructorRole()->pluck('classes_id');
+        $classes = ClassMembership::memberId($user->user_id)->term($term)->instructorRole()->pluck('classes_id');
 
         $events = [];
 
@@ -27,7 +26,7 @@ class FacultyService extends ICalFormatter implements FacultyContract {
     
     public function getFinalExamTimes($term,$email)
     {
-        $finalExamList = ClassMemberships::email($email)
+        $finalExamList = ClassMembership::email($email)
         ->term($term)
         ->instructorRole()
         ->with('course','finalExamEvents')

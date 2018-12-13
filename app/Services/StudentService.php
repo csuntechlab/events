@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Services;
-use App\ClassMembership;
 use App\Contracts\StudentContract;
-use App\Event;
+use App\Models\ClassMembership;
+use App\Models\Event;
 
 class StudentService implements StudentContract
 {

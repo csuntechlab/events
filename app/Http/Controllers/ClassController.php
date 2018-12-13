@@ -1,17 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Carlos Benavides
- * Date: 7/13/2018
- * Time: 11:24 AM
- */
 
 namespace App\Http\Controllers;
 
-
 use App\Contracts\ClassContract;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class ClassController extends Controller
 {

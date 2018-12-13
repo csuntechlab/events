@@ -1,21 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Carlos Benavides
- * Date: 7/13/2018
- * Time: 5:27 PM
- */
 
 namespace App\Services;
 
-use App\Classes;
-use Illuminate\Support\Facades\Validator;
-
 use App\Contracts\ClassContract;
+use App\Models\Classes;
+use Illuminate\Support\Facades\Validator;
 
 class ClassService implements ClassContract
 {
-
     public function isValidCourseId($course_id)
     {
         $data = ['course_id' => $course_id];

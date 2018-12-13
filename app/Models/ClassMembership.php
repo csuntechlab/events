@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ClassMemberships extends Model
+class ClassMembership extends Model
 {
     //check for rank not affilation 
     // if not null then faculty (rank)
@@ -63,9 +63,6 @@ class ClassMemberships extends Model
      */
     public function course()
     {
-        return $this->hasOne('App\CourseInfo','classes_id','classes_id' );
+        return $this->hasOne('App\Models\CourseInfo','classes_id','classes_id' );
     }
-
-    
-    
 }

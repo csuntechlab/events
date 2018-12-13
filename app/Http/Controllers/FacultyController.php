@@ -1,11 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Contracts\FacultyContract;
-use Eluceo\iCal\Property\Event\RecurrenceRule;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use App\ICal;
 
 // use Controller;
 // require_once __DIR__ . '/../vendor/autoload.php';

@@ -1,13 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Carlos Benavides
- * Date: 7/16/2018
- * Time: 2:10 PM
- */
-
-namespace App;
-
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -39,12 +31,11 @@ class Classes extends Model
 
     public function getDetails()
     {
-        return $this->hasOne('App\CourseInfo','classes_id','entities_id');
+        return $this->hasOne('App\Models\CourseInfo','classes_id','entities_id');
     }
 
     public function scopeFinal($query,$queryBuilder)
     {
         return $query->where('entities_id', $queryBuilder);
     }
-
 }

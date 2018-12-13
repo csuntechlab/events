@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,5 +26,4 @@ class User extends Model
     {
         return $query->whereEmail($email.'@csun.edu');
     }
-
 }
