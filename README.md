@@ -5,7 +5,7 @@
 The Events web service is a REST-ful API which allows us to retrieve JSON that contains a 
 professor's events: office hours, final exam hours, and class hours.
 
-For more information please visit the Roster web service [home page](https://api.metalab.csun.edu/events/).
+For more information please visit the Events web service [home page](https://api.metalab.csun.edu/events/).
 
 ## Installation
 
